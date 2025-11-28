@@ -1,9 +1,12 @@
 import { Link } from 'react-router-dom'
 import { useProjects } from '../../hooks/useProjects'
 import ProjectCard from './ProjectCard'
+import ProjectsSkeleton from './ProjectsSkeleton'
+import ProjectsErrorBoundary from './ProjectsErrorBoundary'
+import EmptyState from '../ui/EmptyState'
 import Button from '../ui/Button'
 
-export default function ProjectsSection() {
+function ProjectsSectionContent() {
   const { data: projects, isLoading } = useProjects()
 
   // Show top 4 featured projects
@@ -11,11 +14,31 @@ export default function ProjectsSection() {
 
   if (isLoading) {
     return (
-      <section className="py-16 px-4 sm:px-6 lg:px-8">
+      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900">
         <div className="max-w-5xl mx-auto">
-          <div className="text-center text-gray-600 dark:text-gray-400">
-            Loading projects...
+          <div className="text-center mb-12 space-y-4">
+            <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-slate-900 dark:text-white">
+              Featured Projects
+            </h2>
+            <p className="text-base md:text-lg text-slate-600 dark:text-slate-400 leading-relaxed">
+              A selection of my recent work showcasing full-stack development and problem-solving
+              skills
+            </p>
           </div>
+          <ProjectsSkeleton count={4} />
+        </div>
+      </section>
+    )
+  }
+
+  if (!projects || projects.length === 0) {
+    return (
+      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900">
+        <div className="max-w-5xl mx-auto">
+          <EmptyState
+            title="No projects yet"
+            description="Projects will be added soon. Stay tuned!"
+          />
         </div>
       </section>
     )
@@ -25,11 +48,11 @@ export default function ProjectsSection() {
     <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900">
       <div className="max-w-5xl mx-auto">
         {/* Section Header */}
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="text-center mb-12 space-y-4">
+          <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-slate-900 dark:text-white">
             Featured Projects
           </h2>
-          <p className="text-lg text-gray-600 dark:text-gray-400">
+          <p className="text-base md:text-lg text-slate-600 dark:text-slate-400 leading-relaxed">
             A selection of my recent work showcasing full-stack development and problem-solving
             skills
           </p>
@@ -52,5 +75,15 @@ export default function ProjectsSection() {
         </div>
       </div>
     </section>
+  )
+}
+
+export default function ProjectsSection() {
+  const { refetch } = useProjects()
+  
+  return (
+    <ProjectsErrorBoundary onRetry={() => refetch()}>
+      <ProjectsSectionContent />
+    </ProjectsErrorBoundary>
   )
 }

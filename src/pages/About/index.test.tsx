@@ -16,6 +16,17 @@ describe('About Page', () => {
     expect(screen.getByRole('heading', { name: /about me/i })).toBeInTheDocument()
   })
 
+  test('sets correct page title', () => {
+    renderAbout()
+    expect(document.title).toBe('About — Matteo Ricci')
+  })
+
+  test('sets meta description', () => {
+    renderAbout()
+    const metaDescription = document.querySelector('meta[name="description"]')
+    expect(metaDescription?.getAttribute('content')).toContain('full-stack developer')
+  })
+
   test('displays main page title', () => {
     renderAbout()
     expect(screen.getByRole('heading', { name: /about me/i, level: 1 })).toBeInTheDocument()

@@ -197,4 +197,50 @@ describe('ContactForm', () => {
     expect(emailInput).toHaveAttribute('id', 'email')
     expect(messageInput).toHaveAttribute('id', 'message')
   })
+
+  test('error messages have role="alert"', async () => {
+    const user = userEvent.setup()
+    renderContactForm()
+
+    const submitButton = screen.getByRole('button', { name: /send message/i })
+    await user.click(submitButton)
+
+    await waitFor(() => {
+      const errorMessages = screen.getAllByRole('alert')
+      expect(errorMessages.length).toBeGreaterThan(0)
+    })
+  })
+
+  test('invalid inputs have aria-invalid attribute', async () => {
+    const user = userEvent.setup()
+    renderContactForm()
+
+    const submitButton = screen.getByRole('button', { name: /send message/i })
+    await user.click(submitButton)
+
+    await waitFor(() => {
+      const nameInput = screen.getByLabelText(/name/i)
+      expect(nameInput).toHaveAttribute('aria-invalid', 'true')
+    })
+  })
+
+  test('error messages are linked via aria-describedby', async () => {
+    const user = userEvent.setup()
+    renderContactForm()
+
+    const submitButton = screen.getByRole('button', { name: /send message/i })
+    await user.click(submitButton)
+
+    await waitFor(() => {
+      const nameInput = screen.getByLabelText(/name/i)
+      const describedBy = nameInput.getAttribute('aria-describedby')
+      expect(describedBy).toBeTruthy()
+      
+      if (describedBy) {
+        const errorElement = document.getElementById(describedBy)
+        expect(errorElement).toBeInTheDocument()
+        expect(errorElement).toHaveAttribute('role', 'alert')
+      }
+    })
+  })
 })

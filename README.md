@@ -110,6 +110,65 @@ All components are located in `src/components/ui/` and follow these principles:
 
 - **`cn()`** - Merges Tailwind classes safely using `clsx` and `tailwind-merge`
 
+### Typography System (Minimalismo Tecnico 2025)
+
+The portfolio uses a modern, minimal typography scale designed for optimal readability and visual hierarchy.
+
+#### Typography Scale
+
+| Element | Class | Responsive | Weight |
+|---------|-------|------------|--------|
+| H1 | `text-5xl md:text-6xl` | Yes | `font-bold tracking-tight` |
+| H2 | `text-3xl md:text-4xl` | Yes | `font-semibold tracking-tight` |
+| H3 | `text-2xl` | No | `font-semibold` |
+| H4 | `text-xl` | No | `font-medium` |
+| H5 | `text-lg` | No | `font-medium` |
+| Body | `text-base` | No | `leading-relaxed` |
+| Small | `text-sm` | No | `text-slate-500` |
+
+#### Font Stack
+
+- **Primary**: Inter (system-ui, -apple-system fallbacks)
+- **Color Palette**: Slate scale for text hierarchy
+  - Primary: `text-slate-900 dark:text-slate-100`
+  - Secondary: `text-slate-600 dark:text-slate-400`
+  - Muted: `text-slate-500 dark:text-slate-400`
+
+#### Implementation
+
+Typography defaults are defined in:
+- `tailwind.config.js` - Custom fontSize scale with line-heights
+- `src/styles/globals.css` - Base layer defaults for h1-h6, body, small
+
+#### Usage Examples
+
+```tsx
+// Page Title (H1)
+<h1 className="text-5xl md:text-6xl font-bold tracking-tight text-slate-900 dark:text-white">
+  Page Title
+</h1>
+
+// Section Heading (H2)
+<h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-slate-900 dark:text-white">
+  Section Title
+</h2>
+
+// Card Title (H3)
+<h3 className="text-2xl font-semibold text-slate-900 dark:text-white">
+  Card Title
+</h3>
+
+// Body Text
+<p className="text-base leading-relaxed text-slate-700 dark:text-slate-300">
+  Body content with comfortable line height.
+</p>
+
+// Muted/Secondary Text
+<p className="text-sm text-slate-500 dark:text-slate-400">
+  Secondary information or metadata.
+</p>
+```
+
 ## 🏠 Homepage
 
 ### Hero Section
@@ -192,7 +251,7 @@ interface Project {
 - ✅ Responsive multi-column grids
 - ✅ External link handling with proper `target="_blank"` and security
 - ✅ Empty state UX when no results match filter
-- ✅ Ready for future "Project Details" page (routing prepared)
+- ✅ Project Details page with dynamic routing
 - ✅ SEO-friendly semantic HTML
 - ✅ Full accessibility (keyboard navigation, ARIA labels)
 - ✅ Dark mode with proper contrast ratios
@@ -200,7 +259,112 @@ interface Project {
 **Testing:**
 - ProjectCard: 9 tests (render, title, badges, CTA, disabled state, images)
 - ProjectsSection: 8 tests (loading, cards, CTA link, data fetching)
-- Projects Page: 11 tests (filters, empty state, loading, card rendering)
+- Projects Page: 14 tests (filters, empty state, loading, card rendering)
+
+## 📄 Project Details Page
+
+### Dynamic Case Study Layout
+
+The Project Details page provides an in-depth view of each project, serving as a professional case study for portfolio review:
+
+**Route Configuration:**
+- Dynamic route: `/projects/:id`
+- Lazy loaded component for performance
+- ProjectsErrorBoundary for error isolation
+
+**Page Structure:**
+
+**Header Section:**
+- Project title (H1) with semantic heading
+- Project description as subtitle
+- Tech stack badges for quick tech identification
+- CTA buttons:
+  - "View Repository" - Links to GitHub (when available)
+  - "Live Demo" - Links to live project (when available)
+- Both CTAs open in new tab with `rel="noopener noreferrer"` security
+
+**Main Content Sections:**
+- **Overview** - Extended project description with context and motivation
+- **Key Features** - Bulleted list of main project features with checkmark icons
+- **Technologies Used** - Visual tech stack display with styled chips
+- **Screenshots** - Gallery of project screenshots (SVG placeholders ready for real images)
+- **Technical Approach** - Description of development practices and architecture
+
+**Sidebar (Desktop):**
+- **Project Info Card:**
+  - Status badge (In Production / In Progress / Archived / Demo)
+  - Created date
+  - Last Updated date
+- **Related Projects:**
+  - 3 projects with overlapping tech stack
+  - Links to navigate to related project details
+
+**Data Model Extended:**
+```typescript
+interface Project {
+  id: string
+  title: string
+  description: string
+  longDescription?: string      // For Overview section
+  features?: string[]           // For Key Features list
+  tech: string[]
+  image?: string
+  screenshots?: string[]        // Gallery images
+  repoUrl?: string
+  liveUrl?: string
+  status?: ProjectStatus        // 'in-production' | 'in-progress' | 'archived' | 'demo'
+  createdAt?: string            // ISO date string
+  updatedAt?: string            // ISO date string
+}
+```
+
+**Loading States:**
+- `ProjectDetailsSkeleton` - Full page skeleton with:
+  - Header skeleton (title, description, badges, buttons)
+  - Section skeletons (overview, features, screenshots)
+  - Sidebar skeleton (info card, related projects)
+- Skeleton uses `animate-pulse` for shimmer effect
+- Proper `role="status"` and `aria-label` for accessibility
+
+**Error Handling:**
+- `ProjectsErrorBoundary` wraps page content
+- Retry button triggers TanStack Query refetch
+- Error state shows warning icon with retry option
+
+**Not Found State:**
+- Custom SEO: "Project Not Found — Matteo Ricci"
+- `EmptyState` component with:
+  - "Project not found" heading
+  - Descriptive message
+  - "View All Projects" CTA button
+- Back to Projects link for navigation
+
+**SEO Dynamic:**
+```tsx
+<Seo
+  title={`${project.title} — Matteo Ricci`}
+  description={project.description}
+  canonical={`https://matteoricci.net/projects/${id}`}
+/>
+```
+
+**Accessibility Features:**
+- ✅ Semantic HTML with proper heading hierarchy (H1 → H2 → H3)
+- ✅ External links with `target="_blank"` and security attributes
+- ✅ Focus-visible rings on all interactive elements
+- ✅ Back link with arrow icon for clear navigation
+- ✅ Proper alt text on all images
+- ✅ Related projects as accessible links
+
+**Testing:**
+- ProjectDetails: 33 tests covering:
+  - Route rendering and loading states
+  - Not-found state (4 tests)
+  - Project content display (9 tests)
+  - CTA buttons and security (5 tests)
+  - Sidebar info and related projects (5 tests)
+  - Dynamic SEO tags (4 tests)
+  - Different project types (3 tests)
 
 ## 🧭 Responsive Navigation
 
@@ -350,22 +514,318 @@ The About page provides a comprehensive professional overview without fluff:
 - About Page: 11 tests (sections, content, accessibility)
 - **26 new tests** - 103 total passing
 
+## 🔍 SEO System
+
+Professional SEO implementation with dynamic meta tags and Open Graph support.
+
+### Meta Tags Generated
+
+Each page automatically generates:
+- `<title>` - Unique page-specific title
+- `<meta name="description">` - Tailored description for each page
+- `<meta property="og:title">` - Open Graph title for social sharing
+- `<meta property="og:description">` - Open Graph description
+- `<meta property="og:url">` - Canonical URL for the page
+- `<meta property="og:type">` - Set to "website"
+- `<link rel="canonical">` - Canonical URL to avoid duplicate content
+
+### Usage
+
+The `<Seo>` component is used in every page:
+
+```tsx
+import Seo from '../../components/seo/Seo'
+
+<Seo
+  title="Projects — Matteo Ricci"
+  description="Portfolio progetti di Matteo Ricci: applicazioni full-stack con React, Django, TypeScript."
+  canonical="https://matteoricci.net/projects"
+/>
+```
+
+### Page-Specific Metadata
+
+- **Home**: "Matteo Ricci — Full-Stack Developer" - Main portfolio landing
+- **Projects**: "Projects — Matteo Ricci" - Portfolio projects showcase
+- **About**: "About — Matteo Ricci" - Bio, skills, technical journey
+- **Contact**: "Contact — Matteo Ricci" - Contact form and collaboration opportunities
+
+### Favicon & Web Manifest
+
+- `/favicon.svg` - SVG favicon with "M" letter in blue circle
+- `/icon-192.png` & `/icon-512.png` - PNG icons for PWA and mobile
+- `/site.webmanifest` - Web app manifest for installation
+- `<html lang="it">` - Italian language declaration
+
+### Semantic HTML
+
+All pages follow proper HTML semantics:
+- ✅ Each page has exactly 1 `<h1>` tag
+- ✅ Sections wrapped in `<section>` elements
+- ✅ Proper heading hierarchy (h1 → h2 → h3)
+- ✅ Accessible ARIA labels where needed
+
+### Future Enhancements
+
+Note: Full SEO optimization including `robots.txt`, sitemap.xml, and structured data will be implemented in Issue #16 during deployment configuration.
+
+**Testing:**
+- Seo Component: 11 tests (title, meta tags, og tags, canonical, fallbacks, updates)
+- Page SEO Integration: 4 tests (Home, Projects, About, Contact verify correct titles and descriptions)
+- **15 new SEO tests** - 129 total passing
+
+## ♿ Accessibility Baseline (A11y)
+
+Professional accessibility implementation achieving WCAG 2.1 AA-level standards.
+
+### Skip Link
+
+Skip navigation link for keyboard users:
+- Visually hidden by default (sr-only class)
+- Appears on keyboard focus with proper styling
+- Links to `#main-content` landmark
+- Smooth scroll behavior to main content area
+- Positioned before all other content
+
+### Focus Management
+
+Consistent focus indicators across all interactive elements:
+- ✅ Visible focus ring with `focus-visible:ring-2`
+- ✅ High contrast focus indicators (blue-600 primary)
+- ✅ Ring offset for better visibility
+- ✅ Applied to: buttons, inputs, textareas, links, filter buttons
+- ✅ Keyboard-only focus (no mouse focus rings)
+
+### Landmark Roles
+
+Semantic HTML5 landmarks with explicit ARIA roles:
+- `<header role="banner">` - Site header with navigation
+- `<nav role="navigation" aria-label="Main navigation">` - Primary navigation
+- `<main id="main-content" role="main" tabIndex={-1}>` - Main content area (focusable)
+- `<footer role="contentinfo">` - Site footer
+
+### Mobile Menu Accessibility
+
+Full keyboard and screen reader support:
+- ✅ Hamburger button: `aria-expanded={isOpen}` state
+- ✅ Mobile menu: `aria-hidden={!isOpen}` visibility
+- ✅ Dynamic `aria-label`: "Open menu" / "Close menu"
+- ✅ ESC key closes menu
+- ✅ Focus trap when menu is open
+- ✅ Smooth animations with accessibility in mind
+
+### Form Accessibility
+
+Contact form with complete ARIA support:
+- ✅ Error messages: `role="alert"` for screen readers
+- ✅ Invalid inputs: `aria-invalid={true}` attribute
+- ✅ Error linking: `aria-describedby` connects errors to inputs
+- ✅ Proper `<label>` associations with `htmlFor`
+- ✅ Required fields marked with visual and semantic indicators
+
+### Alt Text
+
+All images have descriptive alternative text:
+- Hero portrait: `alt="Portrait of Matteo Ricci"`
+- Project images: `alt={project.title}`
+- Decorative SVG icons marked appropriately
+- No images without alt attributes
+
+### Contrast Ratios
+
+WCAG AA-level contrast verified:
+- ✅ Text colors: gray-900/white on backgrounds
+- ✅ Button variants: blue-600/blue-700 with white text
+- ✅ Badge variants: proper foreground/background contrast
+- ✅ Dark mode: adjusted colors for accessibility
+- ✅ Links: distinguishable from body text
+
+### Keyboard Navigation
+
+Complete keyboard-only usability:
+- ✅ Tab order follows logical flow
+- ✅ All interactive elements reachable via keyboard
+- ✅ No keyboard traps (except intentional focus management)
+- ✅ Enter/Space activate buttons and links
+- ✅ ESC closes modals and mobile menu
+- ✅ Arrow keys for future component enhancements
+
+### Screen Reader Support
+
+Optimized for assistive technology:
+- ✅ Semantic HTML structure
+- ✅ ARIA labels on navigation regions
+- ✅ Live regions for dynamic content (toasts with role="alert")
+- ✅ Hidden decorative elements from screen readers
+- ✅ Meaningful link text (no "click here")
+- ✅ Form error announcements
+
+**Testing:**
+- SkipLink: 5 tests (render, href, sr-only, focus, keyboard)
+- PageLayout: 7 tests (landmarks, banner, main, footer, skip link position)
+- Navbar: +1 test (aria-label verification)
+- ContactForm: +4 tests (role="alert", aria-invalid, aria-describedby)
+- **16 new accessibility tests** - 145 total passing
+
+## ⚠️ Error Handling & Loading States
+
+Enterprise-level error boundaries, skeleton loaders, and empty states for production-ready UX.
+
+### Error Boundaries
+
+Professional error isolation preventing entire app crashes:
+
+**Global ErrorBoundary** (`src/components/system/ErrorBoundary.tsx`)
+- Class component using `getDerivedStateFromError()` lifecycle
+- Catches errors from any child component tree
+- Logs errors to `console.warn()` for debugging (not console.error to avoid noise)
+- Fallback UI with red error icon and descriptive message
+- **Retry mechanism** - "Try Again" button resets error state
+- **Navigation escape** - "Go to Home" button for user recovery
+- Dev mode: displays `error.message` for debugging
+- Optional `onReset` callback for custom retry logic
+
+**ProjectsErrorBoundary** (`src/components/sections/ProjectsErrorBoundary.tsx`)
+- Specialized boundary for Projects section errors
+- Yellow warning icon (less alarming than global red)
+- Context-specific message: "Unable to load projects. Please try again."
+- **Retry with refetch** - Calls `onRetry()` prop to trigger TanStack Query refetch
+- Resets `hasError` state on retry attempt
+- Wraps both ProjectsSection and Projects page
+
+**Usage Pattern:**
+```tsx
+// Global error boundary in App.tsx
+<ErrorBoundary>
+  <AppProviders>
+    <AppRouter />
+  </AppProviders>
+</ErrorBoundary>
+
+// Component-specific boundary
+<ProjectsErrorBoundary>
+  <ProjectsContent />
+</ProjectsErrorBoundary>
+```
+
+### Skeleton Loaders
+
+Shimmer-effect loading states improving perceived performance:
+
+**Skeleton Component** (`src/components/ui/Skeleton.tsx`)
+- Base skeleton with `animate-pulse` Tailwind animation
+- Background: `bg-gray-200 dark:bg-gray-700`
+- Accessibility: `role="status" aria-label="Loading..."`
+- **3 variants**:
+  - `avatar`: Rounded-full circle for profile images
+  - `text`: Height 4 (h-4) rounded bar for text lines
+  - `card`: Rounded-lg block for card placeholders
+- Composable with custom `className` for specific dimensions
+
+**ProjectsSkeleton** (`src/components/sections/ProjectsSkeleton.tsx`)
+- Grid of project card skeletons matching real card layout
+- Configurable `count` prop (default 4)
+- Each skeleton card includes:
+  - `aspect-video` image skeleton
+  - h-6 title skeleton
+  - 2x h-4 description line skeletons
+  - 3x rounded-full badge skeletons
+- Responsive grid: 1 column mobile → 2 columns desktop
+- Used in ProjectsSection (4 skeletons) and Projects page (6 skeletons)
+
+**Loading State Integration:**
+```tsx
+if (isLoading) {
+  return <ProjectsSkeleton count={6} />
+}
+```
+
+### Empty States
+
+User-friendly feedback for empty results with optional actions:
+
+**EmptyState Component** (`src/components/ui/EmptyState.tsx`)
+- Props: `title`, `description?`, `actionLabel?`, `onAction?`
+- Gray archive box SVG icon (decorative)
+- Centered layout with max-width 512px
+- **h3 title** for semantic heading hierarchy
+- **Optional description** with gray text
+- **Optional action button** - Primary variant Button component
+- `onAction` callback for reset/navigation logic
+
+**Usage Examples:**
+```tsx
+// Projects page - no results after filtering
+<EmptyState
+  title={`No projects found for "${activeFilter}"`}
+  description="Try selecting a different filter to see more projects."
+  actionLabel="Show All Projects"
+  onAction={() => setActiveFilter('All')}
+/>
+
+// Projects section - no projects at all
+<EmptyState
+  title="No projects available"
+  description="Check back soon for updates."
+/>
+```
+
+### Implementation Highlights
+
+**Wrapper Pattern:**
+Content components split from error boundary wrappers:
+- `ProjectsSection` → wraps → `ProjectsSectionContent`
+- `Projects` page → wraps → `ProjectsContent`
+- Clean separation of concerns
+- Error boundaries catch errors in content logic
+- Loading and error states isolated
+
+**Console Logging:**
+- Error boundaries use `console.warn()` not `console.error()`
+- Rationale: Error boundaries are expected error handling, not unexpected crashes
+- Logged errors include: `error.message`, `error.stack`, component stack trace
+
+**Accessibility:**
+- Skeletons: `role="status"` with `aria-label="Loading..."`
+- Empty states: Proper heading hierarchy (h3)
+- Error fallbacks: Semantic button elements with descriptive text
+- All interactive elements keyboard-accessible
+
+**Architecture Benefits:**
+- ✅ Prevents full app crashes from component errors
+- ✅ Improves perceived performance with skeleton feedback
+- ✅ Professional empty state UX instead of blank pages
+- ✅ Retry mechanisms reduce user frustration
+- ✅ Component-specific boundaries isolate failures
+- ✅ Enterprise-level error handling patterns
+
+**Testing:**
+- ErrorBoundary: 8 tests (catches errors, fallback UI, retry, console.warn, dev mode)
+- ProjectsErrorBoundary: 7 tests (warning icon, retry callback, state reset)
+- Skeleton: 9 tests (variants, aria-label, animate-pulse, dark mode)
+- ProjectsSkeleton: 9 tests (grid, count prop, structure, responsive)
+- EmptyState: 12 tests (title, description, action button, onAction callback)
+- **45 error handling tests** - part of 222 total
+
 ## ✅ Completed Features
 
-- ✅ **Routing & Layout** - React Router with lazy loading
+- ✅ **Routing & Layout** - React Router with lazy loading and dynamic routes
 - ✅ **Dark Mode** - Theme context with localStorage persistence
 - ✅ **Navigation** - Responsive navbar with mobile menu and animations
-- ✅ **Page Structure** - All main pages complete (Home, Projects, About, Contact)
-- ✅ **Design System** - Button, Card, Input, Textarea, Badge, Hamburger components
+- ✅ **Page Structure** - All main pages complete (Home, Projects, ProjectDetails, About, Contact)
+- ✅ **Design System** - Button, Card, Input, Textarea, Badge, Hamburger, Skeleton, EmptyState components
 - ✅ **Hero Section** - Complete landing section with CTA and responsive layout
 - ✅ **Projects Section** - Full portfolio showcase with filtering, TanStack Query, and 28 tests
+- ✅ **Project Details** - Dynamic case study page with extended data model, 33 tests (222 total)
 - ✅ **Contact Form** - React Hook Form validation, toast notifications, 13 tests
-- ✅ **About Page** - Professional bio, categorized skills grid, technical timeline, 26 tests (103 total)
+- ✅ **About Page** - Professional bio, categorized skills grid, technical timeline, 26 tests
+- ✅ **SEO System** - Dynamic meta tags, Open Graph, favicon, manifest, semantic HTML, 15 tests
+- ✅ **Accessibility (A11y)** - Skip link, landmarks, ARIA, keyboard nav, AA contrast, 16 tests
+- ✅ **Error Handling & Loading** - Error boundaries, skeleton loaders, empty states, retry logic, 45 tests
 
 ## 🎯 TODO
 
-- [ ] Implement project detail pages with routing
 - [ ] Connect contact form to Django backend (mock currently)
 - [ ] Add animations and micro-interactions
 - [ ] Optimize images and lazy loading
-- [ ] SEO optimization (meta tags, Open Graph)
+- [ ] Production deployment (robots.txt, sitemap.xml - Issue #16)

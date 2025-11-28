@@ -4,6 +4,7 @@ import PageLayout from '../components/layout/PageLayout'
 
 const Home = lazy(() => import('../pages/Home'))
 const Projects = lazy(() => import('../pages/Projects'))
+const ProjectDetails = lazy(() => import('../pages/ProjectDetails'))
 const About = lazy(() => import('../pages/About'))
 const Contact = lazy(() => import('../pages/Contact'))
 const NotFound = lazy(() => import('../pages/NotFound'))
@@ -24,6 +25,7 @@ export function AppRouter() {
           <Route element={<PageLayout />}>
             <Route path="/" element={<Home />} />
             <Route path="/projects" element={<Projects />} />
+            <Route path="/projects/:id" element={<ProjectDetails />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="*" element={<NotFound />} />

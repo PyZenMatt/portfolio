@@ -26,7 +26,15 @@ const renderProjectsSection = () => {
 describe('ProjectsSection', () => {
   test('renders without crashing', () => {
     renderProjectsSection()
-    expect(screen.getByText(/loading projects/i)).toBeInTheDocument()
+    // Should render skeleton during loading
+    expect(screen.getAllByRole('status').length).toBeGreaterThan(0)
+  })
+
+  test('shows loading state initially', () => {
+    renderProjectsSection()
+    // Check for skeleton elements
+    const skeletons = screen.getAllByRole('status')
+    expect(skeletons.length).toBeGreaterThan(0)
   })
 
   test('displays section title', async () => {
@@ -69,16 +77,8 @@ describe('ProjectsSection', () => {
     })
   })
 
-  test('shows loading state initially', () => {
-    renderProjectsSection()
-    expect(screen.getByText(/loading projects/i)).toBeInTheDocument()
-  })
-
   test('displays projects after loading', async () => {
     renderProjectsSection()
-    await waitFor(() => {
-      expect(screen.queryByText(/loading projects/i)).not.toBeInTheDocument()
-    })
     await waitFor(() => {
       expect(screen.getByRole('heading', { name: /featured projects/i })).toBeInTheDocument()
     })

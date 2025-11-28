@@ -24,14 +24,14 @@ export default function HeroSection() {
         <div className="grid md:grid-cols-2 gap-12 items-center">
           {/* Content Column */}
           <div className="space-y-6">
-            <div className="space-y-2">
+            <div className="space-y-3">
               <Badge variant="default">Full-Stack Developer</Badge>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white">
+              <h1 className="text-5xl md:text-6xl font-bold tracking-tight text-slate-900 dark:text-white">
                 Hi, I'm Matteo Ricci
               </h1>
             </div>
 
-            <p className="text-xl text-gray-600 dark:text-gray-400 leading-relaxed">
+            <p className="text-lg md:text-xl text-slate-600 dark:text-slate-400 leading-relaxed">
               Building modern web applications with Django, React, and
               TypeScript. Passionate about clean code, user experience, and
               scalable architecture.

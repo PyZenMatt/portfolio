@@ -48,7 +48,7 @@ describe('Timeline', () => {
   test('timeline entries have proper structure', () => {
     renderTimeline()
     const firstTitle = screen.getByRole('heading', { name: /python foundation/i })
-    expect(firstTitle).toHaveClass('font-bold')
+    expect(firstTitle).toHaveClass('font-medium')
   })
 
   test('displays years in badge format', () => {

@@ -20,6 +20,12 @@ describe('Navbar', () => {
     expect(screen.getByRole('navigation')).toBeInTheDocument()
   })
 
+  test('navbar has correct aria-label', () => {
+    renderNavbar()
+    const nav = screen.getByRole('navigation')
+    expect(nav).toHaveAttribute('aria-label', 'Main navigation')
+  })
+
   test('renders logo with link to home', () => {
     renderNavbar()
     const logo = screen.getByRole('link', { name: /matteo ricci/i })

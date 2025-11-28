@@ -27,7 +27,22 @@ const renderProjectsPage = () => {
 describe('Projects Page', () => {
   test('renders without crashing', () => {
     renderProjectsPage()
-    expect(screen.getByText(/loading projects/i)).toBeInTheDocument()
+    expect(screen.getAllByRole('status').length).toBeGreaterThan(0)
+  })
+
+  test('sets correct page title', async () => {
+    renderProjectsPage()
+    await waitFor(() => {
+      expect(document.title).toBe('Projects — Matteo Ricci')
+    })
+  })
+
+  test('sets meta description', async () => {
+    renderProjectsPage()
+    await waitFor(() => {
+      const metaDescription = document.querySelector('meta[name="description"]')
+      expect(metaDescription?.getAttribute('content')).toContain('Portfolio progetti')
+    })
   })
 
   test('displays page title', async () => {
@@ -48,7 +63,8 @@ describe('Projects Page', () => {
 
   test('shows loading state initially', () => {
     renderProjectsPage()
-    expect(screen.getByText(/loading projects/i)).toBeInTheDocument()
+    const skeletons = screen.getAllByRole('status')
+    expect(skeletons.length).toBeGreaterThan(0)
   })
 
   test('displays filter buttons', async () => {
@@ -81,8 +97,10 @@ describe('Projects Page', () => {
     const user = userEvent.setup()
     renderProjectsPage()
 
+    // Wait for projects to load
     await waitFor(() => {
-      expect(screen.getByRole('heading', { name: /all projects/i })).toBeInTheDocument()
+      const projectCards = screen.getAllByRole('heading', { level: 3 })
+      expect(projectCards.length).toBeGreaterThan(0)
     })
 
     const reactButton = screen.getByRole('button', { name: /^react$/i })
@@ -97,19 +115,21 @@ describe('Projects Page', () => {
     const user = userEvent.setup()
     renderProjectsPage()
 
+    // Wait for projects to load
     await waitFor(() => {
-      expect(screen.getByRole('heading', { name: /all projects/i })).toBeInTheDocument()
+      const projectCards = screen.getAllByRole('heading', { level: 3 })
+      expect(projectCards.length).toBeGreaterThan(0)
     })
 
     // Click TypeScript filter which might have no results
     const tsButton = screen.getByRole('button', { name: /^typescript$/i })
     await user.click(tsButton)
 
-    // Check if either projects are shown or empty state
+    // Check if either projects are shown or empty state with EmptyState component
     await waitFor(
       () => {
         const hasProjects = screen.queryAllByRole('heading', { level: 3 }).length > 0
-        const hasEmptyState = screen.queryByText(/no projects found/i)
+        const hasEmptyState = screen.queryByRole('heading', { name: /no projects found/i })
         expect(hasProjects || hasEmptyState).toBeTruthy()
       },
       { timeout: 2000 }
@@ -120,8 +140,10 @@ describe('Projects Page', () => {
     const user = userEvent.setup()
     renderProjectsPage()
 
+    // Wait for projects to load
     await waitFor(() => {
-      expect(screen.getByRole('heading', { name: /all projects/i })).toBeInTheDocument()
+      const projectCards = screen.getAllByRole('heading', { level: 3 })
+      expect(projectCards.length).toBeGreaterThan(0)
     })
 
     const tsButton = screen.getByRole('button', { name: /^typescript$/i })
@@ -129,7 +151,7 @@ describe('Projects Page', () => {
 
     await waitFor(
       () => {
-        const emptyState = screen.queryByText(/no projects found/i)
+        const emptyState = screen.queryByRole('heading', { name: /no projects found/i })
         if (emptyState) {
           expect(screen.getByRole('button', { name: /show all projects/i })).toBeInTheDocument()
         }

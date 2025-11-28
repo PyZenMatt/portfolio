@@ -51,11 +51,11 @@ export default function ProjectCard({ project }: ProjectCardProps) {
 
       {/* Content */}
       <div className="p-6 flex-1 flex flex-col">
-        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+        <h3 className="text-2xl font-semibold text-slate-900 dark:text-white mb-2">
           {title}
         </h3>
 
-        <p className="text-gray-600 dark:text-gray-400 mb-4 flex-1">
+        <p className="text-base text-slate-600 dark:text-slate-400 leading-relaxed mb-4 flex-1">
           {description}
         </p>
 

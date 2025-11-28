@@ -1,12 +1,16 @@
 import { useState, useMemo } from 'react'
+import Seo from '../../components/seo/Seo'
 import { useProjects } from '../../hooks/useProjects'
 import ProjectCard from '../../components/sections/ProjectCard'
+import ProjectsSkeleton from '../../components/sections/ProjectsSkeleton'
+import ProjectsErrorBoundary from '../../components/sections/ProjectsErrorBoundary'
+import EmptyState from '../../components/ui/EmptyState'
 import Button from '../../components/ui/Button'
 import { cn } from '../../lib/cn'
 
 const TECH_FILTERS = ['All', 'React', 'Django', 'Python', 'Blockchain', 'TypeScript']
 
-export default function Projects() {
+function ProjectsContent() {
   const { data: projects, isLoading } = useProjects()
   const [activeFilter, setActiveFilter] = useState('All')
 
@@ -18,20 +22,30 @@ export default function Projects() {
 
   if (isLoading) {
     return (
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="text-center">
-          <div className="text-xl text-gray-600 dark:text-gray-400">Loading projects...</div>
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="mb-12 space-y-4">
+          <h1 className="text-5xl md:text-6xl font-bold tracking-tight text-slate-900 dark:text-white">All Projects</h1>
+          <p className="text-base md:text-lg text-slate-600 dark:text-slate-400 leading-relaxed">
+            Explore my portfolio of full-stack projects, tools, and experiments
+          </p>
         </div>
+        <ProjectsSkeleton count={6} />
       </div>
     )
   }
 
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <>
+      <Seo
+        title="Projects — Matteo Ricci"
+        description="Portfolio progetti di Matteo Ricci: applicazioni full-stack con React, Django, TypeScript. Blockchain, e-commerce, AI workflows e architetture moderne."
+        canonical="https://matteoricci.net/projects"
+      />
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       {/* Header */}
-      <div className="mb-12">
-        <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">All Projects</h1>
-        <p className="text-lg text-gray-600 dark:text-gray-400">
+      <div className="mb-12 space-y-4">
+        <h1 className="text-5xl md:text-6xl font-bold tracking-tight text-slate-900 dark:text-white">All Projects</h1>
+        <p className="text-base md:text-lg text-slate-600 dark:text-slate-400 leading-relaxed">
           Explore my portfolio of full-stack projects, tools, and experiments
         </p>
       </div>
@@ -64,20 +78,29 @@ export default function Projects() {
           ))}
         </div>
       ) : (
-        <div className="text-center py-16">
-          <p className="text-gray-600 dark:text-gray-400 text-lg">
-            No projects found for <strong>{activeFilter}</strong>
-          </p>
-          <Button
-            variant="secondary"
-            size="md"
-            onClick={() => setActiveFilter('All')}
-            className="mt-4"
-          >
-            Show All Projects
-          </Button>
-        </div>
+        <EmptyState
+          title={`No projects found for "${activeFilter}"`}
+          description="Try selecting a different filter to see more projects."
+          actionLabel="Show All Projects"
+          onAction={() => setActiveFilter('All')}
+        />
       )}
     </div>
+    </>
+  )
+}
+
+export default function Projects() {
+  return (
+    <>
+      <Seo
+        title="Projects — Matteo Ricci"
+        description="Portfolio progetti di Matteo Ricci: applicazioni full-stack con React, Django, TypeScript. Blockchain, e-commerce, AI workflows e architetture moderne."
+        canonical="https://matteoricci.net/projects"
+      />
+      <ProjectsErrorBoundary>
+        <ProjectsContent />
+      </ProjectsErrorBoundary>
+    </>
   )
 }

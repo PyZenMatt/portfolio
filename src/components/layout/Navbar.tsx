@@ -28,7 +28,7 @@ export default function Navbar() {
 
   return (
     <nav
-      className="border-b border-gray-200 dark:border-gray-800"
+      className="border-b border-slate-200 dark:border-slate-800"
       role="navigation"
       aria-label="Main navigation"
     >
@@ -72,12 +72,12 @@ export default function Navbar() {
       {/* Mobile Menu */}
       <div
         className={cn(
-          'md:hidden border-t border-gray-200 dark:border-gray-800 transition-all duration-300 ease-in-out overflow-hidden',
+          'md:hidden border-t border-slate-200 dark:border-slate-800 transition-all duration-300 ease-in-out overflow-hidden',
           isOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'
         )}
         aria-hidden={!isOpen}
       >
-        <div className="px-4 py-4 space-y-1 bg-white dark:bg-gray-900">
+        <div className="px-4 py-4 space-y-1 bg-white dark:bg-slate-900">
           {navLinks.map((link) => (
             <button
               key={link.path}
