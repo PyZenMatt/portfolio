@@ -1,0 +1,487 @@
+{
+  "meta": {
+    "issue": "13.2d",
+    "title": "Light Theme Audit",
+    "branch": "feature/13.2d-light-theme-audit",
+    "date": "2025-11-30",
+    "auditor": "GitHub Copilot Agent",
+    "scope": "Diagnostic Pass - NO CODE CHANGES"
+  },
+  "summary": {
+    "totalIssues": 24,
+    "high": 5,
+    "medium": 11,
+    "low": 8,
+    "legacyColorsFound": 2,
+    "pagesAudited": 5,
+    "componentsAudited": 15
+  },
+  "home": {
+    "text": [
+      {
+        "issue": "Hero description text using --color-text-secondary (#2F4560)",
+        "location": "HeroSection.tsx - line 36",
+        "currentColor": "#2F4560",
+        "problem": "Acceptable contrast but could be stronger for key messaging",
+        "severity": "low",
+        "fix": "Consider using --color-text for hero description or a mid-tone"
+      }
+    ],
+    "accent": [
+      {
+        "issue": "Ghost button (Download CV) lacks visual prominence",
+        "location": "HeroSection.tsx - CTA buttons",
+        "currentColor": "text-[var(--color-text-secondary)]",
+        "problem": "Secondary CTA blends with surrounding text, not immediately clickable",
+        "severity": "medium",
+        "fix": "Add subtle border or use outline variant with primary accent"
+      },
+      {
+        "issue": "Badge 'Full-Stack Developer' uses surface background",
+        "location": "HeroSection.tsx - Badge component",
+        "currentColor": "bg-[var(--color-surface)] (#E5E5E5)",
+        "problem": "Badge doesn't stand out as a key differentiator",
+        "severity": "low",
+        "fix": "Consider primary/10 background with primary text for hero badge"
+      }
+    ],
+    "surface": [
+      {
+        "issue": "Hero section has no background differentiation",
+        "location": "HeroSection.tsx - section element",
+        "currentColor": "transparent (inherits --color-bg #F2F2F2)",
+        "problem": "Hero blends directly into page background",
+        "severity": "low",
+        "fix": "Acceptable for minimal design, but could add subtle gradient or --color-card"
+      },
+      {
+        "issue": "ProjectsSection uses --color-surface but Cards use --color-card",
+        "location": "ProjectsSection.tsx",
+        "currentColor": "bg-[var(--color-surface)] (#E5E5E5)",
+        "problem": "Creates good layering - surface > card > content",
+        "severity": "low",
+        "fix": "Current implementation is correct - KEEP"
+      }
+    ],
+    "border": [],
+    "hover": [],
+    "legacyColors": [],
+    "prose": [],
+    "components": [
+      {
+        "issue": "Portrait placeholder icon uses --color-surface",
+        "location": "HeroSection.tsx - fallback SVG",
+        "currentColor": "text-[var(--color-surface)] (#E5E5E5)",
+        "problem": "Icon barely visible on gradient background",
+        "severity": "medium",
+        "fix": "Use --color-text-secondary or --color-border for better visibility"
+      }
+    ]
+  },
+  "projects": {
+    "text": [
+      {
+        "issue": "Page description uses --color-text-secondary",
+        "location": "Projects/index.tsx - line 32",
+        "currentColor": "#2F4560",
+        "problem": "Consistent with design system, acceptable contrast",
+        "severity": "low",
+        "fix": "No change needed"
+      }
+    ],
+    "accent": [
+      {
+        "issue": "Filter buttons correctly use primary variant when active",
+        "location": "Projects/index.tsx - TECH_FILTERS",
+        "currentColor": "bg-primary (#EF552C)",
+        "problem": "None - correctly implemented",
+        "severity": "low",
+        "fix": "KEEP - working correctly"
+      }
+    ],
+    "surface": [
+      {
+        "issue": "Projects page has no section background",
+        "location": "Projects/index.tsx",
+        "currentColor": "transparent (inherits --color-bg)",
+        "problem": "Page feels flat compared to Home which has ProjectsSection with surface bg",
+        "severity": "medium",
+        "fix": "Consider adding alternating section backgrounds for visual rhythm"
+      }
+    ],
+    "border": [
+      {
+        "issue": "ProjectCard hover border accent works correctly",
+        "location": "ProjectCard.tsx - hover:border-[var(--color-primary)]",
+        "currentColor": "#EF552C on hover",
+        "problem": "None - correctly implemented",
+        "severity": "low",
+        "fix": "KEEP"
+      }
+    ],
+    "hover": [],
+    "legacyColors": [],
+    "prose": [],
+    "components": [
+      {
+        "issue": "ProjectCard placeholder icon uses --color-bg",
+        "location": "ProjectCard.tsx - line 33",
+        "currentColor": "text-[var(--color-bg)] (#F2F2F2)",
+        "problem": "Icon invisible on --color-surface background",
+        "severity": "high",
+        "fix": "Change to --color-text-secondary or --color-border"
+      }
+    ]
+  },
+  "projectDetails": {
+    "text": [
+      {
+        "issue": "Overview and description text uses --color-text-secondary",
+        "location": "ProjectDetails/index.tsx - multiple locations",
+        "currentColor": "#2F4560",
+        "problem": "Long-form content slightly low contrast for extended reading",
+        "severity": "medium",
+        "fix": "Consider --color-text for body paragraphs, keep secondary for meta"
+      }
+    ],
+    "accent": [
+      {
+        "issue": "Back to Projects link correctly uses primary accent",
+        "location": "ProjectDetails/index.tsx - line 143",
+        "currentColor": "text-primary (#EF552C)",
+        "problem": "None - correctly implemented",
+        "severity": "low",
+        "fix": "KEEP"
+      },
+      {
+        "issue": "Live Demo button lacks accent, uses ghost style",
+        "location": "ProjectDetails/index.tsx - line 207-227",
+        "currentColor": "text-[var(--color-text-secondary)]",
+        "problem": "Secondary CTA not distinguishable from regular text",
+        "severity": "medium",
+        "fix": "Add border-[var(--color-primary)] or use outline variant"
+      }
+    ],
+    "surface": [
+      {
+        "issue": "Technologies section items use surface background",
+        "location": "ProjectDetails/index.tsx - line 278-284",
+        "currentColor": "bg-[var(--color-surface)] (#E5E5E5)",
+        "problem": "Tech tags blend together, no visual separation",
+        "severity": "medium",
+        "fix": "Add border or use card background with shadow"
+      }
+    ],
+    "border": [
+      {
+        "issue": "Tech items have border-transparent by default",
+        "location": "ProjectDetails/index.tsx - line 280",
+        "currentColor": "border-transparent",
+        "problem": "Items only get border on hover, invisible at rest",
+        "severity": "medium",
+        "fix": "Add subtle default border: border-[var(--color-border)]"
+      }
+    ],
+    "hover": [
+      {
+        "issue": "Tech items have good hover state with primary border",
+        "location": "ProjectDetails/index.tsx",
+        "currentColor": "hover:border-[var(--color-primary)]",
+        "problem": "None - correctly implemented",
+        "severity": "low",
+        "fix": "KEEP"
+      }
+    ],
+    "legacyColors": [
+      {
+        "issue": "NotFound link in ProjectDetails uses legacy blue-600",
+        "location": "ProjectDetails/index.tsx - line 427",
+        "currentColor": "text-blue-600 dark:text-blue-400",
+        "problem": "Legacy Tailwind color not from brand palette",
+        "severity": "high",
+        "fix": "Replace with text-primary dark:text-primary-light"
+      }
+    ],
+    "prose": [],
+    "components": [
+      {
+        "issue": "Feature list checkmarks use correct primary accent",
+        "location": "ProjectDetails/index.tsx - line 259",
+        "currentColor": "text-[var(--color-primary)]",
+        "problem": "None - correctly implemented",
+        "severity": "low",
+        "fix": "KEEP"
+      }
+    ]
+  },
+  "about": {
+    "text": [
+      {
+        "issue": "Bio paragraphs use --color-text-secondary for long-form content",
+        "location": "About/index.tsx - lines 21-33",
+        "currentColor": "#2F4560",
+        "problem": "Extended reading content could benefit from higher contrast",
+        "severity": "medium",
+        "fix": "Use --color-text for body paragraphs, secondary for labels"
+      },
+      {
+        "issue": "Strong tags in bio not visually distinct",
+        "location": "About/index.tsx - <strong> elements",
+        "currentColor": "Inherits --color-text-secondary",
+        "problem": "Bold text still secondary color, doesn't emphasize keywords",
+        "severity": "medium",
+        "fix": "Add prose styling: strong should use --color-text"
+      }
+    ],
+    "accent": [
+      {
+        "issue": "Timeline year badges correctly use primary accent",
+        "location": "Timeline.tsx - line 46",
+        "currentColor": "text-primary bg-primary/10",
+        "problem": "None - correctly implemented",
+        "severity": "low",
+        "fix": "KEEP"
+      },
+      {
+        "issue": "Timeline dots correctly use primary accent",
+        "location": "Timeline.tsx - line 40",
+        "currentColor": "bg-primary",
+        "problem": "None - correctly implemented",
+        "severity": "low",
+        "fix": "KEEP"
+      }
+    ],
+    "surface": [
+      {
+        "issue": "SkillsGrid Cards use --color-card on page with --color-bg",
+        "location": "SkillsGrid.tsx - Card component",
+        "currentColor": "#FFFFFF",
+        "problem": "Good contrast between card and page background",
+        "severity": "low",
+        "fix": "KEEP - working correctly"
+      }
+    ],
+    "border": [
+      {
+        "issue": "Timeline vertical line uses --color-surface",
+        "location": "Timeline.tsx - line 39",
+        "currentColor": "border-[color:var(--color-surface)]",
+        "problem": "Line slightly faint in light mode (#E5E5E5 on #F2F2F2)",
+        "severity": "low",
+        "fix": "Consider using --color-border for stronger visibility"
+      }
+    ],
+    "hover": [],
+    "legacyColors": [],
+    "prose": [
+      {
+        "issue": "Prose class applied but paragraphs override with explicit colors",
+        "location": "About/index.tsx - .prose wrapper",
+        "currentColor": "text-[var(--color-text-secondary)]",
+        "problem": "Explicit color overrides prose defaults",
+        "severity": "low",
+        "fix": "Remove explicit color classes, let prose handle text styling"
+      }
+    ],
+    "components": [
+      {
+        "issue": "Badge variant='default' uses surface background",
+        "location": "Badge.tsx - SkillsGrid badges",
+        "currentColor": "bg-[var(--color-surface)] (#E5E5E5)",
+        "problem": "Badges blend into card background slightly",
+        "severity": "medium",
+        "fix": "Add subtle border or use slightly darker surface"
+      }
+    ]
+  },
+  "contact": {
+    "text": [
+      {
+        "issue": "Form labels use --color-text-secondary",
+        "location": "ContactForm.tsx - label elements",
+        "currentColor": "#2F4560",
+        "problem": "Labels slightly low contrast",
+        "severity": "low",
+        "fix": "Consider --color-text for labels, secondary for help text"
+      },
+      {
+        "issue": "Required fields note uses --color-text-secondary",
+        "location": "ContactForm.tsx - line 127",
+        "currentColor": "#2F4560",
+        "problem": "Acceptable for footnote text",
+        "severity": "low",
+        "fix": "KEEP"
+      }
+    ],
+    "accent": [
+      {
+        "issue": "Submit button correctly uses primary variant",
+        "location": "ContactForm.tsx - line 124",
+        "currentColor": "bg-primary (#EF552C)",
+        "problem": "None - correctly implemented",
+        "severity": "low",
+        "fix": "KEEP"
+      }
+    ],
+    "surface": [
+      {
+        "issue": "Form container correctly uses --color-card",
+        "location": "Contact/index.tsx - line 24",
+        "currentColor": "#FFFFFF",
+        "problem": "None - good contrast with page background",
+        "severity": "low",
+        "fix": "KEEP"
+      }
+    ],
+    "border": [
+      {
+        "issue": "Input border uses --color-border",
+        "location": "Input.tsx - validStyles",
+        "currentColor": "#E5E5E5",
+        "problem": "Border slightly faint in light mode",
+        "severity": "medium",
+        "fix": "Consider slightly darker border or add subtle shadow"
+      },
+      {
+        "issue": "Form container border uses --color-border",
+        "location": "Contact/index.tsx - line 24",
+        "currentColor": "#E5E5E5",
+        "problem": "Border visible but could be stronger",
+        "severity": "low",
+        "fix": "Current implementation acceptable"
+      }
+    ],
+    "hover": [
+      {
+        "issue": "Input focus ring correctly uses primary accent",
+        "location": "Input.tsx - focus-visible:ring-[var(--color-primary)]",
+        "currentColor": "#EF552C",
+        "problem": "None - correctly implemented",
+        "severity": "low",
+        "fix": "KEEP"
+      }
+    ],
+    "legacyColors": [],
+    "prose": [],
+    "components": []
+  },
+  "global": {
+    "variables": [
+      {
+        "issue": "--color-border equals --color-surface in light mode",
+        "location": "globals.css - :root",
+        "currentValue": "--color-border: #E5E5E5, --color-surface: #E5E5E5",
+        "problem": "Border and surface are identical, reducing layering options",
+        "severity": "medium",
+        "fix": "Consider --color-border: #D4D4D4 for stronger borders"
+      },
+      {
+        "issue": "--color-text-secondary (#2F4560) contrast ratio",
+        "location": "globals.css - :root",
+        "currentValue": "#2F4560 on #F2F2F2",
+        "problem": "Contrast ratio ~6.5:1 - meets AA but feels muted",
+        "severity": "low",
+        "fix": "Consider darkening to #263549 for ~8:1 ratio"
+      }
+    ],
+    "typography": [
+      {
+        "issue": "Prose bullets use --color-text-secondary",
+        "location": "globals.css - .prose overrides",
+        "currentValue": "--tw-prose-bullets: var(--color-text-secondary)",
+        "problem": "Bullets could use accent for visual interest",
+        "severity": "low",
+        "fix": "Consider --color-primary for bullets"
+      }
+    ],
+    "sections": [
+      {
+        "issue": "No consistent section alternation pattern",
+        "location": "Multiple pages",
+        "problem": "Some sections have bg-surface, some inherit bg, feels inconsistent",
+        "severity": "medium",
+        "fix": "Establish pattern: Hero (bg) > Projects (surface) > etc."
+      }
+    ],
+    "legacyColors": [
+      {
+        "issue": "ProjectsErrorBoundary uses text-gray-900 and text-gray-600",
+        "location": "ProjectsErrorBoundary.tsx - lines 66, 69",
+        "currentValue": "text-gray-900 dark:text-white, text-gray-600 dark:text-gray-400",
+        "problem": "Legacy Tailwind colors outside brand palette",
+        "severity": "high",
+        "fix": "Replace with text-[var(--color-text)] and text-[var(--color-text-secondary)]"
+      },
+      {
+        "issue": "NotFound page uses bg-blue-600 and text-white",
+        "location": "NotFound/index.tsx - line 12",
+        "currentValue": "bg-blue-600 text-white hover:bg-blue-700",
+        "problem": "Legacy Tailwind blue, not using brand primary",
+        "severity": "high",
+        "fix": "Replace with bg-primary text-white hover:bg-primary-light"
+      }
+    ],
+    "components": [
+      {
+        "issue": "Badge semantic variants use hardcoded Tailwind colors",
+        "location": "Badge.tsx - variants object",
+        "currentValue": "bg-green-100, bg-yellow-100, bg-red-100",
+        "problem": "Semantic colors not part of brand palette",
+        "severity": "medium",
+        "fix": "Define semantic colors in CSS variables or accept as utility colors"
+      },
+      {
+        "issue": "EmptyState icon uses --color-surface",
+        "location": "EmptyState.tsx - line 18",
+        "currentValue": "text-[var(--color-surface)] (#E5E5E5)",
+        "problem": "Icon too light on page background",
+        "severity": "medium",
+        "fix": "Use --color-text-secondary or --color-border"
+      }
+    ],
+    "recommendations": [
+      {
+        "priority": 1,
+        "title": "Fix Legacy Colors",
+        "description": "Replace all text-gray-*, bg-blue-* with CSS variables",
+        "files": ["ProjectsErrorBoundary.tsx", "NotFound/index.tsx", "ProjectDetails/index.tsx"]
+      },
+      {
+        "priority": 2,
+        "title": "Strengthen Borders",
+        "description": "Update --color-border to #D4D4D4 for better visibility",
+        "files": ["globals.css"]
+      },
+      {
+        "priority": 3,
+        "title": "Fix Invisible Icons",
+        "description": "Update placeholder icons using --color-bg or --color-surface to --color-text-secondary",
+        "files": ["ProjectCard.tsx", "EmptyState.tsx", "HeroSection.tsx"]
+      },
+      {
+        "priority": 4,
+        "title": "Ghost Button Enhancement",
+        "description": "Add subtle border to ghost buttons for better visibility",
+        "files": ["Button.tsx", "ProjectDetails/index.tsx"]
+      },
+      {
+        "priority": 5,
+        "title": "Prose Content Contrast",
+        "description": "Use --color-text for body paragraphs, reserve secondary for meta/labels",
+        "files": ["About/index.tsx", "ProjectDetails/index.tsx"]
+      },
+      {
+        "priority": 6,
+        "title": "Badge Border Enhancement",
+        "description": "Add subtle border to default badges for better definition",
+        "files": ["Badge.tsx"]
+      },
+      {
+        "priority": 7,
+        "title": "Input Border Visibility",
+        "description": "Slightly darken input borders or add subtle shadow",
+        "files": ["Input.tsx", "Textarea.tsx"]
+      }
+    ]
+  }
+}

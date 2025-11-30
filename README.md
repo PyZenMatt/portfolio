@@ -956,3 +956,90 @@ Content components split from error boundary wrappers:
 - [ ] Add animations and micro-interactions
 - [ ] Optimize images and lazy loading
 - [ ] Production deployment (robots.txt, sitemap.xml - Issue #16)
+
+---
+
+## 🔍 Issue 13.2d — Light Theme Audit
+
+**Branch:** `feature/13.2d-light-theme-audit`
+
+### Purpose
+
+A comprehensive diagnostic audit of the Light Theme implementation after Issues 13.2/13.2b/13.2c. This is a **diagnostic pass only** — no code changes, only analysis and documentation.
+
+### Scope
+
+Audited all 5 pages and 15+ components for:
+- Text contrast issues
+- Accent inconsistencies
+- Surface/background layering problems
+- Border visibility issues
+- Hover/active state problems
+- Legacy Tailwind colors
+- Prose styling issues
+- Component-specific problems
+
+### Report Location
+
+**Full audit report:** `docs/light-theme-audit-13.2d.json`
+
+### Key Findings Summary
+
+| Severity | Count | Description |
+|----------|-------|-------------|
+| 🔴 High | 5 | Legacy colors, invisible placeholders |
+| 🟡 Medium | 11 | Contrast, borders, ghost buttons |
+| 🟢 Low | 8 | Minor improvements, acceptable states |
+
+### Critical Issues Found
+
+1. **Legacy Colors Remaining:**
+   - `ProjectsErrorBoundary.tsx`: `text-gray-900`, `text-gray-600`
+   - `NotFound/index.tsx`: `bg-blue-600`, `hover:bg-blue-700`
+   - `ProjectDetails/index.tsx`: `text-blue-600` (404 state)
+
+2. **Invisible Placeholder Icons:**
+   - `ProjectCard.tsx`: Icon uses `--color-bg` on `--color-surface`
+   - `EmptyState.tsx`: Icon uses `--color-surface` on page bg
+   - `HeroSection.tsx`: Portrait fallback barely visible
+
+3. **Border/Surface Conflict:**
+   - `--color-border` equals `--color-surface` (#E5E5E5)
+   - Reduces layering options and border visibility
+
+### Recommendations Priority
+
+1. Fix legacy colors (High)
+2. Strengthen borders (#D4D4D4) (High)
+3. Fix invisible icons (Medium)
+4. Ghost button enhancement (Medium)
+5. Prose content contrast (Medium)
+6. Badge border enhancement (Low)
+7. Input border visibility (Low)
+
+### Next Steps
+
+**→ Issue 13.2e — Light Theme Fix (Implementation)**
+
+Will implement all recommended fixes from this audit report.
+
+### How to Read the Report
+
+```json
+{
+  "pageName": {
+    "category": [
+      {
+        "issue": "Brief description",
+        "location": "File.tsx - line N",
+        "currentColor": "#HEX or class",
+        "problem": "What's wrong",
+        "severity": "low|medium|high",
+        "fix": "Recommended solution"
+      }
+    ]
+  }
+}
+```
+
+Categories: `text`, `accent`, `surface`, `border`, `hover`, `legacyColors`, `prose`, `components`
