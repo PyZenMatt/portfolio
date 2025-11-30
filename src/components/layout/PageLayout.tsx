@@ -5,7 +5,7 @@ import SkipLink from './SkipLink'
 
 export default function PageLayout() {
   return (
-    <div className="flex flex-col min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+    <div className="flex flex-col min-h-screen bg-[var(--color-bg)] text-[var(--color-text)]">
       <SkipLink />
       <header role="banner">
         <Navbar />

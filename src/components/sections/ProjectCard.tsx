@@ -21,7 +21,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
   return (
     <Card className="h-full flex flex-col transition-all duration-300 hover:shadow-lg hover:scale-[1.02]">
       {/* Image */}
-      <div className="aspect-video bg-neutral-100 dark:bg-neutral-700 rounded-t-lg overflow-hidden">
+      <div className="aspect-video bg-[var(--color-surface)] rounded-t-lg overflow-hidden">
         {image ? (
           <img
             src={image}
@@ -30,7 +30,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
             loading="lazy"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-neutral-100 dark:text-neutral-700">
+          <div className="w-full h-full flex items-center justify-center text-[var(--color-bg)]">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-16 w-16"
@@ -51,11 +51,11 @@ export default function ProjectCard({ project }: ProjectCardProps) {
 
       {/* Content */}
       <div className="p-6 flex-1 flex flex-col">
-        <h3 className="text-2xl font-semibold text-neutral-900 dark:text-neutral-50 mb-2">
+        <h3 className="text-2xl font-semibold text-[var(--color-text)] mb-2">
           {title}
         </h3>
 
-        <p className="text-base text-neutral-700 dark:text-neutral-100 leading-relaxed mb-4 flex-1">
+        <p className="text-base text-[var(--color-text-secondary)] leading-relaxed mb-4 flex-1">
           {description}
         </p>
 

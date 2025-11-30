@@ -9,10 +9,10 @@ interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
 const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
   ({ className, isInvalid, ...props }, ref) => {
     const baseStyles =
-      'flex min-h-[80px] w-full rounded-md border bg-white px-3 py-2 text-sm transition-colors placeholder:text-neutral-700/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-neutral-900 dark:placeholder:text-neutral-100/60'
+      'flex min-h-[80px] w-full rounded-md border bg-[var(--color-bg)] px-3 py-2 text-sm transition-colors placeholder:text-[var(--color-text-secondary)]/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50'
 
     const validStyles =
-      'border-neutral-100 focus-visible:ring-primary dark:border-neutral-700'
+      'border-[color:var(--color-surface)] focus-visible:ring-primary'
 
     const invalidStyles =
       'border-red-500 focus-visible:ring-red-600 dark:border-red-500'

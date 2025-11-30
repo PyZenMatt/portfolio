@@ -160,10 +160,10 @@ function ProjectDetailsContent({ project, relatedProjects }: ProjectDetailsConte
           <div className="lg:col-span-2 space-y-8">
             {/* Project Header */}
             <header className="space-y-4">
-              <h1 className="text-5xl md:text-6xl font-bold tracking-tight text-neutral-900 dark:text-neutral-50">
+              <h1 className="text-5xl md:text-6xl font-bold tracking-tight text-[var(--color-text)]">
                 {project.title}
               </h1>
-              <p className="text-lg md:text-xl text-neutral-700 dark:text-neutral-100 leading-relaxed">
+              <p className="text-lg md:text-xl text-[var(--color-text-secondary)] leading-relaxed">
                 {project.description}
               </p>
 
@@ -205,7 +205,7 @@ function ProjectDetailsContent({ project, relatedProjects }: ProjectDetailsConte
                     href={project.liveUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center rounded-lg font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 hover:bg-neutral-100 text-neutral-700 focus-visible:ring-neutral-700 dark:hover:bg-neutral-700 dark:text-neutral-100 h-10 px-4 text-base"
+                    className="inline-flex items-center justify-center rounded-lg font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 hover:bg-[var(--color-surface)]/50 text-[var(--color-text-secondary)] focus-visible:ring-primary h-10 px-4 text-base"
                   >
                     <svg
                       className="w-5 h-5 mr-2"
@@ -230,10 +230,10 @@ function ProjectDetailsContent({ project, relatedProjects }: ProjectDetailsConte
             {/* Overview Section */}
             {project.longDescription && (
               <Card as="section">
-                <h2 className="text-2xl font-semibold text-neutral-900 dark:text-neutral-50 mb-4">
+                <h2 className="text-2xl font-semibold text-[var(--color-text)] mb-4">
                   Overview
                 </h2>
-                <p className="text-base text-neutral-700 dark:text-neutral-100 leading-relaxed">
+                <p className="text-base text-[var(--color-text-secondary)] leading-relaxed">
                   {project.longDescription}
                 </p>
               </Card>
@@ -242,14 +242,14 @@ function ProjectDetailsContent({ project, relatedProjects }: ProjectDetailsConte
             {/* Key Features Section */}
             {project.features && project.features.length > 0 && (
               <Card as="section">
-                <h2 className="text-2xl font-semibold text-neutral-900 dark:text-neutral-50 mb-4">
+                <h2 className="text-2xl font-semibold text-[var(--color-text)] mb-4">
                   Key Features
                 </h2>
                 <ul className="space-y-3">
                   {project.features.map((feature, index) => (
                     <li
                       key={index}
-                      className="flex items-start text-base text-neutral-700 dark:text-neutral-100 leading-relaxed"
+                      className="flex items-start text-base text-[var(--color-text-secondary)] leading-relaxed"
                     >
                       <svg
                         className="w-5 h-5 text-green-500 mr-3 mt-0.5 flex-shrink-0"
@@ -274,14 +274,14 @@ function ProjectDetailsContent({ project, relatedProjects }: ProjectDetailsConte
 
             {/* Technologies Section */}
             <Card as="section">
-              <h2 className="text-2xl font-semibold text-neutral-900 dark:text-neutral-50 mb-4">
+              <h2 className="text-2xl font-semibold text-[var(--color-text)] mb-4">
                 Technologies Used
               </h2>
               <div className="flex flex-wrap gap-3">
                 {project.tech.map((tech) => (
                   <div
                     key={tech}
-                    className="px-4 py-2 bg-neutral-100 dark:bg-neutral-700 rounded-lg text-neutral-700 dark:text-neutral-100 font-medium text-sm"
+                    className="px-4 py-2 bg-[var(--color-surface)] rounded-lg text-[var(--color-text-secondary)] font-medium text-sm"
                   >
                     {tech}
                   </div>
@@ -292,14 +292,14 @@ function ProjectDetailsContent({ project, relatedProjects }: ProjectDetailsConte
             {/* Screenshots Section */}
             {project.screenshots && project.screenshots.length > 0 && (
               <Card as="section">
-                <h2 className="text-2xl font-semibold text-neutral-900 dark:text-neutral-50 mb-4">
+                <h2 className="text-2xl font-semibold text-[var(--color-text)] mb-4">
                   Screenshots
                 </h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {project.screenshots.map((screenshot, index) => (
                     <div
                       key={index}
-                      className="aspect-video bg-neutral-100 dark:bg-neutral-700 rounded-lg overflow-hidden"
+                      className="aspect-video bg-[var(--color-surface)] rounded-lg overflow-hidden"
                     >
                       <img
                         src={screenshot}
@@ -315,10 +315,10 @@ function ProjectDetailsContent({ project, relatedProjects }: ProjectDetailsConte
 
             {/* Technical Approach Section */}
             <Card as="section">
-              <h2 className="text-2xl font-semibold text-neutral-900 dark:text-neutral-50 mb-4">
+              <h2 className="text-2xl font-semibold text-[var(--color-text)] mb-4">
                 Technical Approach
               </h2>
-              <p className="text-base text-neutral-700 dark:text-neutral-100 leading-relaxed">
+              <p className="text-base text-[var(--color-text-secondary)] leading-relaxed">
                 This project follows modern software development practices including clean
                 architecture principles, comprehensive testing, and continuous integration.
                 The codebase is structured for maintainability and scalability, with clear
@@ -331,12 +331,12 @@ function ProjectDetailsContent({ project, relatedProjects }: ProjectDetailsConte
           <aside className="hidden lg:block space-y-6 mt-8 lg:mt-0">
             {/* Project Info Card */}
             <Card>
-              <h3 className="text-xl font-medium text-neutral-900 dark:text-neutral-50 mb-4">
+              <h3 className="text-xl font-medium text-[var(--color-text)] mb-4">
                 Project Info
               </h3>
               <dl className="space-y-3">
                 <div>
-                  <dt className="text-sm text-neutral-700 dark:text-neutral-100">Status</dt>
+                  <dt className="text-sm text-[var(--color-text-secondary)]">Status</dt>
                   <dd className="mt-1">
                     <Badge variant={getStatusBadgeVariant(project.status)}>
                       {getStatusLabel(project.status)}
@@ -344,14 +344,14 @@ function ProjectDetailsContent({ project, relatedProjects }: ProjectDetailsConte
                   </dd>
                 </div>
                 <div>
-                  <dt className="text-sm text-neutral-700 dark:text-neutral-100">Created</dt>
-                  <dd className="text-base text-neutral-900 dark:text-neutral-50">
+                  <dt className="text-sm text-[var(--color-text-secondary)]">Created</dt>
+                  <dd className="text-base text-[var(--color-text)]">
                     {formatDate(project.createdAt)}
                   </dd>
                 </div>
                 <div>
-                  <dt className="text-sm text-neutral-700 dark:text-neutral-100">Last Updated</dt>
-                  <dd className="text-base text-neutral-900 dark:text-neutral-50">
+                  <dt className="text-sm text-[var(--color-text-secondary)]">Last Updated</dt>
+                  <dd className="text-base text-[var(--color-text)]">
                     {formatDate(project.updatedAt)}
                   </dd>
                 </div>
@@ -361,7 +361,7 @@ function ProjectDetailsContent({ project, relatedProjects }: ProjectDetailsConte
             {/* Related Projects Card */}
             {relatedProjects.length > 0 && (
               <Card>
-                <h3 className="text-xl font-medium text-neutral-900 dark:text-neutral-50 mb-4">
+                <h3 className="text-xl font-medium text-[var(--color-text)] mb-4">
                   Related Projects
                 </h3>
                 <ul className="space-y-3">
@@ -373,7 +373,7 @@ function ProjectDetailsContent({ project, relatedProjects }: ProjectDetailsConte
                       >
                         {related.title}
                       </Link>
-                      <p className="text-sm text-neutral-700 dark:text-neutral-100 line-clamp-2">
+                      <p className="text-sm text-[var(--color-text-secondary)] line-clamp-2">
                         {related.description}
                       </p>
                     </li>

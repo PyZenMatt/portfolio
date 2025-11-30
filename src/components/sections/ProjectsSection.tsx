@@ -14,13 +14,13 @@ function ProjectsSectionContent() {
 
   if (isLoading) {
     return (
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-neutral-50 dark:bg-neutral-900">
+      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-[var(--color-bg)]">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12 space-y-4">
-            <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-neutral-900 dark:text-neutral-50">
+            <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-[var(--color-text)]">
               Featured Projects
             </h2>
-            <p className="text-base md:text-lg text-neutral-700 dark:text-neutral-100 leading-relaxed">
+            <p className="text-base md:text-lg text-[var(--color-text-secondary)] leading-relaxed">
               A selection of my recent work showcasing full-stack development and problem-solving
               skills
             </p>
@@ -33,7 +33,7 @@ function ProjectsSectionContent() {
 
   if (!projects || projects.length === 0) {
     return (
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-neutral-50 dark:bg-neutral-900">
+      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-[var(--color-bg)]">
         <div className="max-w-5xl mx-auto">
           <EmptyState
             title="No projects yet"
@@ -45,14 +45,14 @@ function ProjectsSectionContent() {
   }
 
   return (
-    <section className="py-16 px-4 sm:px-6 lg:px-8 bg-neutral-50 dark:bg-neutral-900">
+    <section className="py-16 px-4 sm:px-6 lg:px-8 bg-[var(--color-bg)]">
       <div className="max-w-5xl mx-auto">
         {/* Section Header */}
         <div className="text-center mb-12 space-y-4">
-          <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-neutral-900 dark:text-neutral-50">
+          <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-[var(--color-text)]">
             Featured Projects
           </h2>
-          <p className="text-base md:text-lg text-neutral-700 dark:text-neutral-100 leading-relaxed">
+          <p className="text-base md:text-lg text-[var(--color-text-secondary)] leading-relaxed">
             A selection of my recent work showcasing full-stack development and problem-solving
             skills
           </p>

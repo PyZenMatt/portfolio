@@ -48,7 +48,7 @@ export default class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBo
   render(): ReactNode {
     if (this.state.hasError) {
       return (
-        <div className="min-h-screen flex items-center justify-center bg-white dark:bg-gray-900 px-4">
+        <div className="min-h-screen flex items-center justify-center bg-[var(--color-bg)] px-4">
           <div className="max-w-md w-full text-center">
             {/* Error Icon */}
             <div className="mb-6 flex justify-center">
@@ -68,10 +68,10 @@ export default class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBo
             </div>
 
             {/* Error Message */}
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">
+            <h1 className="text-2xl font-bold text-[var(--color-text)] mb-3">
               Something went wrong
             </h1>
-            <p className="text-gray-600 dark:text-gray-400 mb-6">
+            <p className="text-[var(--color-text-secondary)] mb-6">
               We're sorry, but something unexpected happened. Please try refreshing the page or
               contact support if the problem persists.
             </p>

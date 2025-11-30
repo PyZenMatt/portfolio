@@ -26,10 +26,10 @@ describe('ProjectsSkeleton', () => {
     expect(grid).toHaveClass('grid-cols-1', 'md:grid-cols-2', 'lg:grid-cols-3')
   })
 
-  test('skeleton cards have dark mode styles', () => {
+  test('skeleton cards have correct styles', () => {
     const { container } = render(<ProjectsSkeleton count={1} />)
     const card = container.querySelector('.grid > div')
-    expect(card).toHaveClass('dark:bg-neutral-700', 'dark:border-neutral-700/40')
+    expect(card).toHaveClass('bg-[var(--color-bg)]', 'border-[color:var(--color-surface)]/40')
   })
 
   test('renders image skeleton with aspect-video', () => {

@@ -26,12 +26,12 @@ export default function HeroSection() {
           <div className="space-y-6">
             <div className="space-y-3">
               <Badge variant="default">Full-Stack Developer</Badge>
-              <h1 className="text-5xl md:text-6xl font-bold tracking-tight text-neutral-900 dark:text-neutral-50">
+              <h1 className="text-5xl md:text-6xl font-bold tracking-tight text-[var(--color-text)]">
                 Hi, I'm Matteo Ricci
               </h1>
             </div>
 
-            <p className="text-lg md:text-xl text-neutral-700 dark:text-neutral-100 leading-relaxed">
+            <p className="text-lg md:text-xl text-[var(--color-text-secondary)] leading-relaxed">
               Building modern web applications with Django, React, and
               TypeScript. Passionate about clean code, user experience, and
               scalable architecture.
@@ -68,7 +68,7 @@ export default function HeroSection() {
                     e.currentTarget.style.display = 'none'
                   }}
                 />
-                <div className="absolute inset-0 flex items-center justify-center text-neutral-100 dark:text-neutral-700">
+                <div className="absolute inset-0 flex items-center justify-center text-[var(--color-surface)]">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="h-24 w-24"

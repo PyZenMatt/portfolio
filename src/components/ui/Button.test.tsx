@@ -16,13 +16,13 @@ describe('Button', () => {
   test('applies secondary variant', () => {
     render(<Button variant="secondary">Secondary</Button>)
     const button = screen.getByRole('button')
-    expect(button).toHaveClass('bg-neutral-100')
+    expect(button).toHaveClass('bg-[var(--color-surface)]')
   })
 
   test('applies ghost variant', () => {
     render(<Button variant="ghost">Ghost</Button>)
     const button = screen.getByRole('button')
-    expect(button).toHaveClass('hover:bg-neutral-100')
+    expect(button).toHaveClass('hover:bg-[var(--color-surface)]/50')
   })
 
   test('applies medium size by default', () => {

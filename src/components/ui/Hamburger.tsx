@@ -13,7 +13,7 @@ const Hamburger = forwardRef<HTMLButtonElement, HamburgerProps>(
         ref={ref}
         type="button"
         className={cn(
-          'inline-flex items-center justify-center p-2 rounded-md text-neutral-700 dark:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary transition-colors',
+          'inline-flex items-center justify-center p-2 rounded-md text-[var(--color-text-secondary)] hover:bg-[var(--color-surface)]/50 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary transition-colors',
           className
         )}
         aria-label={isOpen ? 'Close menu' : 'Open menu'}

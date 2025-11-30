@@ -38,7 +38,7 @@ export default function ContactForm() {
       <div>
         <label
           htmlFor="name"
-          className="block text-sm font-medium text-neutral-700 dark:text-neutral-100 mb-2"
+          className="block text-sm font-medium text-[var(--color-text-secondary)] mb-2"
         >
           Name *
         </label>
@@ -68,7 +68,7 @@ export default function ContactForm() {
       <div>
         <label
           htmlFor="email"
-          className="block text-sm font-medium text-neutral-700 dark:text-neutral-100 mb-2"
+          className="block text-sm font-medium text-[var(--color-text-secondary)] mb-2"
         >
           Email *
         </label>
@@ -98,7 +98,7 @@ export default function ContactForm() {
       <div>
         <label
           htmlFor="message"
-          className="block text-sm font-medium text-neutral-700 dark:text-neutral-100 mb-2"
+          className="block text-sm font-medium text-[var(--color-text-secondary)] mb-2"
         >
           Message *
         </label>
@@ -133,7 +133,7 @@ export default function ContactForm() {
         {isSubmitting ? 'Sending...' : 'Send Message'}
       </Button>
 
-      <p className="text-sm text-neutral-700 dark:text-neutral-100 text-center">
+      <p className="text-sm text-[var(--color-text-secondary)] text-center">
         * Required fields
       </p>
     </form>

@@ -124,47 +124,47 @@ The portfolio uses a modern, minimal typography scale designed for optimal reada
 | H4 | `text-xl` | No | `font-medium` |
 | H5 | `text-lg` | No | `font-medium` |
 | Body | `text-base` | No | `leading-relaxed` |
-| Small | `text-sm` | No | `text-slate-500` |
+| Small | `text-sm` | No | `text-[var(--color-text-secondary)]` |
 
 #### Font Stack
 
 - **Primary**: Inter (system-ui, -apple-system fallbacks)
-- **Color Palette**: Slate scale for text hierarchy
-  - Primary: `text-slate-900 dark:text-slate-100`
-  - Secondary: `text-slate-600 dark:text-slate-400`
-  - Muted: `text-slate-500 dark:text-slate-400`
+- **Color Palette**: CSS Variables (Issue 13.2b Palette Enforcement)
+  - Primary: `text-[var(--color-text)]`
+  - Secondary: `text-[var(--color-text-secondary)]`
+  - Surface/Border: `bg-[var(--color-surface)]` / `border-[color:var(--color-surface)]`
 
 #### Implementation
 
 Typography defaults are defined in:
 - `tailwind.config.js` - Custom fontSize scale with line-heights
-- `src/styles/globals.css` - Base layer defaults for h1-h6, body, small
+- `src/styles/globals.css` - Base layer defaults for h1-h6, body, small + CSS variables
 
 #### Usage Examples
 
 ```tsx
 // Page Title (H1)
-<h1 className="text-5xl md:text-6xl font-bold tracking-tight text-slate-900 dark:text-white">
+<h1 className="text-5xl md:text-6xl font-bold tracking-tight text-[var(--color-text)]">
   Page Title
 </h1>
 
 // Section Heading (H2)
-<h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-slate-900 dark:text-white">
+<h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-[var(--color-text)]">
   Section Title
 </h2>
 
 // Card Title (H3)
-<h3 className="text-2xl font-semibold text-slate-900 dark:text-white">
+<h3 className="text-2xl font-semibold text-[var(--color-text)]">
   Card Title
 </h3>
 
 // Body Text
-<p className="text-base leading-relaxed text-slate-700 dark:text-slate-300">
+<p className="text-base leading-relaxed text-[var(--color-text-secondary)]">
   Body content with comfortable line height.
 </p>
 
 // Muted/Secondary Text
-<p className="text-sm text-slate-500 dark:text-slate-400">
+<p className="text-sm text-[var(--color-text-secondary)]">
   Secondary information or metadata.
 </p>
 ```

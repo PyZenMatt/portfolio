@@ -232,11 +232,13 @@ colors: {
 #### Usage Guidelines
 
 - **CTA Buttons**: Use `bg-primary hover:bg-primary-light` for primary actions
-- **Ghost Buttons**: Use `hover:bg-neutral-100 dark:hover:bg-neutral-700`
-- **Cards**: Use `border-neutral-100/40 dark:border-neutral-700/40`
-- **Text Primary**: Use `text-neutral-900 dark:text-neutral-50`
-- **Text Secondary**: Use `text-neutral-700 dark:text-neutral-100`
+- **Ghost Buttons**: Use `hover:bg-[var(--color-surface)]/50`
+- **Cards**: Use `border-[color:var(--color-surface)]/40`
+- **Text Primary**: Use `text-[var(--color-text)]`
+- **Text Secondary**: Use `text-[var(--color-text-secondary)]`
 - **Links**: Use `text-primary dark:text-primary-light`
+- **Backgrounds**: Use `bg-[var(--color-bg)]` or `bg-[var(--color-surface)]`
+- **Borders**: Use `border-[color:var(--color-surface)]`
 
 #### Contrast Ratios (WCAG AA Compliant)
 
@@ -244,6 +246,55 @@ All color combinations meet minimum 4.5:1 contrast ratio:
 - `#EF552C` on white: 4.5:1 ✅
 - `#242E3D` on `#F4F4F4`: 10.2:1 ✅
 - `#F4F4F4` on `#242E3D`: 10.2:1 ✅
+
+### Issue 13.2b — Full Palette Enforcement
+
+**Why CSS Variables?**
+
+Issue 13.2 introduced the Matteo Ricci brand palette with Tailwind tokens. However, many components still used default Tailwind colors (gray-*, slate-*, neutral-* etc). Issue 13.2b enforces 100% palette coverage by:
+
+1. **Replacing all legacy Tailwind colors** with CSS variable-based classes
+2. **Adding Tailwind Typography (prose) overrides** for consistent styling
+3. **Eliminating dark mode duplication** — CSS variables handle light/dark automatically
+
+**Legacy Colors Removed:**
+- ❌ `text-gray-*`, `bg-gray-*`, `border-gray-*`
+- ❌ `text-slate-*`, `bg-slate-*`, `border-slate-*`
+- ❌ `text-neutral-900 dark:text-neutral-50` (and similar patterns)
+
+**Replacement Pattern:**
+```tsx
+// Before (Issue 13.2)
+className="text-neutral-900 dark:text-neutral-50"
+className="bg-neutral-100 dark:bg-neutral-700"
+
+// After (Issue 13.2b)
+className="text-[var(--color-text)]"
+className="bg-[var(--color-surface)]"
+```
+
+**Tailwind Typography (prose) Override:**
+```css
+.prose {
+  --tw-prose-body: var(--color-text);
+  --tw-prose-headings: var(--color-text);
+  --tw-prose-links: var(--color-primary);
+  --tw-prose-bold: var(--color-text);
+  --tw-prose-counters: var(--color-text-secondary);
+  --tw-prose-bullets: var(--color-text-secondary);
+  --tw-prose-hr: var(--color-surface);
+}
+
+.dark .prose {
+  --tw-prose-links: var(--color-primary-light);
+}
+```
+
+**Benefits:**
+- ✅ Single source of truth for colors
+- ✅ No more `dark:` class duplication
+- ✅ Easy palette changes — update CSS variables only
+- ✅ Consistent theming across all components
 
 ## 🏠 Homepage
 
