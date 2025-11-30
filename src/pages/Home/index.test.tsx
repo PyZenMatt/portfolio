@@ -26,7 +26,7 @@ const renderHome = () => {
 describe('Home Page', () => {
   test('renders without crashing', () => {
     renderHome()
-    expect(screen.getByText(/hi, i'm matteo ricci/i)).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: /matteo ricci/i })).toBeInTheDocument()
   })
 
   test('sets correct page title', () => {
@@ -42,7 +42,7 @@ describe('Home Page', () => {
 
   test('displays hero section', () => {
     renderHome()
-    expect(screen.getByRole('heading', { name: /hi, i'm matteo ricci/i })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: /matteo ricci/i })).toBeInTheDocument()
   })
 
   test('displays projects section', async () => {

@@ -15,7 +15,7 @@ describe('HeroSection', () => {
   test('displays the main heading', () => {
     renderWithRouter(<HeroSection />)
     expect(
-      screen.getByRole('heading', { name: /hi, i'm matteo ricci/i })
+      screen.getByRole('heading', { name: /matteo ricci/i })
     ).toBeInTheDocument()
   })
 
@@ -24,38 +24,40 @@ describe('HeroSection', () => {
     expect(screen.getByText(/full-stack developer/i)).toBeInTheDocument()
   })
 
-  test('displays description with Django, React, TypeScript', () => {
+  test('displays tech stack in header', () => {
     renderWithRouter(<HeroSection />)
-    expect(screen.getByText(/django/i)).toBeInTheDocument()
-    expect(screen.getByText(/react/i)).toBeInTheDocument()
-    expect(screen.getByText(/typescript/i)).toBeInTheDocument()
+    // Tech stack displayed in h2 subheading
+    const subheading = screen.getByRole('heading', { level: 2 })
+    expect(subheading).toHaveTextContent(/django/i)
+    expect(subheading).toHaveTextContent(/react/i)
+    expect(subheading).toHaveTextContent(/typescript/i)
   })
 
-  test('renders View Projects button', () => {
+  test('renders View My Work button', () => {
     renderWithRouter(<HeroSection />)
     expect(
-      screen.getByRole('button', { name: /view projects/i })
+      screen.getByRole('button', { name: /view my work/i })
     ).toBeInTheDocument()
   })
 
-  test('renders Download CV button', () => {
+  test('renders Get In Touch button', () => {
     renderWithRouter(<HeroSection />)
     expect(
-      screen.getByRole('button', { name: /download cv/i })
+      screen.getByRole('button', { name: /get in touch/i })
     ).toBeInTheDocument()
   })
 
-  test('renders at least one button', () => {
+  test('renders at least two CTA buttons', () => {
     renderWithRouter(<HeroSection />)
     const buttons = screen.getAllByRole('button')
-    expect(buttons.length).toBeGreaterThanOrEqual(1)
+    expect(buttons.length).toBeGreaterThanOrEqual(2)
   })
 
-  test('renders image with correct alt text', () => {
-    renderWithRouter(<HeroSection />)
-    expect(
-      screen.getByAltText(/portrait of matteo ricci/i)
-    ).toBeInTheDocument()
+  test('renders HeroArt identity block (portrait SVG)', () => {
+    const { container } = renderWithRouter(<HeroSection />)
+    // Portrait SVG should be present with aria-hidden
+    const svg = container.querySelector('svg[aria-hidden="true"]')
+    expect(svg).toBeInTheDocument()
   })
 
   test('has proper section structure with hero id', () => {
