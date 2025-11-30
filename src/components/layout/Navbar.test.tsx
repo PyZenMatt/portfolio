@@ -94,16 +94,16 @@ describe('Navbar', () => {
     await user.click(hamburger)
     expect(hamburger).toHaveAttribute('aria-expanded', 'true')
     
-    const nav = screen.getByRole('navigation')
-    const mobileMenu = nav.querySelector('[aria-hidden]')
-    const homeButton = mobileMenu?.querySelector('button')
+    // Find mobile menu buttons (should exist when menu is open)
+    const mobileButtons = screen.getAllByRole('button').filter(btn => 
+      btn.classList.contains('w-full')
+    )
     
-    if (homeButton) {
-      await user.click(homeButton)
+    if (mobileButtons.length > 0) {
+      await user.click(mobileButtons[0])
     }
     
     expect(hamburger).toHaveAttribute('aria-expanded', 'false')
-    expect(mobileMenu).toHaveAttribute('aria-hidden', 'true')
   })
 
   test('pressing Escape closes mobile menu', async () => {
@@ -122,8 +122,11 @@ describe('Navbar', () => {
 
   test('mobile menu is hidden by default', () => {
     renderNavbar()
-    const mobileMenuContainer = screen.getByRole('navigation').querySelector('[aria-hidden]')
-    expect(mobileMenuContainer).toHaveAttribute('aria-hidden', 'true')
+    // With AnimatePresence, the mobile menu is not rendered when closed
+    const mobileButtons = screen.queryAllByRole('button').filter(btn => 
+      btn.classList.contains('w-full')
+    )
+    expect(mobileButtons.length).toBe(0)
   })
 
   test('mobile menu is visible when opened', async () => {

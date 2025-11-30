@@ -1,3 +1,7 @@
+import { motion } from 'framer-motion'
+import { useReducedMotion } from '../../hooks/useReducedMotion'
+import { staggerContainer, staggerChild } from '../../motion'
+
 interface TimelineEntry {
   year: string
   title: string
@@ -32,12 +36,50 @@ const TIMELINE: TimelineEntry[] = [
 ]
 
 export default function Timeline() {
+  const prefersReducedMotion = useReducedMotion()
+  const MotionDiv = prefersReducedMotion ? 'div' : motion.div
+
   return (
-    <div className="space-y-8">
-      {TIMELINE.map((entry) => (
-        <div key={entry.year} className="relative pl-8 pb-8 border-l-2 border-[var(--color-border)] last:pb-0">
-          {/* Dot indicator */}
-          <div className="absolute left-0 top-0 -translate-x-[9px] w-4 h-4 rounded-full bg-[var(--color-primary)] ring-4 ring-[var(--color-bg)]" />
+    <MotionDiv
+      {...(!prefersReducedMotion && {
+        initial: "hidden",
+        whileInView: "visible",
+        viewport: { once: true, margin: "-50px" },
+        variants: staggerContainer,
+      })}
+      className="space-y-8 relative"
+    >
+      {/* Animated line background */}
+      {!prefersReducedMotion && (
+        <motion.div
+          className="absolute left-[7px] top-0 bottom-0 w-0.5 bg-[var(--color-border)] origin-top"
+          initial={{ scaleY: 0 }}
+          whileInView={{ scaleY: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
+        />
+      )}
+      
+      {TIMELINE.map((entry, index) => (
+        <MotionDiv
+          key={`${entry.year}-${entry.title}`}
+          {...(!prefersReducedMotion && { variants: staggerChild })}
+          className="relative pl-8 pb-8 border-l-2 border-[var(--color-border)] last:pb-0"
+        >
+          {/* Dot indicator with pulse animation */}
+          <motion.div
+            className="absolute left-0 top-0 -translate-x-[9px] w-4 h-4 rounded-full bg-[var(--color-primary)] ring-4 ring-[var(--color-bg)]"
+            initial={prefersReducedMotion ? undefined : { scale: 0 }}
+            whileInView={prefersReducedMotion ? undefined : { scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ 
+              delay: prefersReducedMotion ? 0 : 0.1 * index,
+              type: 'spring',
+              stiffness: 400,
+              damping: 20,
+            }}
+            whileHover={prefersReducedMotion ? undefined : { scale: 1.2 }}
+          />
           
           {/* Content */}
           <div className="space-y-2">
@@ -53,8 +95,8 @@ export default function Timeline() {
               {entry.description}
             </p>
           </div>
-        </div>
+        </MotionDiv>
       ))}
-    </div>
+    </MotionDiv>
   )
 }

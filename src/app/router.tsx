@@ -1,6 +1,9 @@
 import { lazy, Suspense } from 'react'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
+import { AnimatePresence, motion } from 'framer-motion'
 import PageLayout from '../components/layout/PageLayout'
+import { useReducedMotion } from '../hooks/useReducedMotion'
+import { pageTransition } from '../motion'
 
 const Home = lazy(() => import('../pages/Home'))
 const Projects = lazy(() => import('../pages/Projects'))
@@ -17,11 +20,21 @@ function PageLoader() {
   )
 }
 
-export function AppRouter() {
+// Wrapper component for page transitions
+function AnimatedRoutes() {
+  const location = useLocation()
+  const prefersReducedMotion = useReducedMotion()
+
   return (
-    <BrowserRouter>
-      <Suspense fallback={<PageLoader />}>
-        <Routes>
+    <AnimatePresence mode="wait">
+      <motion.div
+        key={location.pathname}
+        initial={prefersReducedMotion ? undefined : "initial"}
+        animate={prefersReducedMotion ? undefined : "animate"}
+        exit={prefersReducedMotion ? undefined : "exit"}
+        variants={prefersReducedMotion ? undefined : pageTransition}
+      >
+        <Routes location={location}>
           <Route element={<PageLayout />}>
             <Route path="/" element={<Home />} />
             <Route path="/projects" element={<Projects />} />
@@ -31,6 +44,16 @@ export function AppRouter() {
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>
+      </motion.div>
+    </AnimatePresence>
+  )
+}
+
+export function AppRouter() {
+  return (
+    <BrowserRouter>
+      <Suspense fallback={<PageLoader />}>
+        <AnimatedRoutes />
       </Suspense>
     </BrowserRouter>
   )

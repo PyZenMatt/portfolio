@@ -1,8 +1,11 @@
 import { useForm } from 'react-hook-form'
+import { motion } from 'framer-motion'
 import Input from '../ui/Input'
 import Textarea from '../ui/Textarea'
 import Button from '../ui/Button'
 import { useToast } from '../../hooks/useToast'
+import { useReducedMotion } from '../../hooks/useReducedMotion'
+import { staggerContainer, staggerChild } from '../../motion'
 
 interface ContactFormData {
   name: string
@@ -12,6 +15,7 @@ interface ContactFormData {
 
 export default function ContactForm() {
   const { showToast } = useToast()
+  const prefersReducedMotion = useReducedMotion()
   const {
     register,
     handleSubmit,
@@ -32,10 +36,23 @@ export default function ContactForm() {
     }
   }
 
+  const MotionDiv = prefersReducedMotion ? 'div' : motion.div
+  const MotionForm = prefersReducedMotion ? 'form' : motion.form
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6" noValidate>
+    <MotionForm
+      {...(!prefersReducedMotion && {
+        initial: "hidden",
+        whileInView: "visible",
+        viewport: { once: true },
+        variants: staggerContainer,
+      })}
+      onSubmit={handleSubmit(onSubmit)}
+      className="space-y-6"
+      noValidate
+    >
       {/* Name Field */}
-      <div>
+      <MotionDiv {...(!prefersReducedMotion && { variants: staggerChild })}>
         <label
           htmlFor="name"
           className="block text-sm font-medium text-[var(--color-text-secondary)] mb-2"
@@ -49,6 +66,7 @@ export default function ContactForm() {
           isInvalid={!!errors.name}
           aria-invalid={!!errors.name}
           aria-describedby={errors.name ? 'name-error' : undefined}
+          className="focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
           {...register('name', {
             required: 'Name is required',
             minLength: {
@@ -62,10 +80,10 @@ export default function ContactForm() {
             {errors.name.message}
           </p>
         )}
-      </div>
+      </MotionDiv>
 
       {/* Email Field */}
-      <div>
+      <MotionDiv {...(!prefersReducedMotion && { variants: staggerChild })}>
         <label
           htmlFor="email"
           className="block text-sm font-medium text-[var(--color-text-secondary)] mb-2"
@@ -79,6 +97,7 @@ export default function ContactForm() {
           isInvalid={!!errors.email}
           aria-invalid={!!errors.email}
           aria-describedby={errors.email ? 'email-error' : undefined}
+          className="focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
           {...register('email', {
             required: 'Email is required',
             pattern: {
@@ -92,10 +111,10 @@ export default function ContactForm() {
             {errors.email.message}
           </p>
         )}
-      </div>
+      </MotionDiv>
 
       {/* Message Field */}
-      <div>
+      <MotionDiv {...(!prefersReducedMotion && { variants: staggerChild })}>
         <label
           htmlFor="message"
           className="block text-sm font-medium text-[var(--color-text-secondary)] mb-2"
@@ -109,6 +128,7 @@ export default function ContactForm() {
           isInvalid={!!errors.message}
           aria-invalid={!!errors.message}
           aria-describedby={errors.message ? 'message-error' : undefined}
+          className="focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
           {...register('message', {
             required: 'Message is required',
             minLength: {
@@ -126,16 +146,36 @@ export default function ContactForm() {
             {errors.message.message}
           </p>
         )}
-      </div>
+      </MotionDiv>
 
-      {/* Submit Button */}
-      <Button type="submit" variant="primary" size="lg" disabled={isSubmitting} className="w-full">
-        {isSubmitting ? 'Sending...' : 'Send Message'}
-      </Button>
+      {/* Submit Button with micro-spring */}
+      <MotionDiv {...(!prefersReducedMotion && { variants: staggerChild })}>
+        <motion.div
+          whileHover={prefersReducedMotion ? undefined : { scale: 1.02 }}
+          whileTap={prefersReducedMotion ? undefined : { scale: 0.98 }}
+          transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+        >
+          <Button
+            type="submit"
+            variant="primary"
+            size="lg"
+            disabled={isSubmitting}
+            className="w-full relative overflow-hidden group"
+          >
+            <span className="relative z-10">
+              {isSubmitting ? 'Sending...' : 'Send Message'}
+            </span>
+            {/* Ripple effect layer */}
+            <span className="absolute inset-0 bg-white/20 scale-0 group-hover:scale-100 rounded-lg transition-transform duration-300 ease-out" />
+          </Button>
+        </motion.div>
+      </MotionDiv>
 
-      <p className="text-sm text-[var(--color-text-secondary)] text-center">
-        * Required fields
-      </p>
-    </form>
+      <MotionDiv {...(!prefersReducedMotion && { variants: staggerChild })}>
+        <p className="text-sm text-[var(--color-text-secondary)] text-center">
+          * Required fields
+        </p>
+      </MotionDiv>
+    </MotionForm>
   )
 }

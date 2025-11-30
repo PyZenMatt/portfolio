@@ -8,11 +8,16 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "test": "vitest"
+    "test": "vitest",
+    "test:run": "vitest run",
+    "test:unit": "vitest run src/lib src/hooks src/components/ui",
+    "test:ui": "vitest run src/pages src/components/layout src/components/sections",
+    "test:full": "vitest run"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.90.11",
     "clsx": "^2.1.1",
+    "framer-motion": "^12.23.24",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-hook-form": "^7.66.1",

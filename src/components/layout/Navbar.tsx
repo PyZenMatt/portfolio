@@ -1,8 +1,10 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import ThemeToggle from '../ui/ThemeToggle'
 import Hamburger from '../ui/Hamburger'
 import { useMobileMenu } from '../../hooks/useMobileMenu'
+import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { cn } from '../../lib/cn'
 
 const navLinks = [
@@ -16,6 +18,7 @@ export default function Navbar() {
   const location = useLocation()
   const navigate = useNavigate()
   const { isOpen, toggleMenu, closeMenu } = useMobileMenu()
+  const prefersReducedMotion = useReducedMotion()
 
   useEffect(() => {
     closeMenu()
@@ -43,22 +46,37 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-4">
+          <div className="hidden md:flex items-center space-x-1">
             {navLinks.map((link) => (
               <Link
                 key={link.path}
                 to={link.path}
                 className={cn(
-                  'px-3 py-2 rounded-md text-sm font-medium transition-colors',
+                  'relative px-3 py-2 text-sm font-medium transition-colors group',
                   location.pathname === link.path
-                    ? 'bg-[var(--color-surface)] text-[var(--color-primary)]'
-                    : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-surface)] hover:text-[var(--color-text)]'
+                    ? 'text-[var(--color-primary)]'
+                    : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text)]'
                 )}
               >
-                {link.label}
+                {/* Background highlight on hover */}
+                <span className="absolute inset-0 rounded-md bg-[var(--color-surface)] opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+                
+                {/* Label */}
+                <span className="relative">{link.label}</span>
+                
+                {/* Animated underline for active link */}
+                {location.pathname === link.path && (
+                  <motion.span
+                    layoutId={prefersReducedMotion ? undefined : "activeNavUnderline"}
+                    className="absolute bottom-0 left-3 right-3 h-0.5 bg-[var(--color-primary)] rounded-full"
+                    transition={prefersReducedMotion ? undefined : { type: 'spring', stiffness: 400, damping: 30 }}
+                  />
+                )}
               </Link>
             ))}
-            <ThemeToggle />
+            <div className="ml-2">
+              <ThemeToggle />
+            </div>
           </div>
 
           {/* Mobile Menu Button */}
@@ -69,31 +87,43 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Menu */}
-      <div
-        className={cn(
-          'md:hidden border-t border-[var(--color-border)] transition-all duration-300 ease-in-out overflow-hidden',
-          isOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'
+      {/* Mobile Menu with AnimatePresence */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={prefersReducedMotion ? undefined : { height: 0, opacity: 0 }}
+            animate={prefersReducedMotion ? undefined : { height: 'auto', opacity: 1 }}
+            exit={prefersReducedMotion ? undefined : { height: 0, opacity: 0 }}
+            transition={prefersReducedMotion ? undefined : { duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
+            className="md:hidden border-t border-[var(--color-border)] overflow-hidden"
+            aria-hidden={!isOpen}
+          >
+            <div className="px-4 py-4 space-y-1 bg-[var(--color-card)]">
+              {navLinks.map((link, index) => (
+                <motion.button
+                  key={link.path}
+                  onClick={() => handleNavigation(link.path)}
+                  initial={prefersReducedMotion ? undefined : { opacity: 0, x: -10 }}
+                  animate={prefersReducedMotion ? undefined : { opacity: 1, x: 0 }}
+                  transition={prefersReducedMotion ? undefined : { delay: 0.05 * index }}
+                  className={cn(
+                    'w-full text-left px-3 py-3 rounded-md text-base font-medium transition-colors relative',
+                    location.pathname === link.path
+                      ? 'bg-[var(--color-surface)] text-[var(--color-primary)]'
+                      : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-surface)] hover:text-[var(--color-text)]'
+                  )}
+                >
+                  {link.label}
+                  {/* Active indicator */}
+                  {location.pathname === link.path && (
+                    <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-[var(--color-primary)] rounded-r-full" />
+                  )}
+                </motion.button>
+              ))}
+            </div>
+          </motion.div>
         )}
-        aria-hidden={!isOpen}
-      >
-        <div className="px-4 py-4 space-y-1 bg-[var(--color-card)]">
-          {navLinks.map((link) => (
-            <button
-              key={link.path}
-              onClick={() => handleNavigation(link.path)}
-              className={cn(
-                'w-full text-left px-3 py-3 rounded-md text-base font-medium transition-colors',
-                location.pathname === link.path
-                  ? 'bg-[var(--color-surface)] text-[var(--color-primary)]'
-                  : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-surface)] hover:text-[var(--color-text)]'
-              )}
-            >
-              {link.label}
-            </button>
-          ))}
-        </div>
-      </div>
+      </AnimatePresence>
     </nav>
   )
 }
