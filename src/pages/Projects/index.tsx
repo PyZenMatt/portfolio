@@ -29,8 +29,8 @@ function ProjectsContent() {
     return (
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="mb-12 space-y-4">
-          <h1 className="text-5xl md:text-6xl font-bold tracking-tight text-[var(--color-text)]">All Projects</h1>
-          <p className="text-base md:text-lg text-[var(--color-text-secondary)] leading-relaxed">
+          <h1>All Projects</h1>
+          <p className="text-[var(--text-lg)] text-[var(--color-text-secondary)]">
             Explore my portfolio of full-stack projects, tools, and experiments
           </p>
         </div>
@@ -56,8 +56,8 @@ function ProjectsContent() {
         })}
         className="mb-12 space-y-4"
       >
-        <h1 className="text-5xl md:text-6xl font-bold tracking-tight text-[var(--color-text)]">All Projects</h1>
-        <p className="text-base md:text-lg text-[var(--color-text-secondary)] leading-relaxed">
+        <h1>All Projects</h1>
+        <p className="text-[var(--text-lg)] text-[var(--color-text-secondary)]">
           Explore my portfolio of full-stack projects, tools, and experiments
         </p>
       </MotionDiv>

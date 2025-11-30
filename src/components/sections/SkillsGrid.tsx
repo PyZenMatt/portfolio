@@ -68,7 +68,7 @@ export default function SkillsGrid() {
               }}
             >
               <Card className="p-6 transition-all duration-300 hover:shadow-lg hover:border-primary/20 group">
-                <h3 className="text-xl font-medium text-[var(--color-text)] mb-4 group-hover:text-[var(--color-primary)] transition-colors">
+                <h3 className="text-[var(--text-xl)] font-medium mb-4 group-hover:text-[var(--color-primary)] transition-colors">
                   {category}
                 </h3>
                 <div className="flex flex-wrap gap-2">

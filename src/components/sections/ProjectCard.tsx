@@ -93,11 +93,11 @@ const ProjectCard = memo(function ProjectCard({ project }: ProjectCardProps) {
 
         {/* Content */}
         <div className="p-6 flex-1 flex flex-col">
-          <h3 className="text-2xl font-semibold text-[var(--color-text)] mb-2">
+          <h3 className="mb-2">
             {title}
           </h3>
 
-          <p className="text-base text-[var(--color-text-secondary)] leading-relaxed mb-4 flex-1">
+          <p className="text-[var(--color-text-secondary)] mb-4 flex-1">
             {description}
           </p>
 

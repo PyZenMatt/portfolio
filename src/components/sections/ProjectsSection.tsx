@@ -17,10 +17,10 @@ function ProjectsSectionContent() {
       <section className="py-16 px-4 sm:px-6 lg:px-8 bg-[var(--color-surface)]">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12 space-y-4">
-            <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-[var(--color-text)]">
+            <h2>
               Featured Projects
             </h2>
-            <p className="text-base md:text-lg text-[var(--color-text-secondary)] leading-relaxed">
+            <p className="text-[var(--text-lg)] text-[var(--color-text-secondary)]">
               A selection of my recent work showcasing full-stack development and problem-solving
               skills
             </p>
@@ -49,10 +49,10 @@ function ProjectsSectionContent() {
       <div className="max-w-5xl mx-auto">
         {/* Section Header */}
         <div className="text-center mb-12 space-y-4">
-          <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-[var(--color-text)]">
+          <h2>
             Featured Projects
           </h2>
-          <p className="text-base md:text-lg text-[var(--color-text-secondary)] leading-relaxed">
+          <p className="text-[var(--text-lg)] text-[var(--color-text-secondary)]">
             A selection of my recent work showcasing full-stack development and problem-solving
             skills
           </p>

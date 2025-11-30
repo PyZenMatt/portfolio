@@ -87,11 +87,67 @@ npm run test:full
 - **Image loading**: Native lazy loading for images
 
 ### Network Optimization
-- **DNS prefetch**: Preconnect to Google Fonts (preparation for Issue 13.4)
+- **DNS prefetch**: Preconnect to Google Fonts
 - **Font loading**: Optimized preconnect for faster font delivery
 
 ### Analysis
 Run `npm run build:analyze` to generate an interactive bundle visualization (`stats.html`).
+
+## ✒️ Typography System (Issue 13.4)
+
+Professional typography using **Roboto Flex** variable font with fluid scaling.
+
+### Font Stack
+```css
+--font-sans: "Roboto Flex", system-ui, -apple-system, sans-serif;
+```
+
+### Type Scale (Fluid via `clamp()`)
+| Token | Min | Max | Usage |
+|-------|-----|-----|-------|
+| `--text-xs` | 0.75rem | 0.80rem | Microcopy |
+| `--text-sm` | 0.875rem | 0.95rem | UI labels, badges |
+| `--text-base` | 1rem | 1.125rem | Body text |
+| `--text-lg` | 1.125rem | 1.3rem | Lead paragraphs |
+| `--text-xl` | 1.25rem | 1.5rem | h5, intro text |
+| `--text-2xl` | 1.5rem | 1.875rem | h4 |
+| `--text-3xl` | 1.875rem | 2.25rem | h3 |
+| `--text-4xl` | 2.25rem | 3rem | h2 |
+| `--text-5xl` | 3rem | 4rem | h1 |
+
+### Font Weights
+| Token | Value | Usage |
+|-------|-------|-------|
+| `--weight-regular` | 400 | Body text |
+| `--weight-medium` | 500 | Links, subtle emphasis |
+| `--weight-semibold` | 600 | h4-h6, strong |
+| `--weight-bold` | 700 | h1-h3 |
+
+### Line Heights (Vertical Rhythm)
+| Token | Value | Usage |
+|-------|-------|-------|
+| `--leading-tight` | 1.15 | Headings |
+| `--leading-normal` | 1.4 | UI elements |
+| `--leading-relaxed` | 1.65 | Body text, prose |
+
+### Optical Sizing
+Roboto Flex supports automatic optical sizing for better readability:
+- `--opsz-headings: 32` — Display/headline optimization
+- `--opsz-body: 20` — Body text optimization
+
+### Usage
+Typography is applied globally via CSS base layer. Semantic HTML elements (`h1-h6`, `p`, etc.) automatically use the correct tokens. For custom styling:
+```tsx
+<p className="text-[var(--text-lg)] text-[var(--color-text-secondary)]">
+  Lead paragraph text
+</p>
+```
+
+### Accessibility
+- Minimum contrast ratio: AA (WCAG 2.1)
+- Line height ≥ 1.4 for body text
+- No font-weight below 400
+- Fluid scaling respects user font preferences
 
 ## 📋 Naming Conventions
 

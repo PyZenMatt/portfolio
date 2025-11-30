@@ -68,7 +68,7 @@ export default class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBo
             </div>
 
             {/* Error Message */}
-            <h1 className="text-2xl font-bold text-[var(--color-text)] mb-3">
+            <h1 className="text-[var(--text-2xl)] font-bold mb-3">
               Something went wrong
             </h1>
             <p className="text-[var(--color-text-secondary)] mb-6">

@@ -21,10 +21,11 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         'border border-transparent hover:border-[var(--color-border)] hover:bg-[var(--color-surface)] text-[var(--color-text-secondary)] focus-visible:ring-primary hover:text-[var(--color-text)]',
     }
 
+    // Typography-aware sizes using CSS variables
     const sizes = {
-      sm: 'h-9 px-3 text-sm',
-      md: 'h-10 px-4 text-base',
-      lg: 'h-12 px-6 text-lg',
+      sm: 'h-9 px-3 text-[var(--text-sm)]',
+      md: 'h-10 px-4 text-[var(--text-base)]',
+      lg: 'h-12 px-6 text-[var(--text-lg)]',
     }
 
     return (

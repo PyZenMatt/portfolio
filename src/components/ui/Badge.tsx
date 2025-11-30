@@ -9,7 +9,7 @@ interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
 const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
   ({ className, variant = 'default', ...props }, ref) => {
     const baseStyles =
-      'inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold transition-colors'
+      'inline-flex items-center rounded-full px-2.5 py-0.5 text-[var(--text-xs)] font-semibold transition-colors'
 
     const variants = {
       default:

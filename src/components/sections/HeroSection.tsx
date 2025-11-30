@@ -91,13 +91,13 @@ export default function HeroSection() {
               className="space-y-3"
             >
               <Badge variant="default">Full-Stack Developer</Badge>
-              <h1 className="text-5xl md:text-6xl font-bold tracking-tight text-[var(--color-text)]">
+              <h1>
                 Hi, I'm Matteo Ricci
               </h1>
             </MotionDiv>
 
             <MotionDiv {...(!prefersReducedMotion && { variants: staggerChild })}>
-              <p className="text-lg md:text-xl text-[var(--color-text-secondary)] leading-relaxed">
+              <p className="text-[var(--text-xl)] text-[var(--color-text-secondary)]">
                 Building modern web applications with Django, React, and
                 TypeScript. Passionate about clean code, user experience, and
                 scalable architecture.

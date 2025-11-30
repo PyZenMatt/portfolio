@@ -15,7 +15,7 @@ const NotFound = lazy(() => import('../pages/NotFound'))
 function PageLoader() {
   return (
     <div className="flex items-center justify-center min-h-screen">
-      <div className="text-xl">Loading...</div>
+      <div className="text-[var(--text-xl)]">Loading...</div>
     </div>
   )
 }

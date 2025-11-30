@@ -84,14 +84,14 @@ export default function Timeline() {
           {/* Content */}
           <div className="space-y-2">
             <div className="flex items-center gap-3">
-              <span className="inline-block px-3 py-1 text-sm font-semibold text-[var(--color-primary)] bg-[var(--color-primary)]/10 rounded-full">
+              <span className="text-[var(--text-sm)] font-semibold text-[var(--color-primary)] bg-[var(--color-primary)]/10 px-3 py-1 rounded-full">
                 {entry.year}
               </span>
-              <h3 className="text-xl font-medium text-[var(--color-text)]">
+              <h3 className="text-[var(--text-xl)] font-medium">
                 {entry.title}
               </h3>
             </div>
-            <p className="text-base leading-relaxed text-[var(--color-text-secondary)]">
+            <p className="text-[var(--color-text-secondary)]">
               {entry.description}
             </p>
           </div>

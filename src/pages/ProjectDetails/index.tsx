@@ -160,10 +160,10 @@ function ProjectDetailsContent({ project, relatedProjects }: ProjectDetailsConte
           <div className="lg:col-span-2 space-y-8">
             {/* Project Header */}
             <header className="space-y-4">
-              <h1 className="text-5xl md:text-6xl font-bold tracking-tight text-[var(--color-text)]">
+              <h1>
                 {project.title}
               </h1>
-              <p className="text-lg md:text-xl text-[var(--color-text-secondary)] leading-relaxed">
+              <p className="text-[var(--text-xl)] text-[var(--color-text-secondary)]">
                 {project.description}
               </p>
 
@@ -230,10 +230,10 @@ function ProjectDetailsContent({ project, relatedProjects }: ProjectDetailsConte
             {/* Overview Section */}
             {project.longDescription && (
               <Card as="section">
-                <h2 className="text-2xl font-semibold text-[var(--color-text)] mb-4">
+                <h2 className="mb-4">
                   Overview
                 </h2>
-                <p className="text-base text-[var(--color-text-secondary)] leading-relaxed">
+                <p className="text-[var(--color-text-secondary)]">
                   {project.longDescription}
                 </p>
               </Card>
@@ -242,7 +242,7 @@ function ProjectDetailsContent({ project, relatedProjects }: ProjectDetailsConte
             {/* Key Features Section */}
             {project.features && project.features.length > 0 && (
               <Card as="section">
-                <h2 className="text-2xl font-semibold text-[var(--color-text)] mb-4">
+                <h2 className="mb-4">
                   Key Features
                 </h2>
                 <ul className="space-y-3">
@@ -274,7 +274,7 @@ function ProjectDetailsContent({ project, relatedProjects }: ProjectDetailsConte
 
             {/* Technologies Section */}
             <Card as="section">
-              <h2 className="text-2xl font-semibold text-[var(--color-text)] mb-4">
+              <h2 className="mb-4">
                 Technologies Used
               </h2>
               <div className="flex flex-wrap gap-3">
@@ -292,7 +292,7 @@ function ProjectDetailsContent({ project, relatedProjects }: ProjectDetailsConte
             {/* Screenshots Section */}
             {project.screenshots && project.screenshots.length > 0 && (
               <Card as="section">
-                <h2 className="text-2xl font-semibold text-[var(--color-text)] mb-4">
+                <h2 className="mb-4">
                   Screenshots
                 </h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -315,10 +315,10 @@ function ProjectDetailsContent({ project, relatedProjects }: ProjectDetailsConte
 
             {/* Technical Approach Section */}
             <Card as="section">
-              <h2 className="text-2xl font-semibold text-[var(--color-text)] mb-4">
+              <h2 className="mb-4">
                 Technical Approach
               </h2>
-              <p className="text-base text-[var(--color-text-secondary)] leading-relaxed">
+              <p className="text-[var(--color-text-secondary)]">
                 This project follows modern software development practices including clean
                 architecture principles, comprehensive testing, and continuous integration.
                 The codebase is structured for maintainability and scalability, with clear

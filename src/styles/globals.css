@@ -20,6 +20,40 @@
   /* Semantic Colors */
   --color-border: #D4D4D4;
   --color-border-subtle: rgba(212, 212, 212, 0.6);
+
+  /* ============================================
+     Typography System - Issue 13.4
+     Roboto Flex Variable Font
+     ============================================ */
+  
+  /* Font Family */
+  --font-sans: "Roboto Flex", system-ui, -apple-system, sans-serif;
+
+  /* Type Scale (fluid using clamp) */
+  --text-xs: clamp(0.75rem, 0.71rem + 0.2vw, 0.80rem);
+  --text-sm: clamp(0.875rem, 0.84rem + 0.3vw, 0.95rem);
+  --text-base: clamp(1rem, 0.95rem + 0.4vw, 1.125rem);
+  --text-lg: clamp(1.125rem, 1.1rem + 0.45vw, 1.3rem);
+  --text-xl: clamp(1.25rem, 1.2rem + 0.5vw, 1.5rem);
+  --text-2xl: clamp(1.5rem, 1.3rem + 0.8vw, 1.875rem);
+  --text-3xl: clamp(1.875rem, 1.7rem + 1vw, 2.25rem);
+  --text-4xl: clamp(2.25rem, 2rem + 1.2vw, 3rem);
+  --text-5xl: clamp(3rem, 2.5rem + 1.5vw, 4rem);
+
+  /* Vertical Rhythm (line-height) */
+  --leading-tight: 1.15;
+  --leading-normal: 1.4;
+  --leading-relaxed: 1.65;
+
+  /* Font Weight Tokens */
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+
+  /* Optical Size for Variable Font */
+  --opsz-headings: 32;
+  --opsz-body: 20;
 }
 
 .dark {
@@ -40,60 +74,96 @@
 }
 
 @layer base {
-  /* Typography Base Defaults - Minimalismo Tecnico 2025 */
+  /* ============================================
+     Typography Base - Roboto Flex System
+     Issue 13.4: Professional Typography
+     ============================================ */
+  
+  html {
+    font-family: var(--font-sans);
+    font-optical-sizing: auto;
+  }
+
   body {
-    font-family: Inter, system-ui, -apple-system, sans-serif;
-    @apply text-base leading-relaxed;
+    font-size: var(--text-base);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-relaxed);
+    font-variation-settings: "opsz" var(--opsz-body);
     color: var(--color-text);
     background-color: var(--color-bg);
   }
 
-  h1 {
-    @apply text-5xl font-bold tracking-tight mb-4;
+  /* Headings - Bold, Tight Leading, Optical Size for Display */
+  h1, h2, h3, h4, h5, h6 {
+    font-variation-settings: "opsz" var(--opsz-headings);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-tight);
     color: var(--color-text);
   }
-  @media (min-width: 768px) {
-    h1 {
-      @apply text-6xl;
-    }
+
+  h1 {
+    font-size: var(--text-5xl);
+    letter-spacing: -0.02em;
+    margin-bottom: 1rem;
   }
 
   h2 {
-    @apply text-3xl font-semibold tracking-tight mb-3;
-    color: var(--color-text);
-  }
-  @media (min-width: 768px) {
-    h2 {
-      @apply text-4xl;
-    }
+    font-size: var(--text-4xl);
+    letter-spacing: -0.015em;
+    margin-bottom: 0.75rem;
   }
 
   h3 {
-    @apply text-2xl font-semibold mb-2;
-    color: var(--color-text);
+    font-size: var(--text-3xl);
+    letter-spacing: -0.01em;
+    margin-bottom: 0.5rem;
   }
 
   h4 {
-    @apply text-xl font-medium mb-2;
-    color: var(--color-text);
+    font-size: var(--text-2xl);
+    font-weight: var(--weight-semibold);
+    margin-bottom: 0.5rem;
   }
 
   h5 {
-    @apply text-lg font-medium mb-2;
-    color: var(--color-text);
+    font-size: var(--text-xl);
+    font-weight: var(--weight-semibold);
+    margin-bottom: 0.5rem;
   }
 
   h6 {
-    @apply text-base font-medium mb-2;
-    color: var(--color-text);
+    font-size: var(--text-lg);
+    font-weight: var(--weight-medium);
+    margin-bottom: 0.5rem;
+  }
+
+  /* Body Text Elements */
+  p, li, span {
+    font-variation-settings: "opsz" var(--opsz-body);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-relaxed);
   }
 
   p {
-    @apply mb-4 last:mb-0;
+    margin-bottom: 1rem;
+  }
+
+  p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Inline Elements */
+  strong, b {
+    font-weight: var(--weight-semibold);
+  }
+
+  a {
+    font-weight: var(--weight-medium);
+    text-underline-offset: 3px;
   }
 
   small {
-    @apply text-sm;
+    font-size: var(--text-sm);
     color: var(--color-text-secondary);
   }
 }
