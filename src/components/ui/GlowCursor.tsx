@@ -32,7 +32,6 @@ export default function GlowCursor({
   containerRef,
   radius = glowConfig.radius,
   opacity = glowConfig.opacity,
-  color = glowConfig.color,
   lerp = glowConfig.lerp,
 }: GlowCursorProps) {
   const glowRef = useRef<HTMLDivElement>(null)
@@ -134,7 +133,7 @@ export default function GlowCursor({
         width: radius * 2,
         height: radius * 2,
         borderRadius: '50%',
-        background: `radial-gradient(circle at center, ${color}, transparent 70%)`,
+        background: `radial-gradient(circle at center, var(--color-hero-cursor), transparent 70%)`,
         opacity: isVisible ? opacity : 0,
         transition: 'opacity 0.3s ease-out',
         willChange: 'transform',

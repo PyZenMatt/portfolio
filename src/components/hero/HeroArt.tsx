@@ -97,8 +97,8 @@ export default function HeroArt({ className = '' }: HeroArtProps) {
           <motion.div
             className="absolute inset-0 rounded-full blur-3xl scale-110"
             style={{
-              background: 'radial-gradient(circle at center, var(--color-primary-light) 0%, var(--color-primary) 40%, transparent 70%)',
-              opacity: 0.2,
+              background: 'radial-gradient(circle at center, var(--color-hero-glow) 0%, transparent 70%)',
+              opacity: 1,
               x: glowX,
               y: glowY,
             }}
@@ -108,8 +108,8 @@ export default function HeroArt({ className = '' }: HeroArtProps) {
           <div
             className="absolute inset-0 rounded-full blur-3xl scale-110"
             style={{
-              background: 'radial-gradient(circle at center, var(--color-primary-light) 0%, var(--color-primary) 40%, transparent 70%)',
-              opacity: 0.15,
+              background: 'radial-gradient(circle at center, var(--color-hero-glow) 0%, transparent 70%)',
+              opacity: 0.8,
             }}
             aria-hidden="true"
           />
@@ -137,7 +137,7 @@ export default function HeroArt({ className = '' }: HeroArtProps) {
         {/* Subtle ambient animation ring */}
         {!prefersReducedMotion && (
           <motion.div
-            className="absolute inset-0 rounded-full border border-[var(--color-primary)]/20 scale-125"
+            className="absolute inset-0 rounded-full border border-[var(--color-hero-portrait)]/20 scale-125"
             animate={{
               scale: [1.25, 1.35, 1.25],
               opacity: [0.2, 0.1, 0.2],

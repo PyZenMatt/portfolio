@@ -33,10 +33,11 @@ describe('Portrait', () => {
     expect(svg).toHaveClass('custom-class')
   })
 
-  test('contains gradient definitions for theming', () => {
-    render(<Portrait />)
-    const gradients = document.querySelectorAll('linearGradient')
-    expect(gradients.length).toBeGreaterThanOrEqual(1)
+  test('uses currentColor for theme-aware styling', () => {
+    const { container } = render(<Portrait />)
+    // Should use currentColor for stroke elements
+    const strokes = container.querySelectorAll('[stroke="currentColor"]')
+    expect(strokes.length).toBeGreaterThanOrEqual(1)
   })
 
   test('renders portrait silhouette elements', () => {

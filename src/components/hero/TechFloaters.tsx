@@ -142,7 +142,7 @@ const TechFloaters = memo(function TechFloaters() {
       {floaters.map((floater) => (
         <motion.div
           key={floater.id}
-          className="absolute w-6 h-6 md:w-7 md:h-7 text-[var(--color-primary)] opacity-40"
+          className="absolute w-6 h-6 md:w-7 md:h-7 text-[var(--color-hero-icons)] opacity-75"
           style={{
             left: floater.position.x,
             top: floater.position.y,
@@ -152,7 +152,7 @@ const TechFloaters = memo(function TechFloaters() {
             scale: 0.5 
           }}
           animate={prefersReducedMotion ? undefined : { 
-            opacity: 0.4, 
+            opacity: 0.75, 
             scale: 1,
             y: [0, -floater.floatRange, 0],
           }}

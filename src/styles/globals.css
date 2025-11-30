@@ -22,6 +22,15 @@
   --color-border-subtle: rgba(212, 212, 212, 0.6);
 
   /* ============================================
+     Hero Identity Block - Issue 14.1
+     Light theme uses navy/slate for sophistication
+     ============================================ */
+  --color-hero-portrait: #242E3D;
+  --color-hero-cursor: #2F4560;
+  --color-hero-glow: rgba(47, 69, 96, 0.25);
+  --color-hero-icons: #2F4560;
+
+  /* ============================================
      Typography System - Issue 13.4
      Roboto Flex Variable Font
      ============================================ */
@@ -71,6 +80,12 @@
   /* Accent stays consistent */
   --color-primary: #EF552C;
   --color-primary-light: #FF9124;
+
+  /* Hero Identity Block - Dark Mode uses primary accent */
+  --color-hero-portrait: var(--color-primary);
+  --color-hero-cursor: var(--color-primary);
+  --color-hero-glow: rgba(255, 145, 36, 0.25);
+  --color-hero-icons: var(--color-primary-light);
 }
 
 @layer base {
