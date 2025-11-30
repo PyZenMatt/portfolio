@@ -27,7 +27,7 @@ function ProjectsContent() {
 
   if (isLoading) {
     return (
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="mb-12 space-y-4">
           <h1>All Projects</h1>
           <p className="text-[var(--text-lg)] text-[var(--color-text-secondary)]">
@@ -46,7 +46,7 @@ function ProjectsContent() {
         description="Portfolio progetti di Matteo Ricci: applicazioni full-stack con React, Django, TypeScript. Blockchain, e-commerce, AI workflows e architetture moderne."
         canonical="https://matteoricci.net/projects"
       />
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       {/* Header */}
       <MotionDiv
         {...(!prefersReducedMotion && {

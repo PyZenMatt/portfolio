@@ -9,7 +9,7 @@ export default function Contact() {
         description="Contattami per collaborazioni, progetti full-stack o consulenze. Disponibile per opportunità in React, TypeScript, Django e DevOps."
         canonical="https://matteoricci.net/contact"
       />
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       {/* Header */}
       <div className="text-center mb-12">
         <h1 className="mb-4">Get In Touch</h1>

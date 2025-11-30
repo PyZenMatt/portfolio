@@ -41,7 +41,7 @@ export default function Footer() {
       role="contentinfo"
       className="border-t border-[var(--color-border)] mt-auto bg-[var(--color-card)]"
     >
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-sm text-[var(--color-text-secondary)]">
             © {currentYear} Matteo Ricci. All rights reserved.

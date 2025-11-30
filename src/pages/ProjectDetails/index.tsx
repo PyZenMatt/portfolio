@@ -50,7 +50,7 @@ function formatDate(dateString?: string): string {
 
 function ProjectDetailsSkeleton() {
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div className="lg:grid lg:grid-cols-3 lg:gap-8">
         {/* Main Content */}
         <div className="lg:col-span-2 space-y-8">
@@ -132,7 +132,7 @@ function ProjectDetailsContent({ project, relatedProjects }: ProjectDetailsConte
         canonical={`https://matteoricci.net/projects/${id}`}
       />
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Back Link */}
         <Link
           to="/projects"
@@ -417,7 +417,7 @@ function ProjectDetailsPage() {
           description="The requested project could not be found."
           canonical={`https://matteoricci.net/projects/${id}`}
         />
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <Link
             to="/projects"
             className="inline-flex items-center text-[var(--color-primary)] dark:text-[var(--color-primary-light)] hover:underline mb-6 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] focus-visible:ring-offset-2 rounded"

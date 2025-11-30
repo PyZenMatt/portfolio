@@ -97,6 +97,8 @@
   html {
     font-family: var(--font-sans);
     font-optical-sizing: auto;
+    /* Prevent horizontal overflow on zoom/narrow screens */
+    overflow-x: hidden;
   }
 
   body {
@@ -106,6 +108,9 @@
     font-variation-settings: "opsz" var(--opsz-body);
     color: var(--color-text);
     background-color: var(--color-bg);
+    /* Fluid layout - Issue 14.1b */
+    min-width: 280px;
+    overflow-x: hidden;
     /* Theme morphing - smooth color transitions */
     transition: 
       background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),

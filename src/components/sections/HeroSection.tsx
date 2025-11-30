@@ -46,7 +46,7 @@ export default function HeroSection() {
       {/* Glow cursor effect - only visible in hero */}
       <GlowCursor containerRef={heroRef} />
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid md:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Content Column */}
           <MotionDiv

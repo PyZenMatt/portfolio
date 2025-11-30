@@ -15,7 +15,7 @@ function ProjectsSectionContent() {
   if (isLoading) {
     return (
       <section className="py-16 px-4 sm:px-6 lg:px-8 bg-[var(--color-surface)]">
-        <div className="max-w-5xl mx-auto">
+        <div className="w-full max-w-5xl mx-auto">
           <div className="text-center mb-12 space-y-4">
             <h2>
               Featured Projects
@@ -34,7 +34,7 @@ function ProjectsSectionContent() {
   if (!projects || projects.length === 0) {
     return (
       <section className="py-16 px-4 sm:px-6 lg:px-8 bg-[var(--color-surface)]">
-        <div className="max-w-5xl mx-auto">
+        <div className="w-full max-w-5xl mx-auto">
           <EmptyState
             title="No projects yet"
             description="Projects will be added soon. Stay tuned!"
@@ -46,7 +46,7 @@ function ProjectsSectionContent() {
 
   return (
     <section className="py-16 px-4 sm:px-6 lg:px-8 bg-[var(--color-surface)]">
-      <div className="max-w-5xl mx-auto">
+      <div className="w-full max-w-5xl mx-auto">
         {/* Section Header */}
         <div className="text-center mb-12 space-y-4">
           <h2>

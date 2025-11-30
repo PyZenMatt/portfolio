@@ -10,7 +10,7 @@ export default function About() {
         description="Chi sono: full-stack developer con focus su Django, React, TypeScript. Esperienza in DevOps, AI workflows e architetture scalabili."
         canonical="https://matteoricci.net/about"
       />
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       {/* Header */}
       <div className="mb-12">
         <h1 className="mb-6">About Me</h1>

@@ -149,6 +149,46 @@ Typography is applied globally via CSS base layer. Semantic HTML elements (`h1-h
 - No font-weight below 400
 - Fluid scaling respects user font preferences
 
+## 📐 Fluid Layout System
+
+The layout system supports ultra-narrow viewports (280px+) and high zoom levels without breaking.
+
+### Container Pattern
+All containers use the fluid-first pattern:
+```tsx
+<div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+```
+
+| Property | Purpose |
+|----------|---------|
+| `w-full` | Fills available width (prevents fixed-width gaps) |
+| `max-w-*` | Caps width at breakpoint (5xl=1024px, 6xl=1152px) |
+| `mx-auto` | Centers container horizontally |
+| `px-4 sm:px-6 lg:px-8` | Responsive horizontal padding |
+
+### Viewport Protection
+```css
+html { overflow-x: hidden; }
+body { min-width: 280px; overflow-x: hidden; }
+```
+
+### Responsive Grids
+All grids use mobile-first `grid-cols-1` base:
+```tsx
+// Projects grid: 1 → 2 → 3 columns
+<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+// Skills: flexbox wrap for natural flow
+<div className="flex flex-wrap gap-2">
+```
+
+### Supported Viewports
+- **Minimum**: 280px (small phones, high zoom)
+- **Mobile**: 320px - 640px
+- **Tablet**: 640px - 1024px
+- **Desktop**: 1024px+
+- **Zoom**: 200-500% supported via fluid scaling
+
 ## 📋 Naming Conventions
 
 - **Components**: `PascalCase` (e.g., `Button.tsx`)
