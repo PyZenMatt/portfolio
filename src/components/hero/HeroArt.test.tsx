@@ -1,5 +1,11 @@
-import { render } from '@testing-library/react'
+import { render, fireEvent } from '@testing-library/react'
+import { vi } from 'vitest'
 import HeroArt from './HeroArt'
+
+// Mock useReducedMotion
+vi.mock('../../hooks/useReducedMotion', () => ({
+  useReducedMotion: vi.fn(() => false),
+}))
 
 describe('HeroArt', () => {
   test('renders without crashing', () => {
@@ -43,5 +49,67 @@ describe('HeroArt', () => {
     const { container } = render(<HeroArt />)
     const aspectContainer = container.querySelector('.aspect-\\[5\\/6\\]')
     expect(aspectContainer).toBeInTheDocument()
+  })
+})
+
+describe('HeroArt Mobile Motion - Issue 14.2', () => {
+  test('portrait container has hero-idle class for mobile animation', () => {
+    const { container } = render(<HeroArt />)
+    const portraitContainer = container.querySelector('.aspect-\\[5\\/6\\]')
+    expect(portraitContainer).toHaveClass('hero-idle')
+  })
+
+  test('tech floater icons have hero-icon-idle class for mobile animation', () => {
+    const { container } = render(<HeroArt />)
+    const floaters = container.querySelectorAll('[title]')
+    floaters.forEach(floater => {
+      expect(floater).toHaveClass('hero-icon-idle')
+    })
+  })
+
+  test('portrait container does not have touch-active class initially', () => {
+    const { container } = render(<HeroArt />)
+    const portraitContainer = container.querySelector('.aspect-\\[5\\/6\\]')
+    expect(portraitContainer).not.toHaveClass('touch-active')
+  })
+
+  test('tech icons do not have touch-active class initially', () => {
+    const { container } = render(<HeroArt />)
+    const floaters = container.querySelectorAll('[title]')
+    floaters.forEach(floater => {
+      expect(floater).not.toHaveClass('touch-active')
+    })
+  })
+})
+
+describe('HeroArt with reduced motion', () => {
+  beforeEach(() => {
+    vi.resetModules()
+  })
+
+  test('does not have hero-idle class when reduced motion is preferred', async () => {
+    vi.doMock('../../hooks/useReducedMotion', () => ({
+      useReducedMotion: () => true,
+    }))
+
+    const { default: HeroArtMocked } = await import('./HeroArt')
+    const { container } = render(<HeroArtMocked />)
+    
+    const portraitContainer = container.querySelector('.aspect-\\[5\\/6\\]')
+    expect(portraitContainer).not.toHaveClass('hero-idle')
+  })
+
+  test('tech icons do not have hero-icon-idle class when reduced motion is preferred', async () => {
+    vi.doMock('../../hooks/useReducedMotion', () => ({
+      useReducedMotion: () => true,
+    }))
+
+    const { default: HeroArtMocked } = await import('./HeroArt')
+    const { container } = render(<HeroArtMocked />)
+    
+    const floaters = container.querySelectorAll('[title]')
+    floaters.forEach(floater => {
+      expect(floater).not.toHaveClass('hero-icon-idle')
+    })
   })
 })

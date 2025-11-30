@@ -446,7 +446,7 @@ The Hero Section is the main landing area featuring:
 - Headline with name and role badge
 - Descriptive subheadline highlighting skills
 - CTA buttons for navigation
-- Portrait image placeholder with fallback icon
+- HeroArt composite block (Portrait + TechFloaters + Glow)
 
 **Features:**
 - ✅ Semantic HTML (`<section>`, `<h1>`, proper heading hierarchy)
@@ -460,6 +460,66 @@ The Hero Section is the main landing area featuring:
 **Components Used:**
 - `Button` (primary and ghost variants)
 - `Badge` (role indicator)
+- `HeroArt` (creative identity block)
+
+### Hero Motion System (Desktop + Mobile)
+
+The Hero uses a hybrid motion system for premium interactive feel on all devices:
+
+**Motion Priority:**
+```
+1. Touch Active     → Touch parallax override (mobile)
+2. Touch Inactive   → Idle micro-motion (mobile)
+3. Mouse Move       → 3D parallax (desktop)
+4. Reduced Motion   → Fully static
+```
+
+**Desktop Motion (Mouse Parallax):**
+- 3D perspective transforms on mouse move
+- Spring physics for smooth response
+- Portrait rotateX/Y + translateX/Y
+- Glow follows with offset
+
+**Mobile Motion (Idle + Touch):**
+```css
+/* Idle micro-motion - always active on mobile */
+.hero-idle {
+  animation: hero-idle-tilt 6s ease-in-out infinite;
+}
+
+.hero-icon-idle {
+  animation: hero-icon-float 5s ease-in-out infinite;
+}
+
+/* Paused during touch interaction */
+.hero-idle.touch-active,
+.hero-icon-idle.touch-active {
+  animation-play-state: paused;
+}
+```
+
+**Touch Parallax Hook:**
+```tsx
+import { useTouchParallax } from '../../hooks/useTouchParallax'
+
+// In component:
+useTouchParallax(portraitRef, {
+  maxX: 12,           // Max horizontal offset (px)
+  maxY: 12,           // Max vertical offset (px)
+  sensitivityX: 10,   // Lower = more sensitive
+  sensitivityY: 12,
+  decayDuration: 350, // Reset animation duration (ms)
+  onTouchStart: () => setIsTouchActive(true),
+  onTouchEnd: () => setIsTouchActive(false),
+})
+```
+
+**Accessibility:**
+- `prefers-reduced-motion: reduce` disables all animations
+- Transform clamp: ±12px maximum
+- RAF-based updates for 60fps
+- Memory cleanup on unmount
+- No horizontal overflow
 
 ## 💼 Projects Section
 

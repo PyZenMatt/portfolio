@@ -1,24 +1,32 @@
 /**
- * HeroArt Component - Issue 14
+ * HeroArt Component - Issue 14 + 14.2
  * 
  * Composite creative identity block for the Hero section.
  * Combines:
  * - Portrait silhouette SVG
  * - Dynamic glow effect
  * - Floating tech icons
- * - Parallax motion response to mouse
+ * - Parallax motion response to mouse (desktop)
+ * - Touch parallax + idle micro-motion (mobile)
  * 
  * Features:
  * - Full reduced motion support
  * - Theme-aware styling
  * - Responsive sizing
+ * - Mobile WOW effect with idle animations
+ * 
+ * Motion Priority:
+ * 1. Touch active → touch parallax overrides idle
+ * 2. Touch inactive → idle micro-motion
+ * 3. Reduced motion → fully static
  */
 
-import { useCallback } from 'react'
+import { useCallback, useRef, useState } from 'react'
 import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion'
 import Portrait from './Portrait'
 import TechFloaters from './TechFloaters'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
+import { useTouchParallax } from '../../hooks/useTouchParallax'
 import { parallaxConfig, zoomIn } from '../../motion'
 
 interface HeroArtProps {
@@ -27,8 +35,23 @@ interface HeroArtProps {
 
 export default function HeroArt({ className = '' }: HeroArtProps) {
   const prefersReducedMotion = useReducedMotion()
+  const portraitRef = useRef<HTMLDivElement>(null)
+  
+  // Touch state for mobile - controls idle animation pause
+  const [isTouchActive, setIsTouchActive] = useState(false)
 
-  // Mouse parallax values
+  // Touch parallax for mobile devices
+  useTouchParallax(portraitRef, {
+    maxX: 12,
+    maxY: 12,
+    sensitivityX: 10,
+    sensitivityY: 12,
+    decayDuration: 350,
+    onTouchStart: () => setIsTouchActive(true),
+    onTouchEnd: () => setIsTouchActive(false),
+  })
+
+  // Mouse parallax values (desktop only)
   const mouseX = useMotionValue(0)
   const mouseY = useMotionValue(0)
 
@@ -115,9 +138,12 @@ export default function HeroArt({ className = '' }: HeroArtProps) {
           />
         )}
 
-        {/* Main portrait container with parallax */}
+        {/* Main portrait container with parallax (desktop) and idle motion (mobile) */}
         <motion.div
-          className="relative aspect-[5/6] rounded-2xl overflow-visible"
+          ref={portraitRef}
+          className={`relative aspect-[5/6] rounded-2xl overflow-visible md:!transform-none ${
+            !prefersReducedMotion ? `hero-idle${isTouchActive ? ' touch-active' : ''}` : ''
+          }`}
           style={prefersReducedMotion ? undefined : {
             rotateX,
             rotateY,
@@ -130,8 +156,8 @@ export default function HeroArt({ className = '' }: HeroArtProps) {
           {/* Portrait SVG */}
           <Portrait className="relative z-10 drop-shadow-lg" />
 
-          {/* Floating tech icons */}
-          <TechFloaters />
+          {/* Floating tech icons with mobile idle animation */}
+          <TechFloaters isTouchActive={isTouchActive} />
         </motion.div>
 
         {/* Subtle ambient animation ring */}

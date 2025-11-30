@@ -252,6 +252,42 @@
   .animate-slide-in-right {
     animation: slide-in-right 0.3s ease-out;
   }
+
+  /* ============================================
+     Hero Idle Motion System - Issue 14.2
+     Mobile WOW effect with micro-motion
+     ============================================ */
+  
+  /* Idle tilt animation for portrait container */
+  @keyframes hero-idle-tilt {
+    0% { transform: rotate(0deg) translateY(0px); }
+    50% { transform: rotate(1deg) translateY(-3px); }
+    100% { transform: rotate(0deg) translateY(0px); }
+  }
+
+  /* Floating animation for tech icons */
+  @keyframes hero-icon-float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-4px); }
+    100% { transform: translateY(0px); }
+  }
+
+  /* Mobile idle motion classes (active only on mobile, disabled during touch) */
+  .hero-idle {
+    animation: hero-idle-tilt 6s ease-in-out infinite;
+    will-change: transform;
+  }
+
+  .hero-icon-idle {
+    animation: hero-icon-float 5s ease-in-out infinite;
+    will-change: transform;
+  }
+
+  /* Pause animations when touch is active */
+  .hero-idle.touch-active,
+  .hero-icon-idle.touch-active {
+    animation-play-state: paused;
+  }
   
   /* Reduced motion support (Issue 13.3) */
   @media (prefers-reduced-motion: reduce) {
@@ -262,6 +298,13 @@
       animation-iteration-count: 1 !important;
       transition-duration: 0.01ms !important;
       scroll-behavior: auto !important;
+    }
+
+    /* Explicitly disable hero idle animations */
+    .hero-idle,
+    .hero-icon-idle {
+      animation: none !important;
+      will-change: auto !important;
     }
   }
 }

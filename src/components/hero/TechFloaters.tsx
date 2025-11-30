@@ -1,12 +1,13 @@
 /**
- * TechFloaters Component - Issue 14
+ * TechFloaters Component - Issue 14 + 14.2
  * 
  * Floating tech stack icons around the portrait silhouette.
  * Features:
  * - Django, React, TypeScript, Docker, Python, GitHub icons
- * - Slow floating animation (4-8s period)
+ * - Slow floating animation (4-8s period) via Framer Motion (desktop)
+ * - CSS idle animation for mobile (hero-icon-idle class)
  * - Staggered random start positions
- * - Low opacity (40%) for non-intrusive effect
+ * - Low opacity (75%) for non-intrusive effect
  * - Respects prefers-reduced-motion
  * - aria-hidden for accessibility
  */
@@ -14,6 +15,11 @@
 import { memo, useMemo } from 'react'
 import { motion } from 'framer-motion'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
+
+interface TechFloatersProps {
+  /** Whether touch is active (pauses idle animation) */
+  isTouchActive?: boolean
+}
 
 interface FloaterConfig {
   id: string
@@ -73,8 +79,13 @@ function seededRandom(seed: number): number {
   return x - Math.floor(x)
 }
 
-const TechFloaters = memo(function TechFloaters() {
+const TechFloaters = memo(function TechFloaters({ isTouchActive = false }: TechFloatersProps) {
   const prefersReducedMotion = useReducedMotion()
+
+  // Build idle class for mobile - paused during touch
+  const iconIdleClass = !prefersReducedMotion 
+    ? `hero-icon-idle${isTouchActive ? ' touch-active' : ''}`
+    : ''
 
   // Generate floater configurations with consistent random positions
   const floaters: FloaterConfig[] = useMemo(() => [
@@ -139,13 +150,15 @@ const TechFloaters = memo(function TechFloaters() {
       className="absolute inset-0 pointer-events-none"
       aria-hidden="true"
     >
-      {floaters.map((floater) => (
+      {floaters.map((floater, index) => (
         <motion.div
           key={floater.id}
-          className="absolute w-6 h-6 md:w-7 md:h-7 text-[var(--color-hero-icons)] opacity-75"
+          className={`absolute w-6 h-6 md:w-7 md:h-7 text-[var(--color-hero-icons)] opacity-75 ${iconIdleClass}`}
           style={{
             left: floater.position.x,
             top: floater.position.y,
+            // Stagger animation delay for each icon on mobile
+            animationDelay: `${index * 0.3}s`,
           }}
           initial={prefersReducedMotion ? undefined : { 
             opacity: 0, 
