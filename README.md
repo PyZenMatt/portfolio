@@ -40,6 +40,9 @@ npm run dev
 # Build for production
 npm run build
 
+# Build with bundle analysis
+npm run build:analyze
+
 # Preview production build
 npm run preview
 
@@ -48,7 +51,47 @@ npm run lint
 
 # Run tests
 npm run test
+
+# Run unit tests only (fast)
+npm run test:unit
+
+# Run UI tests only
+npm run test:ui
+
+# Run full test suite
+npm run test:full
 ```
+
+## ⚡ Performance Optimizations (Issue 13.3.10)
+
+### Bundle Optimization
+- **Manual chunk splitting**: Vendor libraries (react, router, motion, query) are separated into dedicated chunks for better caching
+- **Modern target**: ES2020 build target for smaller bundle size
+- **CSS minification**: Enabled for production builds
+- **Pre-bundling**: Common dependencies pre-bundled via `optimizeDeps`
+
+### Bundle Size (gzipped)
+| Chunk | Size |
+|-------|------|
+| Main JS | ~71 kB |
+| React vendor | ~4 kB |
+| Framer Motion | ~39 kB |
+| React Router | ~12 kB |
+| TanStack Query | ~11 kB |
+| CSS | ~7.7 kB |
+
+### Runtime Optimization
+- **React.memo**: Applied to list items (ProjectCard) to prevent unnecessary re-renders
+- **useCallback**: Memoized event handlers in HeroSection and other interactive components
+- **Lazy loading**: All page routes lazy-loaded with React.lazy()
+- **Image loading**: Native lazy loading for images
+
+### Network Optimization
+- **DNS prefetch**: Preconnect to Google Fonts (preparation for Issue 13.4)
+- **Font loading**: Optimized preconnect for faster font delivery
+
+### Analysis
+Run `npm run build:analyze` to generate an interactive bundle visualization (`stats.html`).
 
 ## 📋 Naming Conventions
 

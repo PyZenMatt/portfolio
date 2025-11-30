@@ -1,9 +1,34 @@
+import { useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion'
 import Button from '../ui/Button'
 import Badge from '../ui/Badge'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { fadeInScale, staggerContainer, staggerChild } from '../../motion'
+
+// Spring configuration extracted outside component to prevent recreation
+const SPRING_CONFIG = { damping: 25, stiffness: 150 } as const
+
+// SVG placeholder icon extracted to prevent recreation
+function PlaceholderIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className="h-24 w-24"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      aria-hidden="true"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={1.5}
+        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+      />
+    </svg>
+  )
+}
 
 export default function HeroSection() {
   const navigate = useNavigate()
@@ -13,33 +38,32 @@ export default function HeroSection() {
   const mouseX = useMotionValue(0)
   const mouseY = useMotionValue(0)
   
-  // Smooth spring physics
-  const springConfig = { damping: 25, stiffness: 150 }
-  const rotateX = useSpring(useTransform(mouseY, [-200, 200], [3, -3]), springConfig)
-  const rotateY = useSpring(useTransform(mouseX, [-200, 200], [-3, 3]), springConfig)
+  // Smooth spring physics - use external config to avoid recreation
+  const rotateX = useSpring(useTransform(mouseY, [-200, 200], [3, -3]), SPRING_CONFIG)
+  const rotateY = useSpring(useTransform(mouseX, [-200, 200], [-3, 3]), SPRING_CONFIG)
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     if (prefersReducedMotion) return
     const rect = e.currentTarget.getBoundingClientRect()
     const centerX = rect.left + rect.width / 2
     const centerY = rect.top + rect.height / 2
     mouseX.set(e.clientX - centerX)
     mouseY.set(e.clientY - centerY)
-  }
+  }, [prefersReducedMotion, mouseX, mouseY])
 
-  const handleMouseLeave = () => {
+  const handleMouseLeave = useCallback(() => {
     mouseX.set(0)
     mouseY.set(0)
-  }
+  }, [mouseX, mouseY])
 
-  const handleViewProjects = () => {
+  const handleViewProjects = useCallback(() => {
     navigate('/projects')
-  }
+  }, [navigate])
 
-  const handleDownloadCV = () => {
+  const handleDownloadCV = useCallback(() => {
     // TODO: replace with real CV file
     window.open('/assets/matteo-ricci-cv.pdf', '_blank')
-  }
+  }, [])
 
   // Motion wrapper - falls back to static if reduced motion
   const MotionDiv = prefersReducedMotion ? 'div' : motion.div
@@ -145,20 +169,7 @@ export default function HeroSection() {
                   }}
                 />
                 <div className="absolute inset-0 flex items-center justify-center text-[var(--color-text-secondary)]/40">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-24 w-24"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={1.5}
-                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                    />
-                  </svg>
+                  <PlaceholderIcon />
                 </div>
               </motion.div>
             </div>

@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion'
 import type { Project } from '../../lib/projects'
 import Card from '../ui/Card'
@@ -9,7 +10,9 @@ interface ProjectCardProps {
   project: Project
 }
 
-export default function ProjectCard({ project }: ProjectCardProps) {
+// Memoized to prevent re-renders when parent re-renders
+// Projects are stable objects from data, so shallow comparison is sufficient
+const ProjectCard = memo(function ProjectCard({ project }: ProjectCardProps) {
   const { title, description, tech, image, repoUrl, liveUrl } = project
   const prefersReducedMotion = useReducedMotion()
 
@@ -121,4 +124,6 @@ export default function ProjectCard({ project }: ProjectCardProps) {
       </Card>
     </motion.div>
   )
-}
+})
+
+export default ProjectCard

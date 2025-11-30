@@ -28,7 +28,8 @@ export default function ContactForm() {
       // Mock API call - will be replaced with Django backend in Issue #12
       await new Promise((resolve) => setTimeout(resolve, 800))
 
-      console.log('Form data:', data)
+      // TODO: Send to backend (Issue #12)
+      void data // Used by backend API
       showToast('Message sent successfully! I\'ll get back to you soon.', 'success')
       reset()
     } catch {
