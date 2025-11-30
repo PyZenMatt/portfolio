@@ -13,7 +13,7 @@ const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
 
     const variants = {
       default:
-        'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-100',
+        'bg-neutral-100 text-neutral-700 dark:bg-neutral-700 dark:text-neutral-100',
       success:
         'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100',
       warning:

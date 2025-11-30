@@ -23,7 +23,7 @@ describe('Skeleton', () => {
   test('has background color classes', () => {
     render(<Skeleton />)
     const skeleton = screen.getByRole('status')
-    expect(skeleton).toHaveClass('bg-gray-200', 'dark:bg-gray-700')
+    expect(skeleton).toHaveClass('bg-neutral-100', 'dark:bg-neutral-700')
   })
 
   test('renders avatar variant', () => {

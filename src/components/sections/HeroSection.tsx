@@ -26,12 +26,12 @@ export default function HeroSection() {
           <div className="space-y-6">
             <div className="space-y-3">
               <Badge variant="default">Full-Stack Developer</Badge>
-              <h1 className="text-5xl md:text-6xl font-bold tracking-tight text-slate-900 dark:text-white">
+              <h1 className="text-5xl md:text-6xl font-bold tracking-tight text-neutral-900 dark:text-neutral-50">
                 Hi, I'm Matteo Ricci
               </h1>
             </div>
 
-            <p className="text-lg md:text-xl text-slate-600 dark:text-slate-400 leading-relaxed">
+            <p className="text-lg md:text-xl text-neutral-700 dark:text-neutral-100 leading-relaxed">
               Building modern web applications with Django, React, and
               TypeScript. Passionate about clean code, user experience, and
               scalable architecture.
@@ -59,7 +59,7 @@ export default function HeroSection() {
           {/* Image Column */}
           <div className="flex justify-center md:justify-end">
             <div className="relative max-w-sm w-full">
-              <div className="aspect-square rounded-xl bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-900 dark:to-blue-800 shadow-lg flex items-center justify-center">
+              <div className="aspect-square rounded-xl bg-gradient-to-br from-primary/20 to-primary-light/20 dark:from-primary/30 dark:to-primary-light/30 shadow-lg flex items-center justify-center">
                 <img
                   src="/placeholder-portrait.jpg"
                   alt="Portrait of Matteo Ricci"
@@ -68,7 +68,7 @@ export default function HeroSection() {
                     e.currentTarget.style.display = 'none'
                   }}
                 />
-                <div className="absolute inset-0 flex items-center justify-center text-gray-400 dark:text-gray-600">
+                <div className="absolute inset-0 flex items-center justify-center text-neutral-100 dark:text-neutral-700">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="h-24 w-24"

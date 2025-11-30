@@ -56,7 +56,7 @@ describe('EmptyState', () => {
   test('icon has correct color classes', () => {
     const { container } = render(<EmptyState title="No items" />)
     const svg = container.querySelector('svg')
-    expect(svg).toHaveClass('text-gray-400', 'dark:text-gray-600')
+    expect(svg).toHaveClass('text-neutral-100', 'dark:text-neutral-700')
   })
 
   test('has correct layout structure', () => {

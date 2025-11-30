@@ -81,7 +81,7 @@ describe('Projects Page', () => {
     renderProjectsPage()
     await waitFor(() => {
       const allButton = screen.getByRole('button', { name: /^all$/i })
-      expect(allButton).toHaveClass('bg-blue-600')
+      expect(allButton).toHaveClass('bg-primary')
     })
   })
 
@@ -107,7 +107,7 @@ describe('Projects Page', () => {
     await user.click(reactButton)
 
     await waitFor(() => {
-      expect(reactButton).toHaveClass('bg-blue-600')
+      expect(reactButton).toHaveClass('bg-primary')
     })
   })
 

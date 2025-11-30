@@ -44,7 +44,7 @@ export default function SkillsGrid() {
         
         return (
           <Card key={category} className="p-6">
-            <h3 className="text-xl font-medium text-slate-900 dark:text-white mb-4">
+            <h3 className="text-xl font-medium text-neutral-900 dark:text-neutral-50 mb-4">
               {category}
             </h3>
             <div className="flex flex-wrap gap-2">

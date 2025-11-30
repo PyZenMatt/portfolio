@@ -28,7 +28,7 @@ export default function Navbar() {
 
   return (
     <nav
-      className="border-b border-slate-200 dark:border-slate-800"
+      className="border-b border-neutral-100 dark:border-neutral-700 bg-white dark:bg-neutral-900"
       role="navigation"
       aria-label="Main navigation"
     >
@@ -37,7 +37,7 @@ export default function Navbar() {
           {/* Logo */}
           <Link
             to="/"
-            className="text-xl font-bold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+            className="text-xl font-bold text-neutral-900 dark:text-neutral-50 hover:text-primary dark:hover:text-primary-light transition-colors"
           >
             Matteo Ricci
           </Link>
@@ -51,8 +51,8 @@ export default function Navbar() {
                 className={cn(
                   'px-3 py-2 rounded-md text-sm font-medium transition-colors',
                   location.pathname === link.path
-                    ? 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white'
-                    : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white'
+                    ? 'bg-neutral-100 dark:bg-neutral-700 text-neutral-900 dark:text-neutral-50'
+                    : 'text-neutral-700 dark:text-neutral-100 hover:bg-neutral-50 dark:hover:bg-neutral-700 hover:text-neutral-900 dark:hover:text-neutral-50'
                 )}
               >
                 {link.label}
@@ -72,12 +72,12 @@ export default function Navbar() {
       {/* Mobile Menu */}
       <div
         className={cn(
-          'md:hidden border-t border-slate-200 dark:border-slate-800 transition-all duration-300 ease-in-out overflow-hidden',
+          'md:hidden border-t border-neutral-100 dark:border-neutral-700 transition-all duration-300 ease-in-out overflow-hidden',
           isOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'
         )}
         aria-hidden={!isOpen}
       >
-        <div className="px-4 py-4 space-y-1 bg-white dark:bg-slate-900">
+        <div className="px-4 py-4 space-y-1 bg-white dark:bg-neutral-900">
           {navLinks.map((link) => (
             <button
               key={link.path}
@@ -85,8 +85,8 @@ export default function Navbar() {
               className={cn(
                 'w-full text-left px-3 py-3 rounded-md text-base font-medium transition-colors',
                 location.pathname === link.path
-                  ? 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white'
-                  : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white'
+                  ? 'bg-neutral-100 dark:bg-neutral-700 text-neutral-900 dark:text-neutral-50'
+                  : 'text-neutral-700 dark:text-neutral-100 hover:bg-neutral-50 dark:hover:bg-neutral-700 hover:text-neutral-900 dark:hover:text-neutral-50'
               )}
             >
               {link.label}

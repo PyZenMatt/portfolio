@@ -24,8 +24,8 @@ function ProjectsContent() {
     return (
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="mb-12 space-y-4">
-          <h1 className="text-5xl md:text-6xl font-bold tracking-tight text-slate-900 dark:text-white">All Projects</h1>
-          <p className="text-base md:text-lg text-slate-600 dark:text-slate-400 leading-relaxed">
+          <h1 className="text-5xl md:text-6xl font-bold tracking-tight text-neutral-900 dark:text-neutral-50">All Projects</h1>
+          <p className="text-base md:text-lg text-neutral-700 dark:text-neutral-100 leading-relaxed">
             Explore my portfolio of full-stack projects, tools, and experiments
           </p>
         </div>
@@ -44,8 +44,8 @@ function ProjectsContent() {
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       {/* Header */}
       <div className="mb-12 space-y-4">
-        <h1 className="text-5xl md:text-6xl font-bold tracking-tight text-slate-900 dark:text-white">All Projects</h1>
-        <p className="text-base md:text-lg text-slate-600 dark:text-slate-400 leading-relaxed">
+        <h1 className="text-5xl md:text-6xl font-bold tracking-tight text-neutral-900 dark:text-neutral-50">All Projects</h1>
+        <p className="text-base md:text-lg text-neutral-700 dark:text-neutral-100 leading-relaxed">
           Explore my portfolio of full-stack projects, tools, and experiments
         </p>
       </div>

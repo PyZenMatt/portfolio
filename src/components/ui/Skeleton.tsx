@@ -6,7 +6,7 @@ interface SkeletonProps {
 }
 
 export default function Skeleton({ className, variant = 'text' }: SkeletonProps) {
-  const baseStyles = 'animate-pulse bg-gray-200 dark:bg-gray-700'
+  const baseStyles = 'animate-pulse bg-neutral-100 dark:bg-neutral-700'
   
   const variants = {
     avatar: 'rounded-full',

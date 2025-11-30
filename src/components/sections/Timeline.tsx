@@ -35,21 +35,21 @@ export default function Timeline() {
   return (
     <div className="space-y-8">
       {TIMELINE.map((entry) => (
-        <div key={entry.year} className="relative pl-8 pb-8 border-l-2 border-slate-200 dark:border-slate-700 last:pb-0">
+        <div key={entry.year} className="relative pl-8 pb-8 border-l-2 border-neutral-100 dark:border-neutral-700 last:pb-0">
           {/* Dot indicator */}
-          <div className="absolute left-0 top-0 -translate-x-[9px] w-4 h-4 rounded-full bg-blue-600 dark:bg-blue-500 ring-4 ring-white dark:ring-gray-900" />
+          <div className="absolute left-0 top-0 -translate-x-[9px] w-4 h-4 rounded-full bg-primary dark:bg-primary-light ring-4 ring-white dark:ring-neutral-900" />
           
           {/* Content */}
           <div className="space-y-2">
             <div className="flex items-center gap-3">
-              <span className="inline-block px-3 py-1 text-sm font-semibold text-blue-700 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 rounded-full">
+              <span className="inline-block px-3 py-1 text-sm font-semibold text-primary dark:text-primary-light bg-primary/10 dark:bg-primary/20 rounded-full">
                 {entry.year}
               </span>
-              <h3 className="text-xl font-medium text-slate-900 dark:text-white">
+              <h3 className="text-xl font-medium text-neutral-900 dark:text-neutral-50">
                 {entry.title}
               </h3>
             </div>
-            <p className="text-base leading-relaxed text-slate-600 dark:text-slate-400">
+            <p className="text-base leading-relaxed text-neutral-700 dark:text-neutral-100">
               {entry.description}
             </p>
           </div>

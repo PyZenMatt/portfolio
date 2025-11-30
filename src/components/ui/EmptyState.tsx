@@ -14,7 +14,7 @@ export default function EmptyState({ title, description, actionLabel, onAction }
         {/* Empty Icon */}
         <div className="mb-6 flex justify-center">
           <svg
-            className="h-16 w-16 text-gray-400 dark:text-gray-600"
+            className="h-16 w-16 text-neutral-100 dark:text-neutral-700"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -29,11 +29,11 @@ export default function EmptyState({ title, description, actionLabel, onAction }
         </div>
 
         {/* Title */}
-        <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">{title}</h3>
+        <h3 className="text-xl font-semibold text-neutral-900 dark:text-neutral-50 mb-2">{title}</h3>
 
         {/* Description */}
         {description && (
-          <p className="text-gray-600 dark:text-gray-400 mb-6">{description}</p>
+          <p className="text-neutral-700 dark:text-neutral-100 mb-6">{description}</p>
         )}
 
         {/* Optional Action Button */}

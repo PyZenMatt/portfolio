@@ -8,7 +8,17 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Placeholder for custom color palette
+        // Matteo Ricci Brand Palette
+        primary: {
+          DEFAULT: '#EF552C',  // Arancio energico - CTA
+          light: '#FF9124',    // Arancio chiaro - hover / accent
+        },
+        neutral: {
+          50: '#F4F4F4',       // Background light
+          100: '#E5E5E5',      // Surface light / border
+          700: '#2F4560',      // Slate-blu (secondary neutral)
+          900: '#242E3D',      // Navy-grafite (primary neutral)
+        },
       },
       fontSize: {
         // Typography Scale 2025 - Minimalismo Tecnico

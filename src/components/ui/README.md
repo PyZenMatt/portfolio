@@ -124,14 +124,15 @@ The portfolio uses a modern, minimal typography scale designed for optimal reada
 | H4 | `text-xl` | No | `font-medium` |
 | H5 | `text-lg` | No | `font-medium` |
 | Body | `text-base` | No | `leading-relaxed` |
-| Small | `text-sm` | No | `text-neutral-700` |
+| Small | `text-sm` | No | `text-slate-500` |
 
 #### Font Stack
 
 - **Primary**: Inter (system-ui, -apple-system fallbacks)
-- **Color Palette**: Custom neutral scale for text hierarchy
-  - Primary: `text-neutral-900 dark:text-neutral-50`
-  - Secondary: `text-neutral-700 dark:text-neutral-100`
+- **Color Palette**: Slate scale for text hierarchy
+  - Primary: `text-slate-900 dark:text-slate-100`
+  - Secondary: `text-slate-600 dark:text-slate-400`
+  - Muted: `text-slate-500 dark:text-slate-400`
 
 #### Implementation
 
@@ -143,107 +144,30 @@ Typography defaults are defined in:
 
 ```tsx
 // Page Title (H1)
-<h1 className="text-5xl md:text-6xl font-bold tracking-tight text-neutral-900 dark:text-neutral-50">
+<h1 className="text-5xl md:text-6xl font-bold tracking-tight text-slate-900 dark:text-white">
   Page Title
 </h1>
 
 // Section Heading (H2)
-<h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-neutral-900 dark:text-neutral-50">
+<h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-slate-900 dark:text-white">
   Section Title
 </h2>
 
 // Card Title (H3)
-<h3 className="text-2xl font-semibold text-neutral-900 dark:text-neutral-50">
+<h3 className="text-2xl font-semibold text-slate-900 dark:text-white">
   Card Title
 </h3>
 
 // Body Text
-<p className="text-base leading-relaxed text-neutral-700 dark:text-neutral-100">
+<p className="text-base leading-relaxed text-slate-700 dark:text-slate-300">
   Body content with comfortable line height.
 </p>
 
 // Muted/Secondary Text
-<p className="text-sm text-neutral-700 dark:text-neutral-100">
+<p className="text-sm text-slate-500 dark:text-slate-400">
   Secondary information or metadata.
 </p>
 ```
-
-### 🎨 Color Palette (Matteo Ricci Brand)
-
-The portfolio uses a custom color palette that reflects a professional, modern developer aesthetic.
-
-#### Primary Accent Colors
-
-| Name | Hex | Token | Usage |
-|------|-----|-------|-------|
-| Primary | `#EF552C` | `primary` | CTAs, links, accent elements |
-| Primary Light | `#FF9124` | `primary-light` | Hover states, highlights |
-
-#### Neutral Colors
-
-| Name | Hex | Token | Usage |
-|------|-----|-------|-------|
-| Navy Grafite | `#242E3D` | `neutral-900` | Dark mode bg, primary text |
-| Slate Blu | `#2F4560` | `neutral-700` | Secondary neutral, dark surface |
-| Surface Light | `#E5E5E5` | `neutral-100` | Borders, badges, light surface |
-| Background Light | `#F4F4F4` | `neutral-50` | Page background (light mode) |
-
-#### CSS Variables
-
-The palette is exposed via CSS custom properties for flexibility:
-
-```css
-:root {
-  --color-primary: #EF552C;
-  --color-primary-light: #FF9124;
-  --color-bg: #F4F4F4;
-  --color-surface: #E5E5E5;
-  --color-text: #242E3D;
-  --color-text-secondary: #2F4560;
-}
-
-.dark {
-  --color-bg: #242E3D;
-  --color-surface: #2F4560;
-  --color-text: #F4F4F4;
-  --color-text-secondary: #E5E5E5;
-}
-```
-
-#### Tailwind Tokens
-
-Available via `tailwind.config.js`:
-
-```js
-colors: {
-  primary: {
-    DEFAULT: '#EF552C',
-    light: '#FF9124',
-  },
-  neutral: {
-    50: '#F4F4F4',
-    100: '#E5E5E5',
-    700: '#2F4560',
-    900: '#242E3D',
-  },
-}
-```
-
-#### Usage Guidelines
-
-- **CTA Buttons**: Use `bg-primary hover:bg-primary-light` for primary actions
-- **Ghost Buttons**: Use `hover:bg-neutral-100 dark:hover:bg-neutral-700`
-- **Cards**: Use `border-neutral-100/40 dark:border-neutral-700/40`
-- **Text Primary**: Use `text-neutral-900 dark:text-neutral-50`
-- **Text Secondary**: Use `text-neutral-700 dark:text-neutral-100`
-- **Links**: Use `text-primary dark:text-primary-light`
-
-#### Contrast Ratios (WCAG AA Compliant)
-
-All color combinations meet minimum 4.5:1 contrast ratio:
-- `#EF552C` on white: 4.5:1 ✅
-- `#242E3D` on `#F4F4F4`: 10.2:1 ✅
-- `#F4F4F4` on `#242E3D`: 10.2:1 ✅
 
 ## 🏠 Homepage
 
