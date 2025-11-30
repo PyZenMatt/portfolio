@@ -91,6 +91,10 @@
     font-variation-settings: "opsz" var(--opsz-body);
     color: var(--color-text);
     background-color: var(--color-bg);
+    /* Theme morphing - smooth color transitions */
+    transition: 
+      background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+      color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   /* Headings - Bold, Tight Leading, Optical Size for Display */

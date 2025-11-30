@@ -10,6 +10,11 @@ interface ProjectCardProps {
   project: Project
 }
 
+// Enhanced spring config for smoother tilt
+const SPRING_CONFIG = { damping: 25, stiffness: 180, mass: 0.5 }
+const TILT_RANGE = 5 // Degrees of tilt
+const SHADOW_RANGE = 15 // Pixels of shadow offset
+
 // Memoized to prevent re-renders when parent re-renders
 // Projects are stable objects from data, so shallow comparison is sufficient
 const ProjectCard = memo(function ProjectCard({ project }: ProjectCardProps) {
@@ -20,10 +25,17 @@ const ProjectCard = memo(function ProjectCard({ project }: ProjectCardProps) {
   const mouseX = useMotionValue(0)
   const mouseY = useMotionValue(0)
   
-  // Spring physics for smooth tilt
-  const springConfig = { damping: 30, stiffness: 200 }
-  const rotateX = useSpring(useTransform(mouseY, [-150, 150], [3, -3]), springConfig)
-  const rotateY = useSpring(useTransform(mouseX, [-150, 150], [-3, 3]), springConfig)
+  // Spring physics for smooth tilt - enhanced range
+  const rotateX = useSpring(useTransform(mouseY, [-150, 150], [TILT_RANGE, -TILT_RANGE]), SPRING_CONFIG)
+  const rotateY = useSpring(useTransform(mouseX, [-150, 150], [-TILT_RANGE, TILT_RANGE]), SPRING_CONFIG)
+  
+  // Dynamic shadow based on tilt direction - creates depth illusion
+  const shadowX = useTransform(mouseX, [-150, 150], [SHADOW_RANGE, -SHADOW_RANGE])
+  const shadowY = useTransform(mouseY, [-150, 150], [SHADOW_RANGE, -SHADOW_RANGE])
+  const boxShadow = useTransform(
+    [shadowX, shadowY],
+    ([x, y]) => `${x}px ${y}px 35px -12px rgba(var(--color-shadow-rgb, 0, 0, 0), 0.2)`
+  )
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (prefersReducedMotion) return
@@ -51,12 +63,16 @@ const ProjectCard = memo(function ProjectCard({ project }: ProjectCardProps) {
     <motion.div
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      style={prefersReducedMotion ? undefined : { rotateX, rotateY }}
-      whileHover={prefersReducedMotion ? undefined : { scale: 1.02 }}
-      transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-      className="perspective-1000"
+      style={prefersReducedMotion ? undefined : { 
+        rotateX, 
+        rotateY,
+        boxShadow
+      }}
+      whileHover={prefersReducedMotion ? undefined : { scale: 1.03 }}
+      transition={{ type: 'spring', stiffness: 280, damping: 22 }}
+      className="perspective-1000 will-change-transform"
     >
-      <Card className="h-full flex flex-col transition-all duration-300 hover:shadow-xl hover:border-primary/20 group">
+      <Card className="h-full flex flex-col transition-colors duration-300 hover:border-primary/30 group backface-hidden">
         {/* Image with zoom effect */}
         <div className="aspect-video bg-[var(--color-surface)] rounded-t-lg overflow-hidden">
           {image ? (

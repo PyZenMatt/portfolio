@@ -1,13 +1,17 @@
-import { useCallback } from 'react'
+import { useCallback, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion'
 import Button from '../ui/Button'
 import Badge from '../ui/Badge'
+import MagneticButton from '../ui/MagneticButton'
+import GlowCursor from '../ui/GlowCursor'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
-import { fadeInScale, staggerContainer, staggerChild } from '../../motion'
-
-// Spring configuration extracted outside component to prevent recreation
-const SPRING_CONFIG = { damping: 25, stiffness: 150 } as const
+import { 
+  smoothStagger, 
+  staggerItem,
+  parallaxConfig,
+  zoomIn,
+} from '../../motion'
 
 // SVG placeholder icon extracted to prevent recreation
 function PlaceholderIcon() {
@@ -33,14 +37,24 @@ function PlaceholderIcon() {
 export default function HeroSection() {
   const navigate = useNavigate()
   const prefersReducedMotion = useReducedMotion()
+  const heroRef = useRef<HTMLElement>(null)
 
-  // Mouse parallax for portrait
+  // Mouse parallax for portrait - enhanced with parallaxConfig
   const mouseX = useMotionValue(0)
   const mouseY = useMotionValue(0)
   
-  // Smooth spring physics - use external config to avoid recreation
-  const rotateX = useSpring(useTransform(mouseY, [-200, 200], [3, -3]), SPRING_CONFIG)
-  const rotateY = useSpring(useTransform(mouseX, [-200, 200], [-3, 3]), SPRING_CONFIG)
+  // Smooth spring physics for parallax
+  const springConfig = parallaxConfig.spring
+  const translateX = useSpring(
+    useTransform(mouseX, [-200, 200], [-parallaxConfig.xRange, parallaxConfig.xRange]), 
+    springConfig
+  )
+  const translateY = useSpring(
+    useTransform(mouseY, [-200, 200], [-parallaxConfig.yRange, parallaxConfig.yRange]), 
+    springConfig
+  )
+  const rotateX = useSpring(useTransform(mouseY, [-200, 200], [3, -3]), springConfig)
+  const rotateY = useSpring(useTransform(mouseX, [-200, 200], [-3, 3]), springConfig)
 
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     if (prefersReducedMotion) return
@@ -70,11 +84,15 @@ export default function HeroSection() {
 
   return (
     <section
+      ref={heroRef}
       id="hero"
-      className="py-20 md:py-28"
+      className="py-20 md:py-28 relative overflow-hidden"
       aria-label="Hero section"
     >
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Glow cursor effect - only visible in hero */}
+      <GlowCursor containerRef={heroRef} />
+
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid md:grid-cols-2 gap-12 items-center">
           {/* Content Column */}
           <MotionDiv
@@ -82,12 +100,12 @@ export default function HeroSection() {
               initial: "hidden",
               whileInView: "visible",
               viewport: { once: true },
-              variants: staggerContainer,
+              variants: smoothStagger,
             })}
             className="space-y-6"
           >
             <MotionDiv 
-              {...(!prefersReducedMotion && { variants: staggerChild })}
+              {...(!prefersReducedMotion && { variants: staggerItem })}
               className="space-y-3"
             >
               <Badge variant="default">Full-Stack Developer</Badge>
@@ -96,7 +114,7 @@ export default function HeroSection() {
               </h1>
             </MotionDiv>
 
-            <MotionDiv {...(!prefersReducedMotion && { variants: staggerChild })}>
+            <MotionDiv {...(!prefersReducedMotion && { variants: staggerItem })}>
               <p className="text-[var(--text-xl)] text-[var(--color-text-secondary)]">
                 Building modern web applications with Django, React, and
                 TypeScript. Passionate about clean code, user experience, and
@@ -104,48 +122,50 @@ export default function HeroSection() {
               </p>
             </MotionDiv>
 
-            {/* CTA Buttons */}
+            {/* CTA Buttons with Magnetic Effect */}
             <MotionDiv 
-              {...(!prefersReducedMotion && { variants: staggerChild })}
+              {...(!prefersReducedMotion && { variants: staggerItem })}
               className="flex flex-wrap gap-4 pt-4"
             >
-              <motion.div
-                whileHover={prefersReducedMotion ? undefined : { scale: 1.03 }}
-                whileTap={prefersReducedMotion ? undefined : { scale: 0.98 }}
-              >
-                <Button
-                  variant="primary"
-                  size="lg"
-                  onClick={handleViewProjects}
-                  className="relative overflow-hidden group"
+              <MagneticButton>
+                <motion.div
+                  whileTap={prefersReducedMotion ? undefined : { scale: 0.98 }}
                 >
-                  <span className="relative z-10">View Projects</span>
-                  {/* Ripple effect layer */}
-                  <span className="absolute inset-0 bg-white/20 scale-0 group-hover:scale-100 rounded-lg transition-transform duration-300 ease-out" />
-                </Button>
-              </motion.div>
-              <motion.div
-                whileHover={prefersReducedMotion ? undefined : { scale: 1.03 }}
-                whileTap={prefersReducedMotion ? undefined : { scale: 0.98 }}
-              >
-                <Button
-                  variant="ghost"
-                  size="lg"
-                  onClick={handleDownloadCV}
+                  <Button
+                    variant="primary"
+                    size="lg"
+                    onClick={handleViewProjects}
+                    className="relative overflow-hidden group"
+                  >
+                    <span className="relative z-10">View Projects</span>
+                    {/* Ripple effect layer */}
+                    <span className="absolute inset-0 bg-white/20 scale-0 group-hover:scale-100 rounded-lg transition-transform duration-300 ease-out" />
+                  </Button>
+                </motion.div>
+              </MagneticButton>
+              <MagneticButton>
+                <motion.div
+                  whileTap={prefersReducedMotion ? undefined : { scale: 0.98 }}
                 >
-                  Download CV
-                </Button>
-              </motion.div>
+                  <Button
+                    variant="ghost"
+                    size="lg"
+                    onClick={handleDownloadCV}
+                  >
+                    Download CV
+                  </Button>
+                </motion.div>
+              </MagneticButton>
             </MotionDiv>
           </MotionDiv>
 
-          {/* Image Column with Parallax */}
+          {/* Image Column with Enhanced Parallax */}
           <MotionDiv
             {...(!prefersReducedMotion && {
               initial: "hidden",
               whileInView: "visible",
               viewport: { once: true },
-              variants: fadeInScale,
+              variants: zoomIn,
             })}
             className="flex justify-center md:justify-end"
           >
@@ -154,11 +174,30 @@ export default function HeroSection() {
               onMouseMove={handleMouseMove}
               onMouseLeave={handleMouseLeave}
             >
+              {/* Subtle glow under portrait */}
+              {!prefersReducedMotion && (
+                <motion.div
+                  className="absolute inset-0 rounded-xl blur-2xl"
+                  style={{
+                    background: 'radial-gradient(circle at center, var(--color-primary) 0%, transparent 70%)',
+                    opacity: 0.15,
+                    x: translateX,
+                    y: translateY,
+                  }}
+                  aria-hidden="true"
+                />
+              )}
+              
               <motion.div
-                style={prefersReducedMotion ? undefined : { rotateX, rotateY }}
+                style={prefersReducedMotion ? undefined : { 
+                  rotateX, 
+                  rotateY,
+                  x: translateX,
+                  y: translateY,
+                }}
                 whileHover={prefersReducedMotion ? undefined : { scale: 1.02 }}
                 transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                className="aspect-square rounded-xl bg-gradient-to-br from-primary/20 to-primary-light/20 dark:from-primary/30 dark:to-primary-light/30 shadow-lg hover:shadow-xl transition-shadow duration-300 flex items-center justify-center border border-[var(--color-border)]/30"
+                className="relative aspect-square rounded-xl bg-gradient-to-br from-primary/20 to-primary-light/20 dark:from-primary/30 dark:to-primary-light/30 shadow-lg hover:shadow-xl transition-shadow duration-300 flex items-center justify-center border border-[var(--color-border)]/30"
               >
                 <img
                   src="/placeholder-portrait.jpg"
