@@ -9,7 +9,7 @@ interface CardProps extends HTMLAttributes<HTMLElement> {
 const Card = forwardRef<HTMLElement, CardProps>(
   ({ className, as = 'div', children, ...props }, ref) => {
     const baseStyles =
-      'rounded-lg border border-[color:var(--color-surface)]/40 bg-[var(--color-bg)] p-6 shadow-sm'
+      'rounded-lg border border-[var(--color-border)] bg-[var(--color-card)] p-6 shadow-sm'
 
     return createElement(
       as,

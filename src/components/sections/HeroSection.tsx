@@ -68,7 +68,7 @@ export default function HeroSection() {
                     e.currentTarget.style.display = 'none'
                   }}
                 />
-                <div className="absolute inset-0 flex items-center justify-center text-[var(--color-surface)]">
+                <div className="absolute inset-0 flex items-center justify-center text-[var(--color-text-secondary)]/40">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="h-24 w-24"

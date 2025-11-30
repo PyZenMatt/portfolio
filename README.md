@@ -1043,3 +1043,83 @@ Will implement all recommended fixes from this audit report.
 ```
 
 Categories: `text`, `accent`, `surface`, `border`, `hover`, `legacyColors`, `prose`, `components`
+
+---
+
+## 🎨 Issue 13.2e — Light Theme Fix (Implementation)
+
+**Branch:** `feature/13.2e-light-theme-fix`
+
+### Overview
+
+Complete implementation of light theme fixes based on the 13.2d audit. All legacy Tailwind colors removed, CSS variables strengthened, and visual consistency achieved.
+
+### Design Tokens Updated
+
+**Light Mode:**
+| Token | Before | After |
+|-------|--------|-------|
+| `--color-bg` | #F4F4F4 | #F2F2F2 |
+| `--color-surface` | #E5E5E5 | #E8E8E8 |
+| `--color-card` | *(new)* | #FFFFFF |
+| `--color-text-secondary` | #2F4560 | #4A5568 |
+| `--color-border` | #E5E5E5 | #D4D4D4 |
+
+**Dark Mode:**
+| Token | Before | After |
+|-------|--------|-------|
+| `--color-card` | *(new)* | #374766 |
+| `--color-text-secondary` | #E5E5E5 | #B8C5D6 |
+| `--color-border` | #2F4560 | #4A5F7A |
+
+### Legacy Colors Removed
+
+| File | Before | After |
+|------|--------|-------|
+| `ProjectsErrorBoundary.tsx` | `text-gray-900`, `text-gray-600` | CSS variables |
+| `NotFound/index.tsx` | `bg-blue-600`, `hover:bg-blue-700` | `bg-primary`, `hover:bg-primary-light` |
+| `ProjectDetails/index.tsx` | `text-blue-600` | `text-[var(--color-primary)]` |
+| `SkipLink.tsx` | `bg-blue-600`, `ring-blue-500` | `bg-primary`, `ring-primary-light` |
+
+### Component Updates
+
+**UI Components:**
+- **Card**: Uses `--color-card` background with `--color-border` border
+- **Button**: Enhanced hover states, shadow on primary, border on ghost
+- **Input/Textarea**: Card background, proper border, hover highlight
+- **Badge**: Added border for visibility in light mode
+
+**Layout Components:**
+- **Navbar**: Card background, accent color on active links
+- **Footer**: Card background, proper border
+
+**Section Components:**
+- **ProjectsSection**: Surface background for section distinction
+- **Timeline**: Primary accent dots, proper border color
+- **ProjectCard**: Visible placeholder icon (text-secondary)
+- **EmptyState**: Border color icon for visibility
+- **HeroSection**: Semi-transparent placeholder icon
+
+### Visual Improvements
+
+1. **3-Tier Layering System**: `bg` → `surface` → `card`
+2. **Stronger Borders**: Differentiated from surface (#D4D4D4 vs #E8E8E8)
+3. **Visible Icons**: Placeholder icons use text-secondary or border colors
+4. **Consistent Accents**: Primary color on active states and links
+5. **Better Hover States**: Visible transitions with proper contrast
+
+### Test Coverage
+
+- ✅ 222 tests passing
+- ✅ Button test updated for new ghost hover
+- ✅ EmptyState test updated for new icon color
+- ✅ ProjectsSkeleton test updated for new card classes
+
+### Bundle Size
+
+| Metric | Before | After | Change |
+|--------|--------|-------|--------|
+| CSS | 35.40 kB | 35.65 kB | +0.7% |
+| JS Total | ~398 kB | ~398 kB | ~0% |
+
+No significant bundle size increase.

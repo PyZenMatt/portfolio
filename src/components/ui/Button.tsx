@@ -14,11 +14,11 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 
     const variants = {
       primary:
-        'bg-primary text-white hover:bg-primary-light focus-visible:ring-primary dark:bg-primary dark:hover:bg-primary-light',
+        'bg-primary text-white hover:bg-primary-light focus-visible:ring-primary shadow-sm hover:shadow-md',
       secondary:
-        'bg-[var(--color-surface)] text-[var(--color-text)] hover:bg-[var(--color-surface)]/80 focus-visible:ring-primary',
+        'bg-[var(--color-surface)] text-[var(--color-text)] border border-[var(--color-border)] hover:bg-[var(--color-border)] focus-visible:ring-primary',
       ghost:
-        'hover:bg-[var(--color-surface)]/50 text-[var(--color-text-secondary)] focus-visible:ring-primary hover:text-[var(--color-text)]',
+        'border border-transparent hover:border-[var(--color-border)] hover:bg-[var(--color-surface)] text-[var(--color-text-secondary)] focus-visible:ring-primary hover:text-[var(--color-text)]',
     }
 
     const sizes = {

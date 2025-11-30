@@ -30,7 +30,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
             loading="lazy"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-[var(--color-bg)]">
+          <div className="w-full h-full flex items-center justify-center text-[var(--color-text-secondary)]">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-16 w-16"

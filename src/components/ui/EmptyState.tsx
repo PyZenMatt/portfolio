@@ -14,7 +14,7 @@ export default function EmptyState({ title, description, actionLabel, onAction }
         {/* Empty Icon */}
         <div className="mb-6 flex justify-center">
           <svg
-            className="h-16 w-16 text-[var(--color-surface)]"
+            className="h-16 w-16 text-[var(--color-border)]"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"

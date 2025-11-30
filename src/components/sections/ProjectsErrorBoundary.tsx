@@ -63,10 +63,10 @@ export default class ProjectsErrorBoundary extends Component<
             </div>
 
             {/* Error Message */}
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+            <h2 className="text-xl font-bold text-[var(--color-text)] mb-2">
               Unable to load projects
             </h2>
-            <p className="text-gray-600 dark:text-gray-400 mb-6">
+            <p className="text-[var(--color-text-secondary)] mb-6">
               There was a problem loading the projects. Please check your connection and try again.
             </p>
 

@@ -28,7 +28,7 @@ export default function Navbar() {
 
   return (
     <nav
-      className="border-b border-[color:var(--color-surface)]/40 bg-[var(--color-bg)]"
+      className="border-b border-[var(--color-border)] bg-[var(--color-card)]"
       role="navigation"
       aria-label="Main navigation"
     >
@@ -37,7 +37,7 @@ export default function Navbar() {
           {/* Logo */}
           <Link
             to="/"
-            className="text-xl font-bold text-[var(--color-text)] hover:text-primary dark:hover:text-primary-light transition-colors"
+            className="text-xl font-bold text-[var(--color-text)] hover:text-[var(--color-primary)] transition-colors"
           >
             Matteo Ricci
           </Link>
@@ -51,8 +51,8 @@ export default function Navbar() {
                 className={cn(
                   'px-3 py-2 rounded-md text-sm font-medium transition-colors',
                   location.pathname === link.path
-                    ? 'bg-[var(--color-surface)] text-[var(--color-text)]'
-                    : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-surface)]/50 hover:text-[var(--color-text)]'
+                    ? 'bg-[var(--color-surface)] text-[var(--color-primary)]'
+                    : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-surface)] hover:text-[var(--color-text)]'
                 )}
               >
                 {link.label}
@@ -72,12 +72,12 @@ export default function Navbar() {
       {/* Mobile Menu */}
       <div
         className={cn(
-          'md:hidden border-t border-[color:var(--color-surface)]/40 transition-all duration-300 ease-in-out overflow-hidden',
+          'md:hidden border-t border-[var(--color-border)] transition-all duration-300 ease-in-out overflow-hidden',
           isOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'
         )}
         aria-hidden={!isOpen}
       >
-        <div className="px-4 py-4 space-y-1 bg-[var(--color-bg)]">
+        <div className="px-4 py-4 space-y-1 bg-[var(--color-card)]">
           {navLinks.map((link) => (
             <button
               key={link.path}
@@ -85,8 +85,8 @@ export default function Navbar() {
               className={cn(
                 'w-full text-left px-3 py-3 rounded-md text-base font-medium transition-colors',
                 location.pathname === link.path
-                  ? 'bg-[var(--color-surface)] text-[var(--color-text)]'
-                  : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-surface)]/50 hover:text-[var(--color-text)]'
+                  ? 'bg-[var(--color-surface)] text-[var(--color-primary)]'
+                  : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-surface)] hover:text-[var(--color-text)]'
               )}
             >
               {link.label}

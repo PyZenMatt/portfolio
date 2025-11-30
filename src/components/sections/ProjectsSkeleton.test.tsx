@@ -29,7 +29,7 @@ describe('ProjectsSkeleton', () => {
   test('skeleton cards have correct styles', () => {
     const { container } = render(<ProjectsSkeleton count={1} />)
     const card = container.querySelector('.grid > div')
-    expect(card).toHaveClass('bg-[var(--color-bg)]', 'border-[color:var(--color-surface)]/40')
+    expect(card).toHaveClass('bg-[var(--color-card)]', 'border-[var(--color-border)]')
   })
 
   test('renders image skeleton with aspect-video', () => {

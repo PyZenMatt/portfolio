@@ -420,7 +420,7 @@ function ProjectDetailsPage() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <Link
             to="/projects"
-            className="inline-flex items-center text-blue-600 dark:text-blue-400 hover:underline mb-6 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 rounded"
+            className="inline-flex items-center text-[var(--color-primary)] dark:text-[var(--color-primary-light)] hover:underline mb-6 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] focus-visible:ring-offset-2 rounded"
           >
             <svg
               className="w-4 h-4 mr-2"

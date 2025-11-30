@@ -11,26 +11,28 @@
   --color-primary-light: #FF9124;
   
   /* Neutral Palette - Light Mode */
-  --color-bg: #F4F4F4;
-  --color-surface: #E5E5E5;
+  --color-bg: #F2F2F2;
+  --color-surface: #E8E8E8;
+  --color-card: #FFFFFF;
   --color-text: #242E3D;
-  --color-text-secondary: #2F4560;
+  --color-text-secondary: #4A5568;
   
   /* Semantic Colors */
-  --color-border: #E5E5E5;
-  --color-border-subtle: rgba(229, 229, 229, 0.4);
+  --color-border: #D4D4D4;
+  --color-border-subtle: rgba(212, 212, 212, 0.6);
 }
 
 .dark {
   /* Neutral Palette - Dark Mode */
   --color-bg: #242E3D;
   --color-surface: #2F4560;
+  --color-card: #374766;
   --color-text: #F4F4F4;
-  --color-text-secondary: #E5E5E5;
+  --color-text-secondary: #B8C5D6;
   
   /* Semantic Colors - Dark Mode */
-  --color-border: #2F4560;
-  --color-border-subtle: rgba(47, 69, 96, 0.4);
+  --color-border: #4A5F7A;
+  --color-border-subtle: rgba(74, 95, 122, 0.6);
   
   /* Accent stays consistent */
   --color-primary: #EF552C;

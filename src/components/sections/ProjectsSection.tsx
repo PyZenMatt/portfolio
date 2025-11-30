@@ -14,7 +14,7 @@ function ProjectsSectionContent() {
 
   if (isLoading) {
     return (
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-[var(--color-bg)]">
+      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-[var(--color-surface)]">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12 space-y-4">
             <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-[var(--color-text)]">
@@ -33,7 +33,7 @@ function ProjectsSectionContent() {
 
   if (!projects || projects.length === 0) {
     return (
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-[var(--color-bg)]">
+      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-[var(--color-surface)]">
         <div className="max-w-5xl mx-auto">
           <EmptyState
             title="No projects yet"
@@ -45,7 +45,7 @@ function ProjectsSectionContent() {
   }
 
   return (
-    <section className="py-16 px-4 sm:px-6 lg:px-8 bg-[var(--color-bg)]">
+    <section className="py-16 px-4 sm:px-6 lg:px-8 bg-[var(--color-surface)]">
       <div className="max-w-5xl mx-auto">
         {/* Section Header */}
         <div className="text-center mb-12 space-y-4">

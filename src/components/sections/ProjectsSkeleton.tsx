@@ -10,7 +10,7 @@ export default function ProjectsSkeleton({ count = 4 }: ProjectsSkeletonProps) {
       {Array.from({ length: count }).map((_, index) => (
         <div
           key={index}
-          className="bg-[var(--color-bg)] rounded-lg shadow-sm border border-[color:var(--color-surface)]/40 overflow-hidden"
+          className="bg-[var(--color-card)] rounded-lg shadow-sm border border-[var(--color-border)] overflow-hidden"
         >
           {/* Image Skeleton */}
           <Skeleton variant="card" className="aspect-video w-full" />

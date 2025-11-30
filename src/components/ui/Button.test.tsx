@@ -22,7 +22,7 @@ describe('Button', () => {
   test('applies ghost variant', () => {
     render(<Button variant="ghost">Ghost</Button>)
     const button = screen.getByRole('button')
-    expect(button).toHaveClass('hover:bg-[var(--color-surface)]/50')
+    expect(button).toHaveClass('hover:bg-[var(--color-surface)]')
   })
 
   test('applies medium size by default', () => {

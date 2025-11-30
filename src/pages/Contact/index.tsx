@@ -21,7 +21,7 @@ export default function Contact() {
 
       {/* Form Container */}
       <div className="max-w-2xl mx-auto">
-        <div className="bg-[var(--color-bg)] border border-[color:var(--color-surface)]/40 rounded-lg shadow-md p-8">
+        <div className="bg-[var(--color-card)] border border-[var(--color-border)] rounded-lg shadow-md p-8">
           <ContactForm />
         </div>
       </div>
