@@ -1,4 +1,4 @@
-import { render, fireEvent } from '@testing-library/react'
+import { render } from '@testing-library/react'
 import { vi } from 'vitest'
 import HeroArt from './HeroArt'
 
@@ -7,7 +7,28 @@ vi.mock('../../hooks/useReducedMotion', () => ({
   useReducedMotion: vi.fn(() => false),
 }))
 
+// Mock matchMedia for pointer detection
+const mockMatchMedia = (pointerType: 'fine' | 'coarse' | 'none') => {
+  Object.defineProperty(window, 'matchMedia', {
+    writable: true,
+    value: vi.fn().mockImplementation((query: string) => ({
+      matches: query.includes(pointerType),
+      media: query,
+      onchange: null,
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+    })),
+  })
+}
+
 describe('HeroArt', () => {
+  beforeEach(() => {
+    mockMatchMedia('fine') // Default to desktop
+  })
+
   test('renders without crashing', () => {
     const { container } = render(<HeroArt />)
     expect(container).toBeInTheDocument()
@@ -52,25 +73,36 @@ describe('HeroArt', () => {
   })
 })
 
-describe('HeroArt Mobile Motion - Issue 14.2', () => {
-  test('portrait container has hero-idle class for mobile animation', () => {
-    const { container } = render(<HeroArt />)
-    const portraitContainer = container.querySelector('.aspect-\\[5\\/6\\]')
-    expect(portraitContainer).toHaveClass('hero-idle')
+describe('HeroArt Layered Architecture - Issue 14.2b', () => {
+  beforeEach(() => {
+    mockMatchMedia('fine')
   })
 
-  test('tech floater icons have hero-icon-idle class for mobile animation', () => {
+  test('has parallax layer wrapper', () => {
+    const { container } = render(<HeroArt />)
+    const parallaxLayer = container.querySelector('.hero-parallax-layer')
+    expect(parallaxLayer).toBeInTheDocument()
+  })
+
+  test('has idle layer wrapper inside parallax layer', () => {
+    const { container } = render(<HeroArt />)
+    const parallaxLayer = container.querySelector('.hero-parallax-layer')
+    const idleLayer = parallaxLayer?.querySelector('.hero-idle-layer')
+    expect(idleLayer).toBeInTheDocument()
+  })
+
+  test('idle layer has hero-idle class for animation', () => {
+    const { container } = render(<HeroArt />)
+    const idleLayer = container.querySelector('.hero-idle-layer')
+    expect(idleLayer).toHaveClass('hero-idle')
+  })
+
+  test('tech floater icons have hero-icon-idle class', () => {
     const { container } = render(<HeroArt />)
     const floaters = container.querySelectorAll('[title]')
     floaters.forEach(floater => {
       expect(floater).toHaveClass('hero-icon-idle')
     })
-  })
-
-  test('portrait container does not have touch-active class initially', () => {
-    const { container } = render(<HeroArt />)
-    const portraitContainer = container.querySelector('.aspect-\\[5\\/6\\]')
-    expect(portraitContainer).not.toHaveClass('touch-active')
   })
 
   test('tech icons do not have touch-active class initially', () => {
@@ -85,6 +117,7 @@ describe('HeroArt Mobile Motion - Issue 14.2', () => {
 describe('HeroArt with reduced motion', () => {
   beforeEach(() => {
     vi.resetModules()
+    mockMatchMedia('fine')
   })
 
   test('does not have hero-idle class when reduced motion is preferred', async () => {
@@ -95,8 +128,8 @@ describe('HeroArt with reduced motion', () => {
     const { default: HeroArtMocked } = await import('./HeroArt')
     const { container } = render(<HeroArtMocked />)
     
-    const portraitContainer = container.querySelector('.aspect-\\[5\\/6\\]')
-    expect(portraitContainer).not.toHaveClass('hero-idle')
+    const idleLayer = container.querySelector('.hero-idle-layer')
+    expect(idleLayer).not.toHaveClass('hero-idle')
   })
 
   test('tech icons do not have hero-icon-idle class when reduced motion is preferred', async () => {

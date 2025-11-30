@@ -1,8 +1,9 @@
 /**
- * useTouchParallax Hook - Issue 14.2
+ * useTouchParallax Hook - Issue 14.2 + 14.2b
  * 
- * Touch-based parallax effect for mobile devices.
+ * Touch-based parallax effect for mobile devices only.
  * Features:
+ * - Only activates on devices with coarse pointer (touch)
  * - Smooth touch-responsive parallax movement
  * - RAF-based updates for 60fps performance
  * - Smooth decay animation on touch end
@@ -37,8 +38,9 @@ interface TouchParallaxReturn {
 }
 
 /**
- * Hook for touch-based parallax on mobile devices.
+ * Hook for touch-based parallax on mobile devices only.
  * Applies translate3d transforms based on touch movement.
+ * Only activates on devices with coarse pointer (touch screens).
  * 
  * @param targetRef - Ref to the element to apply parallax to
  * @param config - Configuration options
@@ -66,6 +68,12 @@ export function useTouchParallax(
   const currentYRef = useRef(0)
   const rafIdRef = useRef<number | null>(null)
   const inactivityTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  // Check if device has coarse pointer (touch/mobile)
+  const isMobile = useCallback((): boolean => {
+    if (typeof window === 'undefined') return false
+    return window.matchMedia('(pointer: coarse)').matches
+  }, [])
 
   // Clamp value within bounds
   const clamp = useCallback((value: number, min: number, max: number): number => {
@@ -160,12 +168,15 @@ export function useTouchParallax(
     }, decayDuration)
   }, [prefersReducedMotion, resetTransform, decayDuration, onTouchEnd])
 
-  // Set up event listeners
+  // Set up event listeners - only on mobile devices
   useEffect(() => {
     const element = targetRef.current
     if (!element || prefersReducedMotion) return
+    
+    // Only activate on mobile (coarse pointer) devices
+    if (!isMobile()) return
 
-    // Use passive: false to allow preventDefault if needed
+    // Use passive: true for better scroll performance
     element.addEventListener('touchstart', handleTouchStart, { passive: true })
     element.addEventListener('touchmove', handleTouchMove, { passive: true })
     element.addEventListener('touchend', handleTouchEnd, { passive: true })
@@ -187,7 +198,7 @@ export function useTouchParallax(
         clearTimeout(inactivityTimeoutRef.current)
       }
     }
-  }, [targetRef, prefersReducedMotion, handleTouchStart, handleTouchMove, handleTouchEnd])
+  }, [targetRef, prefersReducedMotion, isMobile, handleTouchStart, handleTouchMove, handleTouchEnd])
 
   return {
     isTouching: isTouchingRef.current,

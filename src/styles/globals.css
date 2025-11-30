@@ -254,10 +254,20 @@
   }
 
   /* ============================================
-     Hero Idle Motion System - Issue 14.2
-     Mobile WOW effect with micro-motion
+     Hero Idle Motion System - Issue 14.2 + 14.2b
+     Layered architecture for desktop + mobile
      ============================================ */
   
+  /* Parallax layer - receives JS transform on desktop */
+  .hero-parallax-layer {
+    will-change: transform;
+  }
+
+  /* Idle layer - receives CSS animation */
+  .hero-idle-layer {
+    will-change: transform;
+  }
+
   /* Idle tilt animation for portrait container */
   @keyframes hero-idle-tilt {
     0% { transform: rotate(0deg) translateY(0px); }
@@ -272,10 +282,9 @@
     100% { transform: translateY(0px); }
   }
 
-  /* Mobile idle motion classes (active only on mobile, disabled during touch) */
+  /* Idle animation class - applied to idle layer */
   .hero-idle {
     animation: hero-idle-tilt 6s ease-in-out infinite;
-    will-change: transform;
   }
 
   .hero-icon-idle {
@@ -283,7 +292,7 @@
     will-change: transform;
   }
 
-  /* Pause animations when touch is active */
+  /* Pause animations when touch/mouse is active */
   .hero-idle.touch-active,
   .hero-icon-idle.touch-active {
     animation-play-state: paused;

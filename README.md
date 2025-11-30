@@ -474,49 +474,90 @@ The Hero uses a hybrid motion system for premium interactive feel on all devices
 4. Reduced Motion   → Fully static
 ```
 
-**Desktop Motion (Mouse Parallax):**
-- 3D perspective transforms on mouse move
-- Spring physics for smooth response
-- Portrait rotateX/Y + translateX/Y
-- Glow follows with offset
+### Layered Motion Architecture (Issue 14.2b)
 
-**Mobile Motion (Idle + Touch):**
-```css
-/* Idle micro-motion - always active on mobile */
-.hero-idle {
-  animation: hero-idle-tilt 6s ease-in-out infinite;
-}
+The Hero uses a **two-layer architecture** to prevent CSS/JS transform conflicts:
 
-.hero-icon-idle {
-  animation: hero-icon-float 5s ease-in-out infinite;
-}
-
-/* Paused during touch interaction */
-.hero-idle.touch-active,
-.hero-icon-idle.touch-active {
-  animation-play-state: paused;
-}
+```
+┌─────────────────────────────────────────┐
+│  Parallax Layer (JS transform)          │
+│  ├── useDesktopParallax (mouse)         │
+│  └── useTouchParallax (touch)           │
+│                                         │
+│  ┌─────────────────────────────────┐    │
+│  │  Idle Layer (CSS animation)     │    │
+│  │  └── hero-idle class            │    │
+│  │                                 │    │
+│  │  ┌─────────────────────────┐    │    │
+│  │  │  Portrait + TechFloaters│    │    │
+│  │  └─────────────────────────┘    │    │
+│  └─────────────────────────────────┘    │
+└─────────────────────────────────────────┘
 ```
 
-**Touch Parallax Hook:**
+**Why Two Layers?**
+- CSS animations and JS transforms both use `transform`
+- Single element = one transform overwrites the other
+- Two layers = transforms apply independently
+
+**Desktop Motion (Mouse Parallax):**
+```tsx
+import { useDesktopParallax } from '../../hooks/useDesktopParallax'
+
+useDesktopParallax(parallaxLayerRef, {
+  maxX: 15,           // Max horizontal offset (px)
+  maxY: 15,           // Max vertical offset (px)
+  sensitivityX: 40,   // Higher = less sensitive
+  sensitivityY: 40,
+  idleTimeout: 1500,  // ms before idle resumes
+  onMouseMove: () => setIsInteracting(true),
+  onMouseIdle: () => setIsInteracting(false),
+})
+```
+
+**Mobile Motion (Touch Parallax):**
 ```tsx
 import { useTouchParallax } from '../../hooks/useTouchParallax'
 
-// In component:
-useTouchParallax(portraitRef, {
+useTouchParallax(parallaxLayerRef, {
   maxX: 12,           // Max horizontal offset (px)
   maxY: 12,           // Max vertical offset (px)
   sensitivityX: 10,   // Lower = more sensitive
   sensitivityY: 12,
   decayDuration: 350, // Reset animation duration (ms)
-  onTouchStart: () => setIsTouchActive(true),
-  onTouchEnd: () => setIsTouchActive(false),
+  onTouchStart: () => setIsInteracting(true),
+  onTouchEnd: () => setIsInteracting(false),
 })
 ```
 
+**Idle Animation Control:**
+```tsx
+import { useIdleControl } from '../../hooks/useIdleControl'
+
+useIdleControl(idleLayerRef, {
+  isInteracting,      // Pauses idle when true
+  resumeDelay: 350,   // ms before idle resumes
+})
+```
+
+**CSS Layer Classes:**
+```css
+.hero-parallax-layer { will-change: transform; }
+.hero-idle-layer { will-change: transform; }
+
+.hero-idle {
+  animation: hero-idle-tilt 6s ease-in-out infinite;
+}
+```
+
+**Device Detection:**
+- Desktop: `(pointer: fine)` → mouse parallax
+- Mobile: `(pointer: coarse)` → touch parallax
+- Both get idle animation (controlled by `useIdleControl`)
+
 **Accessibility:**
 - `prefers-reduced-motion: reduce` disables all animations
-- Transform clamp: ±12px maximum
+- Transform clamp: ±15px desktop, ±12px mobile
 - RAF-based updates for 60fps
 - Memory cleanup on unmount
 - No horizontal overflow

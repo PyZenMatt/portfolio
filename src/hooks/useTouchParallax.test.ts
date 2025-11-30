@@ -1,5 +1,5 @@
 /**
- * useTouchParallax Hook Tests - Issue 14.2
+ * useTouchParallax Hook Tests - Issue 14.2 + 14.2b
  */
 
 import { renderHook, act } from '@testing-library/react'
@@ -11,11 +11,31 @@ vi.mock('./useReducedMotion', () => ({
   useReducedMotion: vi.fn(() => false),
 }))
 
+// Mock matchMedia for mobile detection
+const mockMatchMedia = (pointerType: 'fine' | 'coarse' | 'none') => {
+  Object.defineProperty(window, 'matchMedia', {
+    writable: true,
+    value: vi.fn().mockImplementation((query: string) => ({
+      matches: query.includes(pointerType),
+      media: query,
+      onchange: null,
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+    })),
+  })
+}
+
 describe('useTouchParallax', () => {
   let mockElement: HTMLDivElement
   let rafCallback: FrameRequestCallback | null = null
 
   beforeEach(() => {
+    // Default to mobile (coarse pointer) for touch parallax tests
+    mockMatchMedia('coarse')
+    
     // Create mock element
     mockElement = document.createElement('div')
     mockElement.style.transform = ''
@@ -43,7 +63,7 @@ describe('useTouchParallax', () => {
     expect(result.current).toHaveProperty('isTouching')
   })
 
-  test('attaches touch event listeners', () => {
+  test('attaches touch event listeners on mobile', () => {
     const ref = { current: mockElement }
     const addEventListenerSpy = vi.spyOn(mockElement, 'addEventListener')
 
@@ -53,6 +73,16 @@ describe('useTouchParallax', () => {
     expect(addEventListenerSpy).toHaveBeenCalledWith('touchmove', expect.any(Function), { passive: true })
     expect(addEventListenerSpy).toHaveBeenCalledWith('touchend', expect.any(Function), { passive: true })
     expect(addEventListenerSpy).toHaveBeenCalledWith('touchcancel', expect.any(Function), { passive: true })
+  })
+
+  test('does NOT attach listeners on desktop (fine pointer)', () => {
+    mockMatchMedia('fine') // Desktop
+    const ref = { current: mockElement }
+    const addEventListenerSpy = vi.spyOn(mockElement, 'addEventListener')
+
+    renderHook(() => useTouchParallax(ref))
+
+    expect(addEventListenerSpy).not.toHaveBeenCalledWith('touchstart', expect.any(Function), expect.any(Object))
   })
 
   test('removes event listeners on unmount', () => {

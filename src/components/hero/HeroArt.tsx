@@ -1,5 +1,5 @@
 /**
- * HeroArt Component - Issue 14 + 14.2
+ * HeroArt Component - Issue 14 + 14.2 + 14.2b
  * 
  * Composite creative identity block for the Hero section.
  * Combines:
@@ -10,24 +10,33 @@
  * - Touch parallax + idle micro-motion (mobile)
  * 
  * Features:
+ * - Layered motion architecture (parallax layer + idle layer)
  * - Full reduced motion support
  * - Theme-aware styling
  * - Responsive sizing
- * - Mobile WOW effect with idle animations
+ * - Desktop + Mobile motion systems
  * 
  * Motion Priority:
- * 1. Touch active → touch parallax overrides idle
- * 2. Touch inactive → idle micro-motion
- * 3. Reduced motion → fully static
+ * Desktop:
+ * 1. Mouse move → parallax active, idle paused
+ * 2. Mouse idle (1.5s) → idle resumes
+ * 
+ * Mobile:
+ * 1. Touch active → touch parallax, idle paused
+ * 2. Touch end → idle resumes after decay
+ * 
+ * Reduced motion → fully static
  */
 
-import { useCallback, useRef, useState } from 'react'
-import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion'
+import { useRef, useState } from 'react'
+import { motion } from 'framer-motion'
 import Portrait from './Portrait'
 import TechFloaters from './TechFloaters'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { useTouchParallax } from '../../hooks/useTouchParallax'
-import { parallaxConfig, zoomIn } from '../../motion'
+import { useDesktopParallax } from '../../hooks/useDesktopParallax'
+import { useIdleControl } from '../../hooks/useIdleControl'
+import { zoomIn } from '../../motion'
 
 interface HeroArtProps {
   className?: string
@@ -35,68 +44,41 @@ interface HeroArtProps {
 
 export default function HeroArt({ className = '' }: HeroArtProps) {
   const prefersReducedMotion = useReducedMotion()
-  const portraitRef = useRef<HTMLDivElement>(null)
   
-  // Touch state for mobile - controls idle animation pause
-  const [isTouchActive, setIsTouchActive] = useState(false)
+  // Refs for the two-layer architecture
+  const parallaxLayerRef = useRef<HTMLDivElement>(null)
+  const idleLayerRef = useRef<HTMLDivElement>(null)
+  
+  // Interaction state - controls idle animation pause
+  const [isInteracting, setIsInteracting] = useState(false)
 
-  // Touch parallax for mobile devices
-  useTouchParallax(portraitRef, {
+  // Desktop parallax - only on pointer:fine devices
+  useDesktopParallax(parallaxLayerRef, {
+    maxX: 15,
+    maxY: 15,
+    sensitivityX: 40,
+    sensitivityY: 40,
+    idleTimeout: 1500,
+    onMouseMove: () => setIsInteracting(true),
+    onMouseIdle: () => setIsInteracting(false),
+  })
+
+  // Mobile touch parallax - only on pointer:coarse devices
+  useTouchParallax(parallaxLayerRef, {
     maxX: 12,
     maxY: 12,
     sensitivityX: 10,
     sensitivityY: 12,
     decayDuration: 350,
-    onTouchStart: () => setIsTouchActive(true),
-    onTouchEnd: () => setIsTouchActive(false),
+    onTouchStart: () => setIsInteracting(true),
+    onTouchEnd: () => setIsInteracting(false),
   })
 
-  // Mouse parallax values (desktop only)
-  const mouseX = useMotionValue(0)
-  const mouseY = useMotionValue(0)
-
-  // Smooth spring physics for parallax
-  const springConfig = parallaxConfig.spring
-  const translateX = useSpring(
-    useTransform(mouseX, [-200, 200], [-8, 8]),
-    springConfig
-  )
-  const translateY = useSpring(
-    useTransform(mouseY, [-200, 200], [-10, 10]),
-    springConfig
-  )
-  const rotateX = useSpring(
-    useTransform(mouseY, [-200, 200], [4, -4]),
-    springConfig
-  )
-  const rotateY = useSpring(
-    useTransform(mouseX, [-200, 200], [-4, 4]),
-    springConfig
-  )
-
-  // Glow movement - slightly offset from main element
-  const glowX = useSpring(
-    useTransform(mouseX, [-200, 200], [-12, 12]),
-    { ...springConfig, stiffness: 80 }
-  )
-  const glowY = useSpring(
-    useTransform(mouseY, [-200, 200], [-14, 14]),
-    { ...springConfig, stiffness: 80 }
-  )
-
-  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    if (prefersReducedMotion) return
-    const rect = e.currentTarget.getBoundingClientRect()
-    const centerX = rect.left + rect.width / 2
-    const centerY = rect.top + rect.height / 2
-    mouseX.set(e.clientX - centerX)
-    mouseY.set(e.clientY - centerY)
-  }, [prefersReducedMotion, mouseX, mouseY])
-
-  const handleMouseLeave = useCallback(() => {
-    mouseX.set(0)
-    mouseY.set(0)
-  }, [mouseX, mouseY])
+  // Control idle animation based on interaction state
+  useIdleControl(idleLayerRef, {
+    isInteracting,
+    resumeDelay: 350,
+  })
 
   const MotionDiv = prefersReducedMotion ? 'div' : motion.div
 
@@ -110,55 +92,40 @@ export default function HeroArt({ className = '' }: HeroArtProps) {
       })}
       className={`relative ${className}`}
     >
-      <div
-        className="relative w-full max-w-[320px] md:max-w-[380px] mx-auto perspective-1000"
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
-      >
+      <div className="relative w-full max-w-[320px] md:max-w-[380px] mx-auto perspective-1000">
         {/* Dynamic glow behind portrait */}
-        {!prefersReducedMotion ? (
-          <motion.div
-            className="absolute inset-0 rounded-full blur-3xl scale-110"
-            style={{
-              background: 'radial-gradient(circle at center, var(--color-hero-glow) 0%, transparent 70%)',
-              opacity: 1,
-              x: glowX,
-              y: glowY,
-            }}
-            aria-hidden="true"
-          />
-        ) : (
-          <div
-            className="absolute inset-0 rounded-full blur-3xl scale-110"
-            style={{
-              background: 'radial-gradient(circle at center, var(--color-hero-glow) 0%, transparent 70%)',
-              opacity: 0.8,
-            }}
-            aria-hidden="true"
-          />
-        )}
-
-        {/* Main portrait container with parallax (desktop) and idle motion (mobile) */}
-        <motion.div
-          ref={portraitRef}
-          className={`relative aspect-[5/6] rounded-2xl overflow-visible md:!transform-none ${
-            !prefersReducedMotion ? `hero-idle${isTouchActive ? ' touch-active' : ''}` : ''
-          }`}
-          style={prefersReducedMotion ? undefined : {
-            rotateX,
-            rotateY,
-            x: translateX,
-            y: translateY,
+        <div
+          className="absolute inset-0 rounded-full blur-3xl scale-110"
+          style={{
+            background: 'radial-gradient(circle at center, var(--color-hero-glow) 0%, transparent 70%)',
+            opacity: prefersReducedMotion ? 0.8 : 1,
           }}
-          whileHover={prefersReducedMotion ? undefined : { scale: 1.02 }}
-          transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-        >
-          {/* Portrait SVG */}
-          <Portrait className="relative z-10 drop-shadow-lg" />
+          aria-hidden="true"
+        />
 
-          {/* Floating tech icons with mobile idle animation */}
-          <TechFloaters isTouchActive={isTouchActive} />
-        </motion.div>
+        {/* 
+          Two-layer architecture for motion:
+          - Outer layer (parallaxLayerRef): receives JS transform from mouse/touch
+          - Inner layer (idleLayerRef): receives CSS idle animation
+          This prevents transform conflicts between JS and CSS animations
+        */}
+        <div
+          ref={parallaxLayerRef}
+          className="hero-parallax-layer"
+        >
+          <div
+            ref={idleLayerRef}
+            className={`hero-idle-layer relative aspect-[5/6] rounded-2xl overflow-visible ${
+              !prefersReducedMotion ? 'hero-idle' : ''
+            }`}
+          >
+            {/* Portrait SVG */}
+            <Portrait className="relative z-10 drop-shadow-lg" />
+
+            {/* Floating tech icons with idle animation */}
+            <TechFloaters isTouchActive={isInteracting} />
+          </div>
+        </div>
 
         {/* Subtle ambient animation ring */}
         {!prefersReducedMotion && (
