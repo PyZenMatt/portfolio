@@ -1,5 +1,5 @@
 /**
- * FeaturedProjectHighlight Section - Issue 14.3.7 + 14.3.8
+ * FeaturedProjectHighlight Section - Issue 14.3.7 + 14.3.8 + 14.3.9
  * 
  * Showcases a featured/flagship project with premium Vercel-style presentation.
  * Features:
@@ -7,6 +7,8 @@
  * - Premium gradient + noise placeholder for images
  * - CTA "View Case Study" button
  * - Mobile-first responsive design
+ * - Fade-in + slide-up animations
+ * - Subtle parallax float on image
  * - Reduced motion support
  * - Full accessibility
  */
@@ -56,15 +58,49 @@ export default function FeaturedProjectHighlight({
   const MotionSection = prefersReducedMotion ? 'section' : motion.section
   const MotionDiv = prefersReducedMotion ? 'div' : motion.div
 
+  // Container with stagger for children
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { staggerChildren: 0.1, delayChildren: 0.1 },
+      transition: { staggerChildren: 0.15, delayChildren: 0.1 },
     },
   }
 
-  const itemVariants = {
+  // Fade-in + slide-up for content elements
+  const slideUpVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, ease: [0.25, 0.1, 0.25, 1] as const },
+    },
+  }
+
+  // Image container with scale reveal
+  const imageVariants = {
+    hidden: { opacity: 0, scale: 0.95 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: { duration: 0.7, ease: [0.25, 0.1, 0.25, 1] as const },
+    },
+  }
+
+  // Subtle parallax float animation for image
+  const floatAnimation = prefersReducedMotion
+    ? {}
+    : {
+        y: [0, -8, 0],
+        transition: {
+          duration: 6,
+          repeat: Infinity,
+          ease: 'easeInOut' as const,
+        },
+      }
+
+  // Content items stagger
+  const contentItemVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: {
       opacity: 1,
@@ -90,7 +126,7 @@ export default function FeaturedProjectHighlight({
       <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <MotionDiv
-          {...(!prefersReducedMotion && { variants: itemVariants })}
+          {...(!prefersReducedMotion && { variants: slideUpVariants })}
           className="text-center mb-12 md:mb-16"
         >
           <h2
@@ -106,7 +142,7 @@ export default function FeaturedProjectHighlight({
 
         {/* Featured Project Card */}
         <MotionDiv
-          {...(!prefersReducedMotion && { variants: itemVariants })}
+          {...(!prefersReducedMotion && { variants: slideUpVariants })}
           className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-card)] overflow-hidden"
           role="article"
           aria-label={`Featured project: ${project.title}`}
@@ -118,7 +154,14 @@ export default function FeaturedProjectHighlight({
             }`}
           >
             {/* Image Section */}
-            <div className="relative aspect-[4/3] lg:aspect-auto lg:min-h-[400px] lg:[direction:ltr]">
+            <MotionDiv 
+              {...(!prefersReducedMotion && { 
+                variants: imageVariants,
+                animate: floatAnimation,
+              })}
+              className="relative aspect-[4/3] lg:aspect-auto lg:min-h-[400px] lg:[direction:ltr]"
+              data-testid="image-container"
+            >
               {/* Premium Gradient Placeholder */}
               <div
                 className={`absolute inset-0 transition-opacity duration-500 ${
@@ -172,27 +215,58 @@ export default function FeaturedProjectHighlight({
                   loading="lazy"
                 />
               )}
-            </div>
+            </MotionDiv>
 
             {/* Content Section */}
-            <div className="p-6 md:p-8 lg:p-12 flex flex-col justify-center lg:[direction:ltr]">
+            <MotionDiv 
+              {...(!prefersReducedMotion && { 
+                initial: 'hidden',
+                whileInView: 'visible',
+                viewport: { once: true },
+                variants: {
+                  hidden: { opacity: 0 },
+                  visible: { 
+                    opacity: 1, 
+                    transition: { staggerChildren: 0.1, delayChildren: 0.2 } 
+                  },
+                },
+              })}
+              className="p-6 md:p-8 lg:p-12 flex flex-col justify-center lg:[direction:ltr]"
+            >
               {/* Subtitle / Category */}
-              <span className="text-xs md:text-sm font-semibold uppercase tracking-wider text-[var(--color-primary)] mb-3">
-                {project.subtitle}
-              </span>
+              <MotionDiv
+                {...(!prefersReducedMotion && { variants: contentItemVariants })}
+              >
+                <span className="text-xs md:text-sm font-semibold uppercase tracking-wider text-[var(--color-primary)] mb-3 block">
+                  {project.subtitle}
+                </span>
+              </MotionDiv>
 
               {/* Title */}
-              <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold text-[var(--color-text)] mb-4">
-                {project.title}
-              </h3>
+              <MotionDiv
+                {...(!prefersReducedMotion && { variants: contentItemVariants })}
+              >
+                <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold text-[var(--color-text)] mb-4">
+                  {project.title}
+                </h3>
+              </MotionDiv>
 
               {/* Description */}
-              <p className="text-base md:text-lg text-[var(--color-text-secondary)] mb-6 leading-relaxed">
-                {project.description}
-              </p>
+              <MotionDiv
+                {...(!prefersReducedMotion && { variants: contentItemVariants })}
+              >
+                <p className="text-base md:text-lg text-[var(--color-text-secondary)] mb-6 leading-relaxed">
+                  {project.description}
+                </p>
+              </MotionDiv>
 
               {/* Tech Stack */}
-              <div className="flex flex-wrap gap-2 mb-8" role="list" aria-label="Technologies used">
+              <MotionDiv
+                {...(!prefersReducedMotion && { variants: contentItemVariants })}
+                className="flex flex-wrap gap-2 mb-8" 
+                role="list" 
+                aria-label="Technologies used"
+              >
                 {project.techStack.map((tech) => (
                   <span
                     key={tech}
@@ -204,10 +278,13 @@ export default function FeaturedProjectHighlight({
                     {tech}
                   </span>
                 ))}
-              </div>
+              </MotionDiv>
 
               {/* CTAs */}
-              <div className="flex flex-wrap gap-4">
+              <MotionDiv
+                {...(!prefersReducedMotion && { variants: contentItemVariants })}
+                className="flex flex-wrap gap-4"
+              >
                 {project.caseStudyUrl && (
                   <Link
                     to={project.caseStudyUrl}
@@ -263,8 +340,8 @@ export default function FeaturedProjectHighlight({
                     </svg>
                   </a>
                 )}
-              </div>
-            </div>
+              </MotionDiv>
+            </MotionDiv>
           </div>
         </MotionDiv>
       </div>
