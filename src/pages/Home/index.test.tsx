@@ -50,4 +50,9 @@ describe('Home Page', () => {
     const projectsHeading = await screen.findByRole('heading', { name: /featured projects/i })
     expect(projectsHeading).toBeInTheDocument()
   })
+
+  test('displays What I Build section', () => {
+    renderHome()
+    expect(screen.getByRole('heading', { name: /what i build/i, level: 2 })).toBeInTheDocument()
+  })
 })
