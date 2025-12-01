@@ -50,7 +50,7 @@ export default function TechStackSpotlight() {
           aria-label="Technologies"
         >
           {techStack.map((tech, index) => (
-            <TechIcon key={tech} tech={tech} index={index} />
+            <TechIcon key={tech} tech={tech} index={index} linkToProjects />
           ))}
         </div>
       </div>

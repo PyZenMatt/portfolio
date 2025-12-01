@@ -11,6 +11,7 @@
  */
 
 import { useState, useRef, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 
@@ -19,6 +20,8 @@ export type TechName = 'typescript' | 'react' | 'django' | 'python' | 'docker' |
 interface TechIconProps {
   tech: TechName
   index?: number
+  /** If true, clicking navigates to /projects?tech=X */
+  linkToProjects?: boolean
 }
 
 interface TechConfig {
@@ -84,12 +87,26 @@ const techConfigs: Record<TechName, TechConfig> = {
   },
 }
 
-export default function TechIcon({ tech, index = 0 }: TechIconProps) {
+export default function TechIcon({ tech, index = 0, linkToProjects = false }: TechIconProps) {
   const prefersReducedMotion = useReducedMotion()
+  const navigate = useNavigate()
   const [showTooltip, setShowTooltip] = useState(false)
   const [tooltipPosition, setTooltipPosition] = useState<'top' | 'bottom'>('top')
   const iconRef = useRef<HTMLDivElement>(null)
   const config = techConfigs[tech]
+
+  const handleClick = () => {
+    if (linkToProjects) {
+      navigate(`/projects?tech=${config.name}`)
+    }
+  }
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (linkToProjects && (e.key === 'Enter' || e.key === ' ')) {
+      e.preventDefault()
+      navigate(`/projects?tech=${config.name}`)
+    }
+  }
 
   // Determine tooltip position based on icon position in viewport
   useEffect(() => {
@@ -147,9 +164,11 @@ export default function TechIcon({ tech, index = 0 }: TechIconProps) {
             : 'none',
         }}
         tabIndex={0}
-        aria-label={config.name}
+        aria-label={linkToProjects ? `Filter projects by ${config.name}` : config.name}
         role="button"
         aria-describedby={showTooltip ? `tooltip-${tech}` : undefined}
+        onClick={handleClick}
+        onKeyDown={handleKeyDown}
       >
         {/* Neon glow background on hover */}
         <div

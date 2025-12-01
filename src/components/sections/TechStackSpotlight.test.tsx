@@ -1,8 +1,9 @@
 /**
- * Tests for TechStackSpotlight section - Issue 14.3.4 + 14.3.5
+ * Tests for TechStackSpotlight section - Issue 14.3.4 + 14.3.5 + 14.3.6
  */
 
 import { render, screen } from '@testing-library/react'
+import { MemoryRouter } from 'react-router-dom'
 import { describe, test, expect, vi } from 'vitest'
 import TechStackSpotlight from './TechStackSpotlight'
 
@@ -22,24 +23,33 @@ vi.mock('../../hooks/useReducedMotion', () => ({
   useReducedMotion: vi.fn(() => false),
 }))
 
+// Helper to render with Router
+const renderWithRouter = (ui: React.ReactNode) => {
+  return render(
+    <MemoryRouter>
+      {ui}
+    </MemoryRouter>
+  )
+}
+
 describe('TechStackSpotlight', () => {
   test('renders section', () => {
-    render(<TechStackSpotlight />)
+    renderWithRouter(<TechStackSpotlight />)
     expect(screen.getByRole('region', { name: /tech stack/i })).toBeInTheDocument()
   })
 
   test('renders heading', () => {
-    render(<TechStackSpotlight />)
+    renderWithRouter(<TechStackSpotlight />)
     expect(screen.getByRole('heading', { name: /tech stack/i, level: 2 })).toBeInTheDocument()
   })
 
   test('renders technologies grid', () => {
-    render(<TechStackSpotlight />)
+    renderWithRouter(<TechStackSpotlight />)
     expect(screen.getByRole('list', { name: /technologies/i })).toBeInTheDocument()
   })
 
   test('renders all 6 tech icons', () => {
-    render(<TechStackSpotlight />)
+    renderWithRouter(<TechStackSpotlight />)
     const icons = screen.getAllByRole('listitem')
     expect(icons).toHaveLength(6)
   })

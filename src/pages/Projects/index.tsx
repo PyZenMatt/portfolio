@@ -1,4 +1,5 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import Seo from '../../components/seo/Seo'
 import { useProjects } from '../../hooks/useProjects'
@@ -14,8 +15,40 @@ const TECH_FILTERS = ['All', 'React', 'Django', 'Python', 'Blockchain', 'TypeScr
 
 function ProjectsContent() {
   const { data: projects, isLoading } = useProjects()
-  const [activeFilter, setActiveFilter] = useState('All')
+  const [searchParams, setSearchParams] = useSearchParams()
   const prefersReducedMotion = useReducedMotion()
+
+  // Get initial filter from URL or default to 'All'
+  const techFromUrl = searchParams.get('tech')
+  const initialFilter = techFromUrl && TECH_FILTERS.includes(techFromUrl) ? techFromUrl : 'All'
+  const [activeFilter, setActiveFilter] = useState(initialFilter)
+
+  // Sync URL when filter changes
+  useEffect(() => {
+    if (activeFilter === 'All') {
+      // Remove tech param when showing all
+      if (searchParams.has('tech')) {
+        searchParams.delete('tech')
+        setSearchParams(searchParams, { replace: true })
+      }
+    } else {
+      // Update URL with current filter
+      if (searchParams.get('tech') !== activeFilter) {
+        searchParams.set('tech', activeFilter)
+        setSearchParams(searchParams, { replace: true })
+      }
+    }
+  }, [activeFilter, searchParams, setSearchParams])
+
+  // Sync filter when URL changes (e.g., back/forward navigation)
+  useEffect(() => {
+    const techParam = searchParams.get('tech')
+    if (techParam && TECH_FILTERS.includes(techParam) && techParam !== activeFilter) {
+      setActiveFilter(techParam)
+    } else if (!techParam && activeFilter !== 'All') {
+      setActiveFilter('All')
+    }
+  }, [searchParams]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const filteredProjects = useMemo(() => {
     if (!projects) return []

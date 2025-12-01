@@ -1,6 +1,6 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { BrowserRouter } from 'react-router-dom'
+import { MemoryRouter } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import Projects from './index'
 
@@ -13,14 +13,14 @@ const createTestQueryClient = () =>
     },
   })
 
-const renderProjectsPage = () => {
+const renderProjectsPage = (initialRoute = '/projects') => {
   const queryClient = createTestQueryClient()
   return render(
-    <BrowserRouter>
+    <MemoryRouter initialEntries={[initialRoute]}>
       <QueryClientProvider client={queryClient}>
         <Projects />
       </QueryClientProvider>
-    </BrowserRouter>
+    </MemoryRouter>
   )
 }
 
