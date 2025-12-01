@@ -8,6 +8,7 @@ import { pageTransition } from '../motion'
 const Home = lazy(() => import('../pages/Home'))
 const Projects = lazy(() => import('../pages/Projects'))
 const ProjectDetails = lazy(() => import('../pages/ProjectDetails'))
+const SchoolPlatform = lazy(() => import('../pages/projects/schoolplatform'))
 const About = lazy(() => import('../pages/About'))
 const Contact = lazy(() => import('../pages/Contact'))
 const NotFound = lazy(() => import('../pages/NotFound'))
@@ -38,6 +39,7 @@ function AnimatedRoutes() {
           <Route element={<PageLayout />}>
             <Route path="/" element={<Home />} />
             <Route path="/projects" element={<Projects />} />
+            <Route path="/projects/schoolplatform" element={<SchoolPlatform />} />
             <Route path="/projects/:id" element={<ProjectDetails />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
