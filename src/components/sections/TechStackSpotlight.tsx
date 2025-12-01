@@ -1,15 +1,33 @@
 /**
- * TechStackSpotlight Section - Issue 14.3.4 (Scaffold)
+ * TechStackSpotlight Section - Issue 14.3.4 + 14.3.5
  * 
  * Animated tech wall showing professional tech stack.
- * This is the scaffold version with basic HTML structure only.
+ * Features:
+ * - 6 tech icons: TypeScript, React, Django, Python, Docker, GitHub
+ * - Hover tooltips with tech names
+ * - Neon-like hover glow effects
+ * - Micro-floating animations
+ * - Responsive grid layout
+ * - Reduced motion support
  */
+
+import TechIcon, { type TechName } from './TechIcon'
+
+const techStack: TechName[] = [
+  'typescript',
+  'react',
+  'django',
+  'python',
+  'docker',
+  'github',
+]
 
 export default function TechStackSpotlight() {
   return (
     <section
       className="py-16 md:py-24 bg-[var(--color-surface)]"
       aria-labelledby="tech-stack-title"
+      aria-label="Tech Stack"
     >
       <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
@@ -25,13 +43,15 @@ export default function TechStackSpotlight() {
           </p>
         </div>
 
-        {/* Tech Icons Grid (empty for scaffold) */}
+        {/* Tech Icons Grid */}
         <div 
-          className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-4 md:gap-6"
+          className="grid grid-cols-3 sm:grid-cols-6 gap-4 md:gap-6 justify-items-center max-w-3xl mx-auto"
           role="list"
           aria-label="Technologies"
         >
-          {/* Tech icons will be added in future issues */}
+          {techStack.map((tech, index) => (
+            <TechIcon key={tech} tech={tech} index={index} />
+          ))}
         </div>
       </div>
     </section>
