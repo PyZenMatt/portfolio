@@ -270,6 +270,45 @@
     will-change: transform;
   }
 
+  /* ============================================
+     SVG Line-Drawing Animation - Issue 14.2d
+     Premium "drawing itself" effect for portrait
+     ============================================ */
+  
+  /* Base line-drawing class */
+  .portrait-line {
+    stroke-dasharray: 800;
+    stroke-dashoffset: 800;
+    stroke-linecap: round;
+    animation: draw-line 1.4s ease-out forwards;
+  }
+
+  /* Staggered animation delays for premium reveal */
+  .portrait-line-1 { animation-delay: 0s; }      /* Head */
+  .portrait-line-2 { animation-delay: 0.08s; }   /* Hair */
+  .portrait-line-3 { animation-delay: 0.16s; }   /* Side hair L */
+  .portrait-line-4 { animation-delay: 0.18s; }   /* Side hair R */
+  .portrait-line-5 { animation-delay: 0.24s; }   /* Ear L */
+  .portrait-line-6 { animation-delay: 0.26s; }   /* Ear R */
+  .portrait-line-7 { animation-delay: 0.32s; }   /* Glasses L */
+  .portrait-line-8 { animation-delay: 0.34s; }   /* Glasses R */
+  .portrait-line-9 { animation-delay: 0.40s; }   /* Bridge */
+  .portrait-line-10 { animation-delay: 0.42s; }  /* Temple L */
+  .portrait-line-11 { animation-delay: 0.44s; }  /* Temple R */
+  .portrait-line-12 { animation-delay: 0.50s; }  /* Smile */
+  .portrait-line-13 { animation-delay: 0.60s; }  /* Neck */
+  .portrait-line-14 { animation-delay: 0.70s; }  /* Shoulders */
+  .portrait-line-15 { animation-delay: 0.80s; }  /* Collar */
+  .portrait-line-16 { animation-delay: 0.88s; }  /* Collar line L */
+  .portrait-line-17 { animation-delay: 0.92s; }  /* Collar line R */
+
+  /* Line-drawing keyframes */
+  @keyframes draw-line {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
   /* Idle tilt animation for portrait container */
   @keyframes hero-idle-tilt {
     0% { transform: rotate(0deg) translateY(0px); }
@@ -300,7 +339,7 @@
     animation-play-state: paused;
   }
   
-  /* Reduced motion support (Issue 13.3) */
+  /* Reduced motion support (Issue 13.3 + 14.2d) */
   @media (prefers-reduced-motion: reduce) {
     *,
     ::before,
@@ -316,6 +355,12 @@
     .hero-icon-idle {
       animation: none !important;
       will-change: auto !important;
+    }
+
+    /* SVG line-drawing: instant reveal with reduced motion (Issue 14.2d) */
+    .portrait-line {
+      animation: none !important;
+      stroke-dashoffset: 0 !important;
     }
   }
 }

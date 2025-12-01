@@ -1,5 +1,5 @@
 /**
- * Portrait Component - Issue 14 + 14.1
+ * Portrait Component - Issue 14 + 14.1 + 14.2d
  * 
  * Stylized monoline silhouette portrait SVG.
  * Features:
@@ -7,8 +7,14 @@
  * - Light mode: navy/slate (#242E3D)
  * - Dark mode: primary accent (#EF552C)
  * - Uses currentColor for theme switching
+ * - SVG line-drawing animation (stroke-dashoffset)
  * - Entrance animation (fade + slideUp)
  * - Lightweight (~1.2KB SVG)
+ * 
+ * Line-Drawing Effect (14.2d):
+ * - Paths animate via stroke-dashoffset
+ * - Staggered delays for premium reveal
+ * - Reduced motion: instant reveal (no animation)
  */
 
 import { motion } from 'framer-motion'
@@ -17,12 +23,22 @@ import { fadeInUp } from '../../motion'
 
 interface PortraitProps {
   className?: string
+  /** Callback when line-drawing animation completes */
+  onDrawComplete?: () => void
 }
 
-export default function Portrait({ className = '' }: PortraitProps) {
+export default function Portrait({ className = '', onDrawComplete }: PortraitProps) {
   const prefersReducedMotion = useReducedMotion()
   
   const MotionSvg = prefersReducedMotion ? 'svg' : motion.svg
+
+  // Handle animation end on the last path (shoulders) to trigger callback
+  const handleAnimationEnd = (e: React.AnimationEvent) => {
+    // Only trigger on the last animated element (shoulders path)
+    if (e.currentTarget.classList.contains('portrait-line-last') && onDrawComplete) {
+      onDrawComplete()
+    }
+  }
 
   return (
     <MotionSvg
@@ -51,6 +67,7 @@ export default function Portrait({ className = '' }: PortraitProps) {
           stroke="currentColor"
           strokeWidth="2"
           strokeLinecap="round"
+          className="portrait-line portrait-line-1"
         />
         
         {/* Hair - modern styled */}
@@ -67,6 +84,7 @@ export default function Portrait({ className = '' }: PortraitProps) {
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
+          className="portrait-line portrait-line-2"
         />
         
         {/* Side hair detail */}
@@ -76,6 +94,7 @@ export default function Portrait({ className = '' }: PortraitProps) {
           stroke="currentColor"
           strokeWidth="1.5"
           strokeLinecap="round"
+          className="portrait-line portrait-line-3"
         />
         <path
           d="M152 55 C156 65, 156 80, 152 90"
@@ -83,6 +102,7 @@ export default function Portrait({ className = '' }: PortraitProps) {
           stroke="currentColor"
           strokeWidth="1.5"
           strokeLinecap="round"
+          className="portrait-line portrait-line-4"
         />
 
         {/* Ears */}
@@ -95,6 +115,7 @@ export default function Portrait({ className = '' }: PortraitProps) {
           fillOpacity="0.08"
           stroke="currentColor"
           strokeWidth="1.5"
+          className="portrait-line portrait-line-5"
         />
         <ellipse
           cx="154"
@@ -105,6 +126,7 @@ export default function Portrait({ className = '' }: PortraitProps) {
           fillOpacity="0.08"
           stroke="currentColor"
           strokeWidth="1.5"
+          className="portrait-line portrait-line-6"
         />
 
         {/* Glasses - developer signature */}
@@ -117,6 +139,7 @@ export default function Portrait({ className = '' }: PortraitProps) {
             height="22"
             rx="4"
             strokeLinecap="round"
+            className="portrait-line portrait-line-7"
           />
           {/* Right lens */}
           <rect
@@ -126,12 +149,13 @@ export default function Portrait({ className = '' }: PortraitProps) {
             height="22"
             rx="4"
             strokeLinecap="round"
+            className="portrait-line portrait-line-8"
           />
           {/* Bridge */}
-          <path d="M90 71 L110 71" strokeLinecap="round" />
+          <path d="M90 71 L110 71" strokeLinecap="round" className="portrait-line portrait-line-9" />
           {/* Temple arms */}
-          <path d="M60 66 L46 64" strokeLinecap="round" />
-          <path d="M140 66 L154 64" strokeLinecap="round" />
+          <path d="M60 66 L46 64" strokeLinecap="round" className="portrait-line portrait-line-10" />
+          <path d="M140 66 L154 64" strokeLinecap="round" className="portrait-line portrait-line-11" />
         </g>
 
         {/* Subtle smile */}
@@ -141,6 +165,7 @@ export default function Portrait({ className = '' }: PortraitProps) {
           stroke="currentColor"
           strokeWidth="1.5"
           strokeLinecap="round"
+          className="portrait-line portrait-line-12"
         />
 
         {/* Neck */}
@@ -157,6 +182,7 @@ export default function Portrait({ className = '' }: PortraitProps) {
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
+          className="portrait-line portrait-line-13"
         />
 
         {/* Shoulders - professional look */}
@@ -173,6 +199,8 @@ export default function Portrait({ className = '' }: PortraitProps) {
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
+          className="portrait-line portrait-line-14 portrait-line-last"
+          onAnimationEnd={handleAnimationEnd}
         />
 
         {/* Collar/shirt detail */}
@@ -183,6 +211,7 @@ export default function Portrait({ className = '' }: PortraitProps) {
           strokeWidth="1.5"
           strokeLinecap="round"
           strokeLinejoin="round"
+          className="portrait-line portrait-line-15"
         />
         
         {/* Collar lines */}
@@ -193,6 +222,7 @@ export default function Portrait({ className = '' }: PortraitProps) {
           strokeWidth="1"
           strokeLinecap="round"
           opacity="0.6"
+          className="portrait-line portrait-line-16"
         />
         <path
           d="M135 175 L115 190"
@@ -201,6 +231,7 @@ export default function Portrait({ className = '' }: PortraitProps) {
           strokeWidth="1"
           strokeLinecap="round"
           opacity="0.6"
+          className="portrait-line portrait-line-17"
         />
       </g>
     </MotionSvg>

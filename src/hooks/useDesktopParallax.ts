@@ -1,13 +1,14 @@
 /**
- * useDesktopParallax Hook - Issue 14.2b
+ * useDesktopParallax Hook - Issue 14.2b + 14.2c + 14.2d
  * 
  * Desktop-only mouse parallax effect for the Hero portrait.
  * Features:
  * - Smooth mouse-responsive parallax movement
- * - Only activates on devices with fine pointer (mouse)
+ * - Robust device detection with fallback (14.2c)
  * - RAF-based updates for 60fps performance
  * - Spring physics for natural feel
  * - Respects prefers-reduced-motion
+ * - Dev debug logging (14.2d)
  * - Memory cleanup on unmount
  */
 
@@ -105,6 +106,11 @@ export function useDesktopParallax(
     // Smooth interpolation towards target
     currentXRef.current = lerp(currentXRef.current, targetXRef.current, 0.1)
     currentYRef.current = lerp(currentYRef.current, targetYRef.current, 0.1)
+
+    // Dev debug logging
+    if (import.meta.env.DEV && (Math.abs(currentXRef.current) > 0.1 || Math.abs(currentYRef.current) > 0.1)) {
+      console.debug('[parallax]', { x: currentXRef.current.toFixed(2), y: currentYRef.current.toFixed(2) })
+    }
 
     // Apply transform
     targetRef.current.style.transform = `translate3d(${currentXRef.current}px, ${currentYRef.current}px, 0)`

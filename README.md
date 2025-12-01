@@ -601,6 +601,64 @@ The `GlowCursor` component combines:
 - Radial gradient: `var(--color-hero-cursor)`
 - Box-shadow glow: `var(--color-hero-cursor-soft)`
 
+### SVG Line-Drawing Animation (Issue 14.2d)
+
+The portrait SVG uses a premium "drawing itself" effect via stroke-dashoffset animation:
+
+**How It Works:**
+```css
+/* Base class for all stroke elements */
+.portrait-line {
+  stroke-dasharray: 800;      /* Total stroke length */
+  stroke-dashoffset: 800;     /* Initially hidden */
+  stroke-linecap: round;
+  animation: draw-line 1.4s ease-out forwards;
+}
+
+/* Staggered delays create sequential reveal */
+.portrait-line-1 { animation-delay: 0s; }      /* Head */
+.portrait-line-7 { animation-delay: 0.32s; }   /* Glasses */
+.portrait-line-14 { animation-delay: 0.70s; }  /* Shoulders */
+/* ...17 elements total with incremental delays */
+
+@keyframes draw-line {
+  to { stroke-dashoffset: 0; }
+}
+```
+
+**Effect Coordination:**
+```
+┌─────────────────────────────────────────────────────┐
+│  1. SVG Drawing (~1.4s)                             │
+│     └── stroke-dashoffset animates 0 → revealed     │
+│                                                     │
+│  2. onDrawComplete callback fires                   │
+│     └── isDrawingComplete → true                    │
+│                                                     │
+│  3. Idle Animation Starts                           │
+│     └── hero-idle class applied                     │
+│                                                     │
+│  4. Parallax Ready                                  │
+│     └── Mouse/touch interaction                     │
+└─────────────────────────────────────────────────────┘
+```
+
+**Reduced Motion Support:**
+```css
+@media (prefers-reduced-motion: reduce) {
+  .portrait-line {
+    animation: none !important;
+    stroke-dashoffset: 0 !important;  /* Instant reveal */
+  }
+}
+```
+
+**Dev Debug Logging:**
+When `import.meta.env.DEV` is true, the parallax hook logs transform values:
+```
+[parallax] { x: '5.23', y: '-3.12' }
+```
+
 ## 💼 Projects Section
 
 ### Complete Portfolio Showcase

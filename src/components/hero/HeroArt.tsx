@@ -1,9 +1,9 @@
 /**
- * HeroArt Component - Issue 14 + 14.2 + 14.2b
+ * HeroArt Component - Issue 14 + 14.2 + 14.2b + 14.2d
  * 
  * Composite creative identity block for the Hero section.
  * Combines:
- * - Portrait silhouette SVG
+ * - Portrait silhouette SVG with line-drawing animation
  * - Dynamic glow effect
  * - Floating tech icons
  * - Parallax motion response to mouse (desktop)
@@ -11,6 +11,7 @@
  * 
  * Features:
  * - Layered motion architecture (parallax layer + idle layer)
+ * - SVG line-drawing reveal animation (14.2d)
  * - Full reduced motion support
  * - Theme-aware styling
  * - Responsive sizing
@@ -18,14 +19,16 @@
  * 
  * Motion Priority:
  * Desktop:
- * 1. Mouse move → parallax active, idle paused
- * 2. Mouse idle (1.5s) → idle resumes
+ * 1. SVG drawing animation (~1.4s)
+ * 2. Mouse move → parallax active, idle paused
+ * 3. Mouse idle (1.5s) → idle resumes
  * 
  * Mobile:
- * 1. Touch active → touch parallax, idle paused
- * 2. Touch end → idle resumes after decay
+ * 1. SVG drawing animation (~1.4s)
+ * 2. Touch active → touch parallax, idle paused
+ * 3. Touch end → idle resumes after decay
  * 
- * Reduced motion → fully static
+ * Reduced motion → fully static, no animations
  */
 
 import { useRef, useState } from 'react'
@@ -51,6 +54,9 @@ export default function HeroArt({ className = '' }: HeroArtProps) {
   
   // Interaction state - controls idle animation pause
   const [isInteracting, setIsInteracting] = useState(false)
+  
+  // Drawing complete state - idle starts after drawing finishes
+  const [isDrawingComplete, setIsDrawingComplete] = useState(prefersReducedMotion)
 
   // Desktop parallax - only on pointer:fine devices
   useDesktopParallax(parallaxLayerRef, {
@@ -79,6 +85,11 @@ export default function HeroArt({ className = '' }: HeroArtProps) {
     isInteracting,
     resumeDelay: 350,
   })
+
+  // Handle drawing animation completion
+  const handleDrawComplete = () => {
+    setIsDrawingComplete(true)
+  }
 
   const MotionDiv = prefersReducedMotion ? 'div' : motion.div
 
@@ -113,16 +124,17 @@ export default function HeroArt({ className = '' }: HeroArtProps) {
           ref={parallaxLayerRef}
           className="hero-parallax-layer"
         >
-          <div
-            ref={idleLayerRef}
-            className={`hero-idle-layer relative aspect-[5/6] rounded-2xl overflow-visible ${
-              !prefersReducedMotion ? 'hero-idle' : ''
-            }`}
-          >
-            {/* Portrait SVG */}
-            <Portrait className="relative z-10 drop-shadow-lg" />
-
-            {/* Floating tech icons with idle animation */}
+        <div
+          ref={idleLayerRef}
+          className={`hero-idle-layer relative aspect-[5/6] rounded-2xl overflow-visible ${
+            !prefersReducedMotion && isDrawingComplete ? 'hero-idle' : ''
+          }`}
+        >
+          {/* Portrait SVG with line-drawing animation */}
+          <Portrait 
+            className="relative z-10 drop-shadow-lg" 
+            onDrawComplete={handleDrawComplete}
+          />            {/* Floating tech icons with idle animation */}
             <TechFloaters isTouchActive={isInteracting} />
           </div>
         </div>
