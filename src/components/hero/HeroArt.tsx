@@ -1,5 +1,5 @@
 /**
- * HeroArt Component - Issue 14 + 14.2 + 14.2b + 14.2d + 14.2e
+ * HeroArt Component - Issue 14 + 14.2 + 14.2b + 14.2d + 14.2e + 14.2f
  * 
  * Composite creative identity block for the Hero section.
  * Combines:
@@ -7,21 +7,27 @@
  * - Dynamic glow effect
  * - Floating tech icons
  * - 3D parallax motion response to mouse (desktop only)
- * - Idle micro-motion animation
+ * - Idle breathing animation (opacity/filter based)
  * 
  * Features:
  * - Layered motion architecture (parallax layer + idle layer)
  * - SVG line-drawing reveal animation (14.2d)
  * - 3D rotation parallax with rotateX/rotateY (14.2e)
+ * - Non-transform idle animation using opacity/filter (14.2f)
  * - Full reduced motion support
  * - Theme-aware styling
  * - Responsive sizing
+ * 
+ * Motion Architecture (Issue 14.2f):
+ * - Outer layer (parallaxLayerRef): JS transform for mouse parallax
+ * - Inner layer (idleLayerRef): CSS animation (opacity/filter only)
+ * - This prevents transform conflicts - both can run simultaneously
  * 
  * Motion Priority:
  * Desktop (pointer:fine):
  * 1. SVG drawing animation (~1.4s)
  * 2. Mouse move → 3D parallax active, idle paused
- * 3. Mouse idle (1.5s) → idle resumes
+ * 3. Mouse idle (1.2s) → idle resumes
  * 
  * Mobile (pointer:coarse):
  * 1. SVG drawing animation (~1.4s)

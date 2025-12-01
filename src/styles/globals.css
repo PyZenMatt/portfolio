@@ -256,18 +256,21 @@
   }
 
   /* ============================================
-     Hero Idle Motion System - Issue 14.2 + 14.2b
-     Layered architecture for desktop + mobile
+     Hero Motion Layer System - Issue 14.2f
+     Two-layer architecture prevents transform conflicts:
+     - Parallax layer (outer): JS transform for mouse movement
+     - Idle layer (inner): CSS animation (opacity/filter)
      ============================================ */
   
   /* Parallax layer - receives JS transform on desktop */
   .hero-parallax-layer {
     will-change: transform;
+    transform-style: preserve-3d;
   }
 
-  /* Idle layer - receives CSS animation */
+  /* Idle layer - receives CSS breathing animation (opacity/filter only) */
   .hero-idle-layer {
-    will-change: transform;
+    will-change: opacity, filter;
   }
 
   /* ============================================
@@ -309,23 +312,28 @@
     }
   }
 
-  /* Idle tilt animation for portrait container */
-  @keyframes hero-idle-tilt {
-    0% { transform: rotate(0deg) translateY(0px); }
-    50% { transform: rotate(1deg) translateY(-3px); }
-    100% { transform: rotate(0deg) translateY(0px); }
+  /* ============================================
+     Idle Breathing Animation - Issue 14.2f
+     Uses opacity/filter instead of transform to
+     prevent conflict with JS parallax transforms
+     ============================================ */
+  @keyframes hero-idle-breathing {
+    0%   { opacity: 0.88; filter: drop-shadow(0 0 1px var(--color-hero-glow)); }
+    50%  { opacity: 1;    filter: drop-shadow(0 0 6px var(--color-hero-glow)); }
+    100% { opacity: 0.88; filter: drop-shadow(0 0 1px var(--color-hero-glow)); }
   }
 
-  /* Floating animation for tech icons */
+  /* Floating animation for tech icons - keep transform as icons are separate elements */
   @keyframes hero-icon-float {
     0% { transform: translateY(0px); }
     50% { transform: translateY(-4px); }
     100% { transform: translateY(0px); }
   }
 
-  /* Idle animation class - applied to idle layer */
+  /* Idle animation class - applied to idle layer (inner) */
   .hero-idle {
-    animation: hero-idle-tilt 6s ease-in-out infinite;
+    animation: hero-idle-breathing 5s ease-in-out infinite;
+    will-change: opacity, filter;
   }
 
   .hero-icon-idle {
@@ -339,7 +347,7 @@
     animation-play-state: paused;
   }
   
-  /* Reduced motion support (Issue 13.3 + 14.2d) */
+  /* Reduced motion support (Issue 13.3 + 14.2d + 14.2f) */
   @media (prefers-reduced-motion: reduce) {
     *,
     ::before,
@@ -355,6 +363,8 @@
     .hero-icon-idle {
       animation: none !important;
       will-change: auto !important;
+      opacity: 1 !important;
+      filter: none !important;
     }
 
     /* SVG line-drawing: instant reveal with reduced motion (Issue 14.2d) */

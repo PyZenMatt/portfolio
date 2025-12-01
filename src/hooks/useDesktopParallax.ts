@@ -1,5 +1,5 @@
 /**
- * useDesktopParallax Hook - Issue 14.2e
+ * useDesktopParallax Hook - Issue 14.2e + 14.2f
  * 
  * Desktop-only mouse parallax effect for the Hero portrait.
  * Features:
@@ -9,6 +9,7 @@
  * - RAF-based updates for 60fps performance
  * - Spring physics for natural feel
  * - Respects prefers-reduced-motion
+ * - Uses pointermove for cross-device reliability (14.2f)
  * - Dev debug logging
  * - Memory cleanup on unmount
  */
@@ -118,8 +119,8 @@ export function useDesktopParallax(
     }
   }, [targetRef, lerp])
 
-  // Handle mouse move
-  const handleMouseMove = useCallback((e: MouseEvent) => {
+  // Handle pointer move (14.2f: switched from mousemove to pointermove)
+  const handlePointerMove = useCallback((e: PointerEvent) => {
     if (prefersReducedMotion) return
     if (!isDesktop()) return
     if (!targetRef.current) return
@@ -151,8 +152,8 @@ export function useDesktopParallax(
     }, idleTimeout)
   }, [prefersReducedMotion, isDesktop, targetRef, sensitivityX, sensitivityY, maxX, maxY, clamp, animate, onMouseMove, onMouseIdle, idleTimeout])
 
-  // Handle mouse leave - reset to center
-  const handleMouseLeave = useCallback(() => {
+  // Handle pointer leave - reset to center (14.2f: switched from mouseleave)
+  const handlePointerLeave = useCallback(() => {
     if (prefersReducedMotion) return
     if (!isDesktop()) return
 
@@ -177,17 +178,17 @@ export function useDesktopParallax(
     }, 500) // Shorter timeout on leave
   }, [prefersReducedMotion, isDesktop, animate, onMouseIdle])
 
-  // Set up event listeners on window
+  // Set up event listeners on window (14.2f: using pointermove/pointerleave)
   useEffect(() => {
     if (prefersReducedMotion) return
     if (!isDesktop()) return
 
-    window.addEventListener('mousemove', handleMouseMove, { passive: true })
-    window.addEventListener('mouseleave', handleMouseLeave, { passive: true })
+    window.addEventListener('pointermove', handlePointerMove, { passive: true })
+    window.addEventListener('pointerleave', handlePointerLeave, { passive: true })
 
     return () => {
-      window.removeEventListener('mousemove', handleMouseMove)
-      window.removeEventListener('mouseleave', handleMouseLeave)
+      window.removeEventListener('pointermove', handlePointerMove)
+      window.removeEventListener('pointerleave', handlePointerLeave)
 
       // Cleanup RAF
       if (rafIdRef.current) {
@@ -199,7 +200,7 @@ export function useDesktopParallax(
         clearTimeout(idleTimeoutRef.current)
       }
     }
-  }, [prefersReducedMotion, isDesktop, handleMouseMove, handleMouseLeave])
+  }, [prefersReducedMotion, isDesktop, handlePointerMove, handlePointerLeave])
 
   return {
     isActive: isActiveRef.current,

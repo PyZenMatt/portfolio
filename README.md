@@ -468,25 +468,24 @@ The Hero uses a hybrid motion system for premium interactive feel on all devices
 
 **Motion Priority:**
 ```
-1. Touch Active     → Touch parallax override (mobile)
-2. Touch Inactive   → Idle micro-motion (mobile)
-3. Mouse Move       → 3D parallax (desktop)
+1. Mouse Move       → 3D parallax (desktop pointer:fine)
+2. Mouse Idle       → Breathing animation (opacity/filter)
+3. Mobile           → Breathing animation only (no parallax)
 4. Reduced Motion   → Fully static
 ```
 
-### Layered Motion Architecture (Issue 14.2b)
+### Layered Motion Architecture (Issue 14.2b + 14.2f)
 
 The Hero uses a **two-layer architecture** to prevent CSS/JS transform conflicts:
 
 ```
 ┌─────────────────────────────────────────┐
 │  Parallax Layer (JS transform)          │
-│  ├── useDesktopParallax (mouse)         │
-│  └── useTouchParallax (touch)           │
+│  └── useDesktopParallax (pointermove)   │
 │                                         │
 │  ┌─────────────────────────────────┐    │
-│  │  Idle Layer (CSS animation)     │    │
-│  │  └── hero-idle class            │    │
+│  │  Idle Layer (CSS opacity/filter)│    │
+│  │  └── hero-idle-breathing class  │    │
 │  │                                 │    │
 │  │  ┌─────────────────────────┐    │    │
 │  │  │  Portrait + TechFloaters│    │    │
@@ -496,11 +495,12 @@ The Hero uses a **two-layer architecture** to prevent CSS/JS transform conflicts
 ```
 
 **Why Two Layers?**
-- CSS animations and JS transforms both use `transform`
-- Single element = one transform overwrites the other
-- Two layers = transforms apply independently
+- Issue 14.2f Fix: CSS idle animation was using `transform` which conflicted with JS parallax
+- Solution: Idle now uses `opacity` and `filter: drop-shadow()` instead of `transform`
+- Parallax layer (outer) = JS `translate3d` + `rotateX/rotateY`
+- Idle layer (inner) = CSS `opacity` + `filter` animation
 
-**Desktop Motion (Mouse Parallax):**
+**Desktop Motion (Pointer Parallax):**
 ```tsx
 import { useDesktopParallax } from '../../hooks/useDesktopParallax'
 
@@ -509,24 +509,9 @@ useDesktopParallax(parallaxLayerRef, {
   maxY: 15,           // Max vertical offset (px)
   sensitivityX: 40,   // Higher = less sensitive
   sensitivityY: 40,
-  idleTimeout: 1500,  // ms before idle resumes
+  idleTimeout: 1200,  // ms before idle resumes (14.2f)
   onMouseMove: () => setIsInteracting(true),
   onMouseIdle: () => setIsInteracting(false),
-})
-```
-
-**Mobile Motion (Touch Parallax):**
-```tsx
-import { useTouchParallax } from '../../hooks/useTouchParallax'
-
-useTouchParallax(parallaxLayerRef, {
-  maxX: 12,           // Max horizontal offset (px)
-  maxY: 12,           // Max vertical offset (px)
-  sensitivityX: 10,   // Lower = more sensitive
-  sensitivityY: 12,
-  decayDuration: 350, // Reset animation duration (ms)
-  onTouchStart: () => setIsInteracting(true),
-  onTouchEnd: () => setIsInteracting(false),
 })
 ```
 
@@ -540,13 +525,28 @@ useIdleControl(idleLayerRef, {
 })
 ```
 
-**CSS Layer Classes:**
+**CSS Layer Classes (Issue 14.2f):**
 ```css
-.hero-parallax-layer { will-change: transform; }
-.hero-idle-layer { will-change: transform; }
+/* Parallax layer - receives JS transform */
+.hero-parallax-layer { 
+  will-change: transform;
+  transform-style: preserve-3d;
+}
+
+/* Idle layer - receives CSS opacity/filter animation */
+.hero-idle-layer { 
+  will-change: opacity, filter;
+}
+
+/* Breathing animation using opacity + filter (NOT transform!) */
+@keyframes hero-idle-breathing {
+  0%   { opacity: 0.88; filter: drop-shadow(0 0 1px var(--color-hero-glow)); }
+  50%  { opacity: 1;    filter: drop-shadow(0 0 6px var(--color-hero-glow)); }
+  100% { opacity: 0.88; filter: drop-shadow(0 0 1px var(--color-hero-glow)); }
+}
 
 .hero-idle {
-  animation: hero-idle-tilt 6s ease-in-out infinite;
+  animation: hero-idle-breathing 5s ease-in-out infinite;
 }
 ```
 
@@ -566,6 +566,11 @@ Detection Matrix:
 | ✓ | ✓ | Desktop | Laptop + touch |
 | ✗ | ✓ | Mobile | Touch device |
 | ✗ | ✗ | Mobile | No fine = no parallax |
+
+**Events (Issue 14.2f):**
+- Uses `pointermove` and `pointerleave` instead of `mousemove`/`mouseleave`
+- Better cross-device reliability
+- Unified pointer abstraction for mouse/stylus/touch
 
 **3D Parallax Transform (Issue 14.2e):**
 ```typescript

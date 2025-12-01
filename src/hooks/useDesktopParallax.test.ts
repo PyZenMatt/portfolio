@@ -1,8 +1,9 @@
 /**
- * Tests for useDesktopParallax hook - Issue 14.2e
+ * Tests for useDesktopParallax hook - Issue 14.2e + 14.2f
  * 
  * Desktop detection: pointer:fine only (no fallback)
  * Mobile: no parallax (pointer:coarse or no fine)
+ * Events: pointermove/pointerleave (14.2f)
  */
 
 import { renderHook, act } from '@testing-library/react'
@@ -67,7 +68,7 @@ describe('useDesktopParallax', () => {
     
     renderHook(() => module.useDesktopParallax(targetRef))
     
-    expect(addEventListenerSpy).not.toHaveBeenCalledWith('mousemove', expect.any(Function), expect.any(Object))
+    expect(addEventListenerSpy).not.toHaveBeenCalledWith('pointermove', expect.any(Function), expect.any(Object))
   })
 
   test('attaches listeners on desktop (fine pointer)', () => {
@@ -76,17 +77,17 @@ describe('useDesktopParallax', () => {
     
     renderHook(() => useDesktopParallax(targetRef))
     
-    expect(addEventListenerSpy).toHaveBeenCalledWith('mousemove', expect.any(Function), { passive: true })
+    expect(addEventListenerSpy).toHaveBeenCalledWith('pointermove', expect.any(Function), { passive: true })
   })
 
-  test('calls onMouseMove callback on mouse movement', () => {
+  test('calls onMouseMove callback on pointer movement', () => {
     const targetRef = { current: document.createElement('div') }
     const onMouseMove = vi.fn()
     
     renderHook(() => useDesktopParallax(targetRef, { onMouseMove }))
     
     act(() => {
-      window.dispatchEvent(new MouseEvent('mousemove', { clientX: 100, clientY: 100 }))
+      window.dispatchEvent(new PointerEvent('pointermove', { clientX: 100, clientY: 100 }))
     })
     
     expect(onMouseMove).toHaveBeenCalled()
@@ -100,7 +101,7 @@ describe('useDesktopParallax', () => {
     renderHook(() => useDesktopParallax(targetRef, { onMouseIdle, idleTimeout: 1500 }))
     
     act(() => {
-      window.dispatchEvent(new MouseEvent('mousemove', { clientX: 100, clientY: 100 }))
+      window.dispatchEvent(new PointerEvent('pointermove', { clientX: 100, clientY: 100 }))
     })
     
     expect(onMouseIdle).not.toHaveBeenCalled()
@@ -120,7 +121,7 @@ describe('useDesktopParallax', () => {
     const { unmount } = renderHook(() => useDesktopParallax(targetRef))
     unmount()
     
-    expect(removeEventListenerSpy).toHaveBeenCalledWith('mousemove', expect.any(Function))
+    expect(removeEventListenerSpy).toHaveBeenCalledWith('pointermove', expect.any(Function))
   })
 })
 
@@ -141,7 +142,7 @@ describe('useDesktopParallax with reduced motion', () => {
     
     renderHook(() => module.useDesktopParallax(targetRef))
     
-    expect(addEventListenerSpy).not.toHaveBeenCalledWith('mousemove', expect.any(Function), expect.any(Object))
+    expect(addEventListenerSpy).not.toHaveBeenCalledWith('pointermove', expect.any(Function), expect.any(Object))
   })
 })
 
@@ -175,7 +176,7 @@ describe('useDesktopParallax pointer detection (Issue 14.2e)', () => {
     renderHook(() => module.useDesktopParallax(targetRef))
     
     // Should NOT attach listeners - no fine pointer detected
-    expect(addEventListenerSpy).not.toHaveBeenCalledWith('mousemove', expect.any(Function), expect.any(Object))
+    expect(addEventListenerSpy).not.toHaveBeenCalledWith('pointermove', expect.any(Function), expect.any(Object))
   })
 
   test('does not enable parallax on mobile (coarse pointer only)', async () => {
@@ -189,7 +190,7 @@ describe('useDesktopParallax pointer detection (Issue 14.2e)', () => {
     renderHook(() => module.useDesktopParallax(targetRef))
     
     // Should NOT attach listeners on mobile
-    expect(addEventListenerSpy).not.toHaveBeenCalledWith('mousemove', expect.any(Function), expect.any(Object))
+    expect(addEventListenerSpy).not.toHaveBeenCalledWith('pointermove', expect.any(Function), expect.any(Object))
   })
 
   test('enables parallax on hybrid device with both fine and coarse', async () => {
@@ -203,7 +204,7 @@ describe('useDesktopParallax pointer detection (Issue 14.2e)', () => {
     renderHook(() => module.useDesktopParallax(targetRef))
     
     // Should attach listeners because fine pointer is available
-    expect(addEventListenerSpy).toHaveBeenCalledWith('mousemove', expect.any(Function), { passive: true })
+    expect(addEventListenerSpy).toHaveBeenCalledWith('pointermove', expect.any(Function), { passive: true })
   })
 
   test('enables parallax on desktop (fine pointer only)', async () => {
@@ -216,6 +217,6 @@ describe('useDesktopParallax pointer detection (Issue 14.2e)', () => {
     renderHook(() => module.useDesktopParallax(targetRef))
     
     // Should attach listeners on desktop
-    expect(addEventListenerSpy).toHaveBeenCalledWith('mousemove', expect.any(Function), { passive: true })
+    expect(addEventListenerSpy).toHaveBeenCalledWith('pointermove', expect.any(Function), { passive: true })
   })
 })
