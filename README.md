@@ -550,10 +550,27 @@ useIdleControl(idleLayerRef, {
 }
 ```
 
-**Device Detection:**
-- Desktop: `(pointer: fine)` → mouse parallax
-- Mobile: `(pointer: coarse)` → touch parallax
-- Both get idle animation (controlled by `useIdleControl`)
+**Device Detection (Issue 14.2c Fallback):**
+
+The `useDesktopParallax` hook uses a robust detection strategy:
+
+```typescript
+// Some desktops return false for pointer:fine - use fallback
+const hasFinePointer = window.matchMedia('(pointer: fine)').matches
+const hasCoarsePointer = window.matchMedia('(pointer: coarse)').matches
+
+// Desktop = fine pointer OR (no fine AND no coarse) - fallback for edge cases
+// Mobile always has coarse pointer from touch, so no coarse = desktop
+const isDesktop = hasFinePointer || (!hasFinePointer && !hasCoarsePointer)
+```
+
+Detection Matrix:
+| Fine | Coarse | Result | Device Type |
+|------|--------|--------|-------------|
+| ✓ | ✗ | Desktop | Mouse/trackpad |
+| ✓ | ✓ | Desktop | Laptop + touch |
+| ✗ | ✓ | Mobile | Touch device |
+| ✗ | ✗ | Desktop | Fallback (edge case) |
 
 **Accessibility:**
 - `prefers-reduced-motion: reduce` disables all animations
@@ -561,6 +578,28 @@ useIdleControl(idleLayerRef, {
 - RAF-based updates for 60fps
 - Memory cleanup on unmount
 - No horizontal overflow
+
+### Hero Cursor Glow (Issue 14.2c)
+
+The hero cursor glow uses theme-aware soft colors:
+
+```css
+/* Light mode: slate glow */
+:root {
+  --color-hero-cursor: #2F4560;
+  --color-hero-cursor-soft: rgba(47, 69, 96, 0.45);
+}
+
+/* Dark mode: orange glow */
+.dark {
+  --color-hero-cursor: var(--color-primary);
+  --color-hero-cursor-soft: rgba(239, 85, 44, 0.65);
+}
+```
+
+The `GlowCursor` component combines:
+- Radial gradient: `var(--color-hero-cursor)`
+- Box-shadow glow: `var(--color-hero-cursor-soft)`
 
 ## 💼 Projects Section
 

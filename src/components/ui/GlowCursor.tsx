@@ -134,6 +134,7 @@ export default function GlowCursor({
         height: radius * 2,
         borderRadius: '50%',
         background: `radial-gradient(circle at center, var(--color-hero-cursor), transparent 70%)`,
+        boxShadow: `0 0 ${radius}px ${radius / 2}px var(--color-hero-cursor-soft)`,
         opacity: isVisible ? opacity : 0,
         transition: 'opacity 0.3s ease-out',
         willChange: 'transform',

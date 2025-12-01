@@ -67,10 +67,25 @@ export function useDesktopParallax(
   const targetXRef = useRef(0)
   const targetYRef = useRef(0)
 
-  // Check if device has fine pointer (desktop)
+  /**
+   * Check if device should use desktop parallax (Issue 14.2c fix)
+   * 
+   * Some desktop browsers/systems return false for `pointer: fine` even with a mouse.
+   * Fallback strategy: if device has neither fine nor coarse pointer detected,
+   * assume it's a desktop environment (since mobile always has touch = coarse).
+   * 
+   * Logic: isDesktop = hasFinePointer OR (NOT hasFinePointer AND NOT hasCoarsePointer)
+   */
   const isDesktop = useCallback((): boolean => {
     if (typeof window === 'undefined') return false
-    return window.matchMedia('(pointer: fine)').matches
+    
+    const hasFinePointer = window.matchMedia('(pointer: fine)').matches
+    const hasCoarsePointer = window.matchMedia('(pointer: coarse)').matches
+    
+    // Desktop = has fine pointer (mouse/trackpad)
+    // Fallback: if neither fine nor coarse detected, assume desktop
+    // (mobile devices always have coarse pointer from touch)
+    return hasFinePointer || (!hasFinePointer && !hasCoarsePointer)
   }, [])
 
   // Clamp value within bounds

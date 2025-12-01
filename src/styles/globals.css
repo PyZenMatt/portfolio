@@ -22,11 +22,12 @@
   --color-border-subtle: rgba(212, 212, 212, 0.6);
 
   /* ============================================
-     Hero Identity Block - Issue 14.1
+     Hero Identity Block - Issue 14.1 + 14.2c
      Light theme uses navy/slate for sophistication
      ============================================ */
   --color-hero-portrait: #242E3D;
   --color-hero-cursor: #2F4560;
+  --color-hero-cursor-soft: rgba(47, 69, 96, 0.45);
   --color-hero-glow: rgba(47, 69, 96, 0.25);
   --color-hero-icons: #2F4560;
 
@@ -84,6 +85,7 @@
   /* Hero Identity Block - Dark Mode uses primary accent */
   --color-hero-portrait: var(--color-primary);
   --color-hero-cursor: var(--color-primary);
+  --color-hero-cursor-soft: rgba(239, 85, 44, 0.65);
   --color-hero-glow: rgba(255, 145, 36, 0.25);
   --color-hero-icons: var(--color-primary-light);
 }
