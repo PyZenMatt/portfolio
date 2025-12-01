@@ -550,18 +550,13 @@ useIdleControl(idleLayerRef, {
 }
 ```
 
-**Device Detection (Issue 14.2c Fallback):**
+**Device Detection (Issue 14.2e - Simple):**
 
-The `useDesktopParallax` hook uses a robust detection strategy:
+The `useDesktopParallax` hook uses simple pointer detection:
 
 ```typescript
-// Some desktops return false for pointer:fine - use fallback
-const hasFinePointer = window.matchMedia('(pointer: fine)').matches
-const hasCoarsePointer = window.matchMedia('(pointer: coarse)').matches
-
-// Desktop = fine pointer OR (no fine AND no coarse) - fallback for edge cases
-// Mobile always has coarse pointer from touch, so no coarse = desktop
-const isDesktop = hasFinePointer || (!hasFinePointer && !hasCoarsePointer)
+// Desktop = pointer:fine only. No fallbacks.
+const isDesktop = window.matchMedia('(pointer: fine)').matches
 ```
 
 Detection Matrix:
@@ -570,11 +565,20 @@ Detection Matrix:
 | ✓ | ✗ | Desktop | Mouse/trackpad |
 | ✓ | ✓ | Desktop | Laptop + touch |
 | ✗ | ✓ | Mobile | Touch device |
-| ✗ | ✗ | Desktop | Fallback (edge case) |
+| ✗ | ✗ | Mobile | No fine = no parallax |
+
+**3D Parallax Transform (Issue 14.2e):**
+```typescript
+// Premium 3D effect with rotation
+const rotateY = xOffset * -0.5  // Tilt based on X movement
+const rotateX = yOffset * 0.5   // Tilt based on Y movement
+
+transform = `translate3d(${x}px, ${y}px, 0) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`
+```
 
 **Accessibility:**
 - `prefers-reduced-motion: reduce` disables all animations
-- Transform clamp: ±15px desktop, ±12px mobile
+- Transform clamp: ±15px desktop
 - RAF-based updates for 60fps
 - Memory cleanup on unmount
 - No horizontal overflow

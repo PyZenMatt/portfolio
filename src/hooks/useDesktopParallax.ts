@@ -1,14 +1,15 @@
 /**
- * useDesktopParallax Hook - Issue 14.2b + 14.2c + 14.2d
+ * useDesktopParallax Hook - Issue 14.2e
  * 
  * Desktop-only mouse parallax effect for the Hero portrait.
  * Features:
- * - Smooth mouse-responsive parallax movement
- * - Robust device detection with fallback (14.2c)
+ * - Smooth mouse-responsive 3D parallax movement
+ * - Simple device detection: pointer:fine only (14.2e)
+ * - 3D tilt via rotateX/rotateY transforms
  * - RAF-based updates for 60fps performance
  * - Spring physics for natural feel
  * - Respects prefers-reduced-motion
- * - Dev debug logging (14.2d)
+ * - Dev debug logging
  * - Memory cleanup on unmount
  */
 
@@ -69,24 +70,15 @@ export function useDesktopParallax(
   const targetYRef = useRef(0)
 
   /**
-   * Check if device should use desktop parallax (Issue 14.2c fix)
+   * Check if device should use desktop parallax (Issue 14.2e)
    * 
-   * Some desktop browsers/systems return false for `pointer: fine` even with a mouse.
-   * Fallback strategy: if device has neither fine nor coarse pointer detected,
-   * assume it's a desktop environment (since mobile always has touch = coarse).
-   * 
-   * Logic: isDesktop = hasFinePointer OR (NOT hasFinePointer AND NOT hasCoarsePointer)
+   * Simple detection: pointer:fine = desktop with mouse/trackpad.
+   * No fallback needed - if pointer:fine doesn't match, it's not a desktop.
+   * Mobile always has coarse pointer from touch.
    */
   const isDesktop = useCallback((): boolean => {
     if (typeof window === 'undefined') return false
-    
-    const hasFinePointer = window.matchMedia('(pointer: fine)').matches
-    const hasCoarsePointer = window.matchMedia('(pointer: coarse)').matches
-    
-    // Desktop = has fine pointer (mouse/trackpad)
-    // Fallback: if neither fine nor coarse detected, assume desktop
-    // (mobile devices always have coarse pointer from touch)
-    return hasFinePointer || (!hasFinePointer && !hasCoarsePointer)
+    return window.matchMedia('(pointer: fine)').matches
   }, [])
 
   // Clamp value within bounds
@@ -112,8 +104,10 @@ export function useDesktopParallax(
       console.debug('[parallax]', { x: currentXRef.current.toFixed(2), y: currentYRef.current.toFixed(2) })
     }
 
-    // Apply transform
-    targetRef.current.style.transform = `translate3d(${currentXRef.current}px, ${currentYRef.current}px, 0)`
+    // Apply 3D transform with rotation for premium parallax effect (Issue 14.2e)
+    const rotateY = currentXRef.current * -0.5  // Tilt based on X movement
+    const rotateX = currentYRef.current * 0.5   // Tilt based on Y movement
+    targetRef.current.style.transform = `translate3d(${currentXRef.current}px, ${currentYRef.current}px, 0) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`
 
     // Continue animation if not at target
     const deltaX = Math.abs(targetXRef.current - currentXRef.current)

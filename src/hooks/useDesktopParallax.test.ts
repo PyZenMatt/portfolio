@@ -1,8 +1,8 @@
 /**
- * Tests for useDesktopParallax hook - Issue 14.2b + 14.2c
+ * Tests for useDesktopParallax hook - Issue 14.2e
  * 
- * Issue 14.2c adds fallback detection tests:
- * - When neither fine nor coarse pointer detected, should treat as desktop
+ * Desktop detection: pointer:fine only (no fallback)
+ * Mobile: no parallax (pointer:coarse or no fine)
  */
 
 import { renderHook, act } from '@testing-library/react'
@@ -146,13 +146,12 @@ describe('useDesktopParallax with reduced motion', () => {
 })
 
 /**
- * Issue 14.2c: Fallback detection tests
+ * Issue 14.2e: Simple pointer detection tests
  * 
- * Some desktop browsers/systems return false for both `pointer: fine` AND `pointer: coarse`.
- * In this case, we should still enable desktop parallax as a fallback,
- * since mobile devices always have coarse pointer from touch.
+ * Desktop = pointer:fine only. No fallbacks.
+ * Mobile = no parallax (coarse or no fine pointer)
  */
-describe('useDesktopParallax fallback detection (Issue 14.2c)', () => {
+describe('useDesktopParallax pointer detection (Issue 14.2e)', () => {
   beforeEach(() => {
     vi.resetModules()
     // Re-mock useReducedMotion for fresh imports
@@ -165,8 +164,8 @@ describe('useDesktopParallax fallback detection (Issue 14.2c)', () => {
     vi.clearAllMocks()
   })
 
-  test('enables parallax when neither fine nor coarse pointer detected (fallback)', async () => {
-    // Simulate desktop browser where both queries return false
+  test('does NOT enable parallax when neither fine nor coarse detected (no fallback)', async () => {
+    // Unlike 14.2c, we no longer fallback - no fine pointer = no parallax
     mockMatchMedia({ fine: false, coarse: false })
     
     const module = await import('./useDesktopParallax')
@@ -175,11 +174,11 @@ describe('useDesktopParallax fallback detection (Issue 14.2c)', () => {
     
     renderHook(() => module.useDesktopParallax(targetRef))
     
-    // Should still attach listeners because we fallback to desktop mode
-    expect(addEventListenerSpy).toHaveBeenCalledWith('mousemove', expect.any(Function), { passive: true })
+    // Should NOT attach listeners - no fine pointer detected
+    expect(addEventListenerSpy).not.toHaveBeenCalledWith('mousemove', expect.any(Function), expect.any(Object))
   })
 
-  test('does not enable parallax on mobile even with fallback logic', async () => {
+  test('does not enable parallax on mobile (coarse pointer only)', async () => {
     // Mobile always has coarse pointer from touch
     mockMatchMedia({ fine: false, coarse: true })
     
@@ -204,6 +203,19 @@ describe('useDesktopParallax fallback detection (Issue 14.2c)', () => {
     renderHook(() => module.useDesktopParallax(targetRef))
     
     // Should attach listeners because fine pointer is available
+    expect(addEventListenerSpy).toHaveBeenCalledWith('mousemove', expect.any(Function), { passive: true })
+  })
+
+  test('enables parallax on desktop (fine pointer only)', async () => {
+    mockMatchMedia({ fine: true, coarse: false })
+    
+    const module = await import('./useDesktopParallax')
+    const targetRef = { current: document.createElement('div') }
+    const addEventListenerSpy = vi.spyOn(window, 'addEventListener')
+    
+    renderHook(() => module.useDesktopParallax(targetRef))
+    
+    // Should attach listeners on desktop
     expect(addEventListenerSpy).toHaveBeenCalledWith('mousemove', expect.any(Function), { passive: true })
   })
 })

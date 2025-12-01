@@ -1,32 +1,31 @@
 /**
- * HeroArt Component - Issue 14 + 14.2 + 14.2b + 14.2d
+ * HeroArt Component - Issue 14 + 14.2 + 14.2b + 14.2d + 14.2e
  * 
  * Composite creative identity block for the Hero section.
  * Combines:
  * - Portrait silhouette SVG with line-drawing animation
  * - Dynamic glow effect
  * - Floating tech icons
- * - Parallax motion response to mouse (desktop)
- * - Touch parallax + idle micro-motion (mobile)
+ * - 3D parallax motion response to mouse (desktop only)
+ * - Idle micro-motion animation
  * 
  * Features:
  * - Layered motion architecture (parallax layer + idle layer)
  * - SVG line-drawing reveal animation (14.2d)
+ * - 3D rotation parallax with rotateX/rotateY (14.2e)
  * - Full reduced motion support
  * - Theme-aware styling
  * - Responsive sizing
- * - Desktop + Mobile motion systems
  * 
  * Motion Priority:
- * Desktop:
+ * Desktop (pointer:fine):
  * 1. SVG drawing animation (~1.4s)
- * 2. Mouse move → parallax active, idle paused
+ * 2. Mouse move → 3D parallax active, idle paused
  * 3. Mouse idle (1.5s) → idle resumes
  * 
- * Mobile:
+ * Mobile (pointer:coarse):
  * 1. SVG drawing animation (~1.4s)
- * 2. Touch active → touch parallax, idle paused
- * 3. Touch end → idle resumes after decay
+ * 2. Idle animation only (no parallax)
  * 
  * Reduced motion → fully static, no animations
  */
@@ -36,7 +35,6 @@ import { motion } from 'framer-motion'
 import Portrait from './Portrait'
 import TechFloaters from './TechFloaters'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
-import { useTouchParallax } from '../../hooks/useTouchParallax'
 import { useDesktopParallax } from '../../hooks/useDesktopParallax'
 import { useIdleControl } from '../../hooks/useIdleControl'
 import { zoomIn } from '../../motion'
@@ -58,26 +56,15 @@ export default function HeroArt({ className = '' }: HeroArtProps) {
   // Drawing complete state - idle starts after drawing finishes
   const [isDrawingComplete, setIsDrawingComplete] = useState(prefersReducedMotion)
 
-  // Desktop parallax - only on pointer:fine devices
+  // Desktop parallax - only on pointer:fine devices (14.2e)
   useDesktopParallax(parallaxLayerRef, {
     maxX: 15,
     maxY: 15,
     sensitivityX: 40,
     sensitivityY: 40,
-    idleTimeout: 1500,
+    idleTimeout: 1200,  // 14.2e: 1200ms before idle resumes
     onMouseMove: () => setIsInteracting(true),
     onMouseIdle: () => setIsInteracting(false),
-  })
-
-  // Mobile touch parallax - only on pointer:coarse devices
-  useTouchParallax(parallaxLayerRef, {
-    maxX: 12,
-    maxY: 12,
-    sensitivityX: 10,
-    sensitivityY: 12,
-    decayDuration: 350,
-    onTouchStart: () => setIsInteracting(true),
-    onTouchEnd: () => setIsInteracting(false),
   })
 
   // Control idle animation based on interaction state
