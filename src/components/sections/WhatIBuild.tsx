@@ -1,10 +1,17 @@
 /**
- * WhatIBuild Section - Issue 14.3.1 + 14.3.2
+ * WhatIBuild Section - Issue 14.3.1 + 14.3.2 + 14.3.3
  * 
  * Premium feature cards section showing professional value proposition.
  * Three cards: Full-Stack Web Apps, AI & Automation, DevOps & Performance.
+ * 
+ * Animations:
+ * - Section header fade-in on scroll
+ * - Cards staggered reveal with fade-up
+ * - Reduced motion support
  */
 
+import { motion } from 'framer-motion'
+import { useReducedMotion } from '../../hooks/useReducedMotion'
 import WhatIBuildCard from './WhatIBuildCard'
 
 // Monoline icons (Linear-inspired)
@@ -86,6 +93,9 @@ const services = [
 ]
 
 export default function WhatIBuild() {
+  const prefersReducedMotion = useReducedMotion()
+  const MotionDiv = prefersReducedMotion ? 'div' : motion.div
+
   return (
     <section
       className="py-16 md:py-24"
@@ -93,7 +103,15 @@ export default function WhatIBuild() {
     >
       <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="text-center mb-12 md:mb-16">
+        <MotionDiv 
+          {...(!prefersReducedMotion && {
+            initial: { opacity: 0, y: 20 },
+            whileInView: { opacity: 1, y: 0 },
+            viewport: { once: true, margin: '-100px' },
+            transition: { duration: 0.5, ease: [0.25, 0.1, 0.25, 1] },
+          })}
+          className="text-center mb-12 md:mb-16"
+        >
           <h2
             id="what-i-build-title"
             className="text-3xl md:text-4xl lg:text-5xl font-bold text-[var(--color-text)] mb-4"
@@ -103,7 +121,7 @@ export default function WhatIBuild() {
           <p className="text-lg md:text-xl text-[var(--color-text-secondary)] max-w-2xl mx-auto">
             Crafting digital experiences with modern technologies and best practices
           </p>
-        </div>
+        </MotionDiv>
 
         {/* Cards Grid */}
         <div 
@@ -111,9 +129,9 @@ export default function WhatIBuild() {
           role="list"
           aria-label="Services offered"
         >
-          {services.map((service) => (
+          {services.map((service, index) => (
             <div key={service.title} role="listitem">
-              <WhatIBuildCard {...service} />
+              <WhatIBuildCard {...service} index={index} />
             </div>
           ))}
         </div>

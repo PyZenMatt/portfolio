@@ -1,11 +1,16 @@
 /**
- * Tests for WhatIBuildCard component - Issue 14.3.2
+ * Tests for WhatIBuildCard component - Issue 14.3.2 + 14.3.3
  */
 
 import { render, screen } from '@testing-library/react'
 import { BrowserRouter } from 'react-router-dom'
-import { describe, test, expect } from 'vitest'
+import { describe, test, expect, vi } from 'vitest'
 import WhatIBuildCard from './WhatIBuildCard'
+
+// Mock useReducedMotion to test both motion states
+vi.mock('../../hooks/useReducedMotion', () => ({
+  useReducedMotion: vi.fn(() => false),
+}))
 
 const mockIcon = <svg data-testid="mock-icon" aria-hidden="true"><circle /></svg>
 
@@ -97,5 +102,27 @@ describe('WhatIBuildCard', () => {
       </BrowserRouter>
     )
     expect(screen.getByRole('link', { name: /learn more/i })).toBeInTheDocument()
+  })
+
+  test('card has hover transition classes', () => {
+    renderCard()
+    const article = screen.getByRole('article')
+    expect(article.className).toContain('hover:shadow-xl')
+    expect(article.className).toContain('hover:border-')
+  })
+
+  test('accepts index prop for staggered animation', () => {
+    renderCard({ index: 2 })
+    expect(screen.getByRole('article')).toBeInTheDocument()
+  })
+})
+
+describe('WhatIBuildCard with reduced motion', () => {
+  test('renders without motion when reduced motion preferred', async () => {
+    const { useReducedMotion } = await import('../../hooks/useReducedMotion')
+    vi.mocked(useReducedMotion).mockReturnValue(true)
+    
+    renderCard()
+    expect(screen.getByRole('article')).toBeInTheDocument()
   })
 })

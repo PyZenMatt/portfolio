@@ -1,5 +1,5 @@
 /**
- * WhatIBuildCard Component - Issue 14.3.2
+ * WhatIBuildCard Component - Issue 14.3.2 + 14.3.3
  * 
  * Card for the "What I Build" section.
  * Features:
@@ -8,11 +8,15 @@
  * - Description paragraph
  * - Bullet list of features
  * - Optional CTA link
+ * - Hover animations (scale, glow, shadow)
+ * - Reduced motion support
  * - Dark/light consistent styling
  * - Full accessibility support
  */
 
 import { Link } from 'react-router-dom'
+import { motion } from 'framer-motion'
+import { useReducedMotion } from '../../hooks/useReducedMotion'
 
 interface WhatIBuildCardProps {
   title: string
@@ -22,6 +26,7 @@ interface WhatIBuildCardProps {
   icon: React.ReactNode
   ctaText?: string
   ctaHref?: string
+  index?: number
 }
 
 export default function WhatIBuildCard({
@@ -32,16 +37,50 @@ export default function WhatIBuildCard({
   icon,
   ctaText = 'Learn More',
   ctaHref = '/projects',
+  index = 0,
 }: WhatIBuildCardProps) {
+  const prefersReducedMotion = useReducedMotion()
+  const MotionArticle = prefersReducedMotion ? 'article' : motion.article
+
   return (
-    <article
-      className="flex flex-col p-6 md:p-8 rounded-2xl 
-        bg-[var(--color-card)] border border-[var(--color-border)]"
+    <MotionArticle
+      {...(!prefersReducedMotion && {
+        initial: { opacity: 0, y: 30 },
+        whileInView: { opacity: 1, y: 0 },
+        viewport: { once: true, margin: '-50px' },
+        transition: { 
+          duration: 0.5, 
+          delay: index * 0.1,
+          ease: [0.25, 0.1, 0.25, 1]
+        },
+        whileHover: {
+          y: -8,
+          scale: 1.02,
+          transition: { duration: 0.25, ease: [0.25, 0.1, 0.25, 1] },
+        },
+      })}
+      className="group flex flex-col p-6 md:p-8 rounded-2xl 
+        bg-[var(--color-card)] border border-[var(--color-border)]
+        hover:border-[var(--color-primary)]/40
+        hover:shadow-xl hover:shadow-[var(--color-primary)]/10
+        transition-[border-color,box-shadow] duration-300"
     >
+      {/* Glow effect on hover */}
+      <div
+        className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-10 
+          transition-opacity duration-300 pointer-events-none -z-10"
+        style={{
+          background: 'radial-gradient(circle at 50% 0%, var(--color-primary) 0%, transparent 70%)',
+        }}
+        aria-hidden="true"
+      />
+
       {/* Icon */}
       <div
         className="flex items-center justify-center w-14 h-14 mb-5 rounded-xl
-          bg-[var(--color-primary)]/10 text-[var(--color-primary)]"
+          bg-[var(--color-primary)]/10 text-[var(--color-primary)]
+          group-hover:bg-[var(--color-primary)]/20
+          transition-colors duration-300"
         aria-hidden="true"
       >
         {icon}
@@ -88,11 +127,11 @@ export default function WhatIBuildCard({
         to={ctaHref}
         className="inline-flex items-center gap-2 text-sm font-medium 
           text-[var(--color-primary)] hover:text-[var(--color-primary-light)]
-          transition-colors duration-200"
+          transition-colors duration-200 group/cta"
       >
         {ctaText}
         <svg 
-          className="w-4 h-4" 
+          className="w-4 h-4 transition-transform group-hover/cta:translate-x-1" 
           fill="none" 
           viewBox="0 0 24 24" 
           stroke="currentColor"
@@ -101,6 +140,6 @@ export default function WhatIBuildCard({
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
         </svg>
       </Link>
-    </article>
+    </MotionArticle>
   )
 }
