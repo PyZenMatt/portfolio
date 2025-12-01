@@ -6,5 +6,6 @@ test('renders app with router', async () => {
   expect(
     await screen.findByRole('heading', { name: /matteo ricci/i }, { timeout: 3000 })
   ).toBeInTheDocument()
-  expect(screen.getByRole('navigation')).toBeInTheDocument()
+  // Multiple navigation elements: header nav + footer nav
+  expect(screen.getAllByRole('navigation').length).toBeGreaterThanOrEqual(1)
 })

@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router-dom'
 import Navbar from './Navbar'
-import Footer from './Footer'
+import PremiumFooter from './PremiumFooter'
 import SkipLink from './SkipLink'
 
 export default function PageLayout() {
@@ -15,7 +15,7 @@ export default function PageLayout() {
           <Outlet />
         </div>
       </main>
-      <Footer />
+      <PremiumFooter />
     </div>
   )
 }
