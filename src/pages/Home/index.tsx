@@ -2,6 +2,7 @@ import Seo from '../../components/seo/Seo'
 import HeroSection from '../../components/sections/HeroSection'
 import WhatIBuild from '../../components/sections/WhatIBuild'
 import TechStackSpotlight from '../../components/sections/TechStackSpotlight'
+import FeaturedProjectHighlight from '../../components/sections/FeaturedProjectHighlight'
 import ProjectsSection from '../../components/sections/ProjectsSection'
 
 export default function Home() {
@@ -15,6 +16,7 @@ export default function Home() {
       <HeroSection />
       <WhatIBuild />
       <TechStackSpotlight />
+      <FeaturedProjectHighlight />
       <ProjectsSection />
     </>
   )
