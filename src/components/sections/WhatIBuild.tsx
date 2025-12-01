@@ -1,5 +1,5 @@
 /**
- * WhatIBuild Section - Issue 14.3.1 + 14.3.2 + 14.3.3
+ * WhatIBuild Section - Issue 14.3.1 + 14.3.2 + 14.3.3 + 14.3.12
  * 
  * Premium feature cards section showing professional value proposition.
  * Three cards: Full-Stack Web Apps, AI & Automation, DevOps & Performance.
@@ -8,6 +8,8 @@
  * - Section header fade-in on scroll
  * - Cards staggered reveal with fade-up
  * - Reduced motion support
+ * 
+ * Issue 14.3.12: Section spacing alignment
  */
 
 import { motion } from 'framer-motion'
@@ -98,7 +100,7 @@ export default function WhatIBuild() {
 
   return (
     <section
-      className="py-16 md:py-24"
+      className="section-spacing bg-[var(--color-bg)]"
       aria-labelledby="what-i-build-title"
     >
       <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">

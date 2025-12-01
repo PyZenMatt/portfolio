@@ -234,6 +234,42 @@
 
 @layer utilities {
   /* Custom utility styles will be defined here */
+
+  /* ============================================
+     Section Spacing Tokens - Issue 14.3.12
+     Consistent vertical rhythm across sections
+     ============================================ */
+  .section-spacing {
+    padding-top: clamp(4rem, 8vw, 6rem);
+    padding-bottom: clamp(4rem, 8vw, 6rem);
+  }
+
+  .section-spacing-lg {
+    padding-top: clamp(5rem, 10vw, 8rem);
+    padding-bottom: clamp(5rem, 10vw, 8rem);
+  }
+
+  /* ============================================
+     Subtle Noise Texture - Issue 14.3.12
+     Premium background grain effect
+     ============================================ */
+  .bg-noise {
+    position: relative;
+  }
+
+  .bg-noise::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    opacity: 0.025;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .dark .bg-noise::before {
+    opacity: 0.04;
+  }
   
   /* Perspective for 3D transforms (Issue 13.3) */
   .perspective-1000 {

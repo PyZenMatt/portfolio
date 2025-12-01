@@ -1,5 +1,5 @@
 /**
- * TechStackSpotlight Section - Issue 14.3.4 + 14.3.5
+ * TechStackSpotlight Section - Issue 14.3.4 + 14.3.5 + 14.3.12
  * 
  * Animated tech wall showing professional tech stack.
  * Features:
@@ -9,6 +9,8 @@
  * - Micro-floating animations
  * - Responsive grid layout
  * - Reduced motion support
+ * 
+ * Issue 14.3.12: Section spacing alignment
  */
 
 import TechIcon, { type TechName } from './TechIcon'
@@ -25,7 +27,7 @@ const techStack: TechName[] = [
 export default function TechStackSpotlight() {
   return (
     <section
-      className="py-16 md:py-24 bg-[var(--color-surface)]"
+      className="section-spacing bg-[var(--color-surface)]"
       aria-labelledby="tech-stack-title"
       aria-label="Tech Stack"
     >

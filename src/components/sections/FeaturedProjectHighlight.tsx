@@ -1,5 +1,5 @@
 /**
- * FeaturedProjectHighlight Section - Issue 14.3.7 + 14.3.8 + 14.3.9
+ * FeaturedProjectHighlight Section - Issue 14.3.7 + 14.3.8 + 14.3.9 + 14.3.12
  * 
  * Showcases a featured/flagship project with premium Vercel-style presentation.
  * Features:
@@ -11,6 +11,8 @@
  * - Subtle parallax float on image
  * - Reduced motion support
  * - Full accessibility
+ * 
+ * Issue 14.3.12: Section spacing alignment
  */
 
 import { useState } from 'react'
@@ -119,7 +121,7 @@ export default function FeaturedProjectHighlight({
         viewport: { once: true, margin: '-100px' },
         variants: containerVariants,
       })}
-      className="py-16 md:py-24 bg-[var(--color-background)]"
+      className="section-spacing bg-[var(--color-bg)]"
       aria-labelledby="featured-project-title"
       aria-label="Featured Project"
     >
