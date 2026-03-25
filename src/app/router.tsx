@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import PageLayout from '../components/layout/PageLayout'
 import { useReducedMotion } from '../hooks/useReducedMotion'
+import { useGoogleAnalytics } from '../hooks/useGoogleAnalytics'
 import { pageTransition } from '../motion'
 
 const Home = lazy(() => import('../pages/Home'))
@@ -25,6 +26,9 @@ function PageLoader() {
 function AnimatedRoutes() {
   const location = useLocation()
   const prefersReducedMotion = useReducedMotion()
+  
+  // Track page views with Google Analytics
+  useGoogleAnalytics()
 
   return (
     <AnimatePresence mode="wait">
