@@ -2,6 +2,7 @@ import { Outlet } from 'react-router-dom'
 import Navbar from './Navbar'
 import PremiumFooter from './PremiumFooter'
 import SkipLink from './SkipLink'
+import { CookieBanner } from '../ui/CookieBanner'
 
 export default function PageLayout() {
   return (
@@ -16,6 +17,7 @@ export default function PageLayout() {
         </div>
       </main>
       <PremiumFooter />
+      <CookieBanner />
     </div>
   )
 }
